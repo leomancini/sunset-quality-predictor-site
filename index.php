@@ -1,8 +1,8 @@
 <?php
-	function getSunsetPrediction($date) {
+	function getSunsetPredictions() {
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_URL, 'https://nycsunsetbot.leo.gd/publish/history/predictions/'.$date.'.json');
+		curl_setopt($curl, CURLOPT_URL, 'https://nycsunsetbot.leo.gd/api/history.php');
 		$result = curl_exec($curl);
 		$data = json_decode($result, true);
 		curl_close($ch);
@@ -11,24 +11,24 @@
 	}
 
 	date_default_timezone_set('America/New_York');
-	$now = time();
-	$today = date('Y-m-d', $now);
+	$today = date('Y-m-d', time());
+	$yesterday = date('Y-m-d', strtotime('-1 day'));
 
-	$data = getSunsetPrediction($today);
+	$predictions = getSunsetPredictions();
+	
+	$firstDateWithPrediction = array_key_first($predictions);
 
-	if ($data) {
-		$predictionDay = 'today';
-		$prediction = $data;
-		$date = $now;
+	$date = strtotime($firstDateWithPrediction);
+	$rating = intval($predictions[$firstDateWithPrediction]['rating']);
+	$confidence = intval($predictions[$firstDateWithPrediction]['confidence']);
+	
+	if ($firstDateWithPrediction === $today) {
+		$predictionDay = 'today\'s';
+	} else if ($firstDateWithPrediction === $yesterday) {
+		$predictionDay = 'yesterday\'s';
 	} else {
-		$predictionDay = 'yesterday';
-		$yesterday = date('Y-m-d', strtotime('-1 days'));
-		$prediction = getSunsetPrediction($yesterday);
-		$date = strtotime('-1 days');
+		$predictionDay = 'latest';
 	}
-
-	$rating = intval($prediction['rating']);
-	$confidence = intval($prediction['confidence']);
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -52,7 +52,7 @@
 		<section data-section-id='latest-prediction'>
 			<div id='content'>
 				<div id='logo'></div>
-				<div id='title'><?php echo $predictionDay; ?>'s Sunset Prediction</div>
+				<div id='title'><?php echo $predictionDay; ?> Sunset Prediction</div>
 				<div id='date'><div class='day'><?php echo date('l', $date); ?></div> <div class='date'><?php echo date('M j', $date); ?></div></div>
 				<div id='stars'>
 					<div class='star <?php echo ($rating >= 1) ? 'filled' : 'unfilled'; ?>'></div>
@@ -64,7 +64,7 @@
 				<div id='confidence'><?php echo $confidence; ?>% Confident</div>
 			</div>
 			<div id='background'>
-				<div id='gradient' style='background-image: url("resources/images/background-<?php echo $rating; ?>.jpg")'></div>
+				<div id='gradient' style='background-image: url("resources/images/backgrounds/background-<?php echo $rating; ?>.jpg")'></div>
 			</div>
 		</section>
 		<div id='sections'>
@@ -104,7 +104,7 @@
 								}
 							}
 							
-							echo "<div class='day'>";
+							echo "<div class='day' style='background-image: url(\"resources/images/thumbnails/thumbnail-".$predictions[$date->format('Y-m-d')]['rating'].".jpg\")'>";
 							echo '<label>'.$date->format('j').'</label>';
 							echo '</div>';
 						}

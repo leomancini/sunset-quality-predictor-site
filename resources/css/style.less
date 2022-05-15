@@ -12,7 +12,7 @@
     line-height: 72px;
     text-align: center;
     color: #FFFFFF;
-    text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2), 0px 2px 4px rgba(0, 0, 0, 0.5), 0px 4px 24px rgba(0, 0, 0, 1);
 
     &::selection {
         background: black;
@@ -75,6 +75,7 @@ body {
         font-size: 0;
         margin-left: 8px; // Optically center
         overflow: visible;
+        user-select: none;
 
         &.scrolled {
             position: fixed;
@@ -87,7 +88,7 @@ body {
             margin: 24px 8px 0 8px;
             cursor: pointer;
             color: #FFFFFF;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 2px 8px rgba(0, 0, 0, 0.2);
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
             transition: 0.2s all;
             font-size: 16px;
             border-radius: 32px;
@@ -95,20 +96,20 @@ body {
 
             &:hover {
                 color: rgba(255, 255, 255, 1);
-                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 12px rgba(0, 0, 0, 0.2);
-                transform: scale(1.1);
+                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 4px 12px rgba(0, 0, 0, 0.2);
+                transform: scale(1.15);
             }
 
             &:active {
-                transform: scale(0.95);
-                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                transform: scale(0.9);
+                text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px 4px rgba(0, 0, 0, 0.2);
             }
 
             &.selected {
                 text-shadow: none;
                 color: rgba(0, 0, 0, 0.8);
-                background: rgba(255, 255, 255, 0.5);
-                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 24px rgba(0, 0, 0, 0.05);
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
 
                 &:hover {
                     cursor: default;
@@ -123,13 +124,11 @@ body {
     }
 
     section[data-section-id='latest-prediction'] {
-        transition: 0.2s all;
-        box-shadow: 0 0 0 transparent;
+        z-index: 2;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 
         &.scrolled {
             position: fixed;
-            z-index: 2;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         @keyframes rotation {
@@ -263,19 +262,21 @@ body {
         z-index: 1;
 
         section[data-section-id='history'] {
-            padding-top: 128px;
+            padding-top: 64px;
 
             #calendar {
                 @calendarWidth: 70vw;
                 font-size: 0;
                 width: @calendarWidth;
                 margin: 0 auto;
+                user-select: none;
 
                 .monthName {
                     display: block;
                     font-size: 32px;
                     font-weight: 800;
                     margin-top: 64px;
+                    margin-left: 8px;
                 }
 
                 .month {
@@ -283,32 +284,43 @@ body {
                     margin: 0 auto;
 
                     .day {
+                        @daySize: calc((@calendarWidth / 7) - 16px);
                         font-size: 14px;
-                        width: calc((@calendarWidth / 7) - 16px);
-                        height: calc((@calendarWidth / 7) - 16px);
+                        width: @daySize;
+                        height: @daySize;
                         background: rgba(0, 0, 0, 0.025);
                         margin: 8px;
-                        border-radius: 16px;
+                        border-radius: 8px;
                         display: inline-block;
                         box-sizing: border-box;
                         vertical-align: top;
-                        transition: 0.2s all;
+                        transition: 0.2s transform, 0.2s border-radius;
                         position: relative;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: 120%;
+                        box-shadow: 0 0 0 transparent;
+                        z-index: 1;
 
                         &.hidden {
                             opacity: 0;
                         }
 
                         &:hover {
-                            background: rgba(0, 0, 0, 0.05);
+                            cursor: pointer;
+                            z-index: 2;
+                            border-radius: 16px;
+                            transform: scale(1.2);
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
                         }
 
                         label {
                             position: absolute;
-                            font-size: 18px;
-                            right: 20px;
-                            top: 20px;
-                            color: rgba(0, 0, 0, 0.6);
+                            font-size: 16px;
+                            right: 16px;
+                            top: 14px;
+                            color: #FFFFFF;
+                            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
                         }
                     }
                 }
