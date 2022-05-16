@@ -48,7 +48,6 @@
 			<div class='item' data-section-id='about'>About</div>
 			<div class='item' data-section-id='follow'>Follow</div>
 		</div>
-		<div id='navigationBlur'></div>
 		<section data-section-id='latest-prediction'>
 			<div id='content'>
 				<div id='logo'></div>
@@ -104,8 +103,14 @@
 								}
 							}
 							
-							echo "<div class='day' style='background-image: url(\"resources/images/thumbnails/thumbnail-".$predictions[$date->format('Y-m-d')]['rating'].".jpg\")'>";
+							if ($predictions[$date->format('Y-m-d')]['rating']) {
+								echo "<div class='day filled day-".$date->format('N')."' style='background-image: url(\"resources/images/thumbnails/thumbnail-".$predictions[$date->format('Y-m-d')]['rating'].".jpg\")'>";
+							} else {
+								echo "<div class='day empty'>";
+							}
+
 							echo '<label>'.$date->format('j').'</label>';
+							echo "<div class='popover'><br>".$date->format('l M j, Y').'<br>'.$predictions[$date->format('Y-m-d')]['rating'].' stars<br>'.$predictions[$date->format('Y-m-d')]['confidence'].'% confident</div>';
 							echo '</div>';
 						}
 

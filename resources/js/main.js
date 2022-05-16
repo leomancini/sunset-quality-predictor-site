@@ -29,19 +29,11 @@ function goToSection(sectionId, behavior) {
 }
 
 window.onload = function() {
-    window.navigationElements = {
-        'navigation': document.querySelector('#navigation'),
-        'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
-        'navigationBlur': document.querySelector('#navigationBlur'),
-        'headerSection': document.querySelector(`section[data-section-id='latest-prediction']`),
-        'allOtherSections': document.querySelector('#sections')
-    };
+    initialize();
 
     window.navigationBottomPadding = 24;
     window.navigationHeight = 44 + (window.navigationBottomPadding * 2);
     window.navigationOffset = 0;
-
-    initialize();
 
     setTimeout(function() {
         if (window.location.hash) {
@@ -59,17 +51,22 @@ window.onload = function() {
 };
 
 function initialize() {
+    window.navigationElements = {
+        'navigation': document.querySelector('#navigation'),
+        'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
+        'headerSection': document.querySelector(`section[data-section-id='latest-prediction']`),
+        'allOtherSections': document.querySelector('#sections')
+    };
+
     window.navigationElements.headerSection.style.height = `${window.innerHeight}px`;
 }
 
 window.onscroll = positionNavigation;
 
-window.onresize = () => {
-    initialize();
-    positionNavigation();
-};
+window.onresize = positionNavigation();
 
 function positionNavigation() {
+    initialize();
     let { navigation, headerSection, allOtherSections } = window.navigationElements;
 
     if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
@@ -77,11 +74,9 @@ function positionNavigation() {
         headerSection.classList.add('scrolled');
         allOtherSections.style.marginTop = `${window.innerHeight + window.navigationOffset}px`;
         navigation.classList.add('scrolled');
-        navigationBlur.classList.add('scrolled');
     } else {
         headerSection.classList.remove('scrolled');
         navigation.classList.remove('scrolled');
-        navigationBlur.classList.remove('scrolled');
         allOtherSections.style.marginTop = `0px`;
     }
 }

@@ -51,20 +51,6 @@ body {
 	
 	}
 
-    #navigationBlur {
-        width: 100%;
-        height: 44px + 24px + 24px;
-        position: fixed;
-        top: 0;
-        backdrop-filter: blur(8px);
-        z-index: 1;
-        display: none;
-
-        &.scrolled {
-            display: inline-block;
-        }
-    }
-
     #navigation {
         position: absolute;
         z-index: 9999;
@@ -124,7 +110,7 @@ body {
     }
 
     section[data-section-id='latest-prediction'] {
-        z-index: 2;
+        z-index: 3;
         box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 
         &.scrolled {
@@ -262,7 +248,7 @@ body {
         z-index: 1;
 
         section[data-section-id='history'] {
-            padding-top: 64px;
+            padding-top: 12px;
 
             #calendar {
                 @calendarWidth: 70vw;
@@ -277,24 +263,27 @@ body {
                     font-weight: 800;
                     margin-top: 64px;
                     margin-left: 8px;
+                    margin-bottom: 12px;
                 }
 
                 .month {
                     display: block;
                     margin: 0 auto;
 
+                    @dayMargin: 8px;
+                    @daySize: calc((@calendarWidth / 7) - @dayMargin * 2);
+
                     .day {
-                        @daySize: calc((@calendarWidth / 7) - 16px);
                         font-size: 14px;
                         width: @daySize;
                         height: @daySize;
                         background: rgba(0, 0, 0, 0.025);
-                        margin: 8px;
+                        margin: @dayMargin;
                         border-radius: 8px;
                         display: inline-block;
                         box-sizing: border-box;
                         vertical-align: top;
-                        transition: 0.2s transform, 0.2s border-radius;
+                        transition: 0.2s transform, 0.2s border-radius, 0.2s background;
                         position: relative;
                         background-position: center;
                         background-repeat: no-repeat;
@@ -302,25 +291,77 @@ body {
                         box-shadow: 0 0 0 transparent;
                         z-index: 1;
 
+                        label {
+                            position: absolute;
+                            font-size: 20px;
+                            right: 16px;
+                            top: 14px;
+                            cursor: inherit;
+                        }
+                        
                         &.hidden {
                             opacity: 0;
                         }
 
-                        &:hover {
-                            cursor: pointer;
-                            z-index: 2;
-                            border-radius: 16px;
-                            transform: scale(1.2);
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+                        &.empty {
+                            label {
+                                color: rgba(0, 0, 0, 0.1);
+                            }
+
+                            &:hover {
+                                background: rgba(0, 0, 0, 0.05);
+                            }
                         }
 
-                        label {
+                        &.filled {
+                            &:hover {
+                                cursor: pointer;
+                                z-index: 2;
+                                border-radius: 16px;
+                                transform: scale(1.2);
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+
+                                .popover {
+                                    opacity: 1;
+                                }
+                            }
+
+                            label {
+                                color: #FFFFFF;
+                                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                            }
+                        }
+
+                        &.day-6 {
+                            .popover {
+                                left: 100%;
+                                margin-left: -300px;
+                            }
+                        }
+
+                        &.day-7 {
+                            .popover {
+                                left: 0;
+                                margin-left: 0;
+                            }
+                        }
+
+                        .popover {
                             position: absolute;
-                            font-size: 16px;
-                            right: 16px;
-                            top: 14px;
-                            color: #FFFFFF;
-                            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                            top: 100%;
+                            left: 50%;
+                            margin-top: 6px;
+                            width: 300px;
+                            margin-left: -150px;
+                            height: 240px;
+                            background: #FFFFFF;
+                            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+                            border-radius: 16px;
+                            display: inline-block;
+                            opacity: 0;
+                            transition: 0.2s opacity ease-out;
+                            pointer-events: none;
+                            text-align: center;
                         }
                     }
                 }
