@@ -270,8 +270,9 @@ body {
                     display: block;
                     margin: 0 auto;
 
-                    @dayMargin: 8px;
+                    @dayMargin: calc((@calendarWidth / 7) / 12);
                     @daySize: calc((@calendarWidth / 7) - @dayMargin * 2);
+                    @dayHoverScale: 1.2;
 
                     .day {
                         font-size: 14px;
@@ -289,7 +290,6 @@ body {
                         background-repeat: no-repeat;
                         background-size: 120%;
                         box-shadow: 0 0 0 transparent;
-                        z-index: 1;
 
                         label {
                             position: absolute;
@@ -314,18 +314,17 @@ body {
                         }
 
                         &.filled {
+                            z-index: 1;
+
                             &:hover {
-                                cursor: pointer;
                                 z-index: 2;
+                                cursor: pointer;
                                 border-radius: 16px;
-                                transform: scale(1.2);
+                                transform: scale(@dayHoverScale);
                                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
 
-                                .popover {
-                                    opacity: 1;
-                                }
                             }
-
+                            
                             label {
                                 color: #FFFFFF;
                                 text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
@@ -334,15 +333,26 @@ body {
 
                         &.day-6 {
                             .popover {
-                                left: 100%;
-                                margin-left: -300px;
+                                left: unset;
+                                margin-left: unset;
+                                right: 0;
+
+                                &:before {
+                                    left: unset;
+                                    right: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
+                                }
                             }
                         }
 
                         &.day-7 {
                             .popover {
                                 left: 0;
-                                margin-left: 0;
+                                margin-left: unset;
+
+                                &:before {
+                                    left: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
+                                    margin-left: unset;
+                                }
                             }
                         }
 
@@ -350,18 +360,42 @@ body {
                             position: absolute;
                             top: 100%;
                             left: 50%;
-                            margin-top: 6px;
-                            width: 300px;
-                            margin-left: -150px;
-                            height: 240px;
+                            margin-top: calc((@dayMargin * 2.5) / @dayHoverScale);
+                            width: 400px;
+                            margin-left: -200px;
                             background: #FFFFFF;
                             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
                             border-radius: 16px;
                             display: inline-block;
                             opacity: 0;
-                            transition: 0.2s opacity ease-out;
+                            transition: 0.2s opacity;
                             pointer-events: none;
                             text-align: center;
+                            z-index: 2;
+
+                            &:before {
+                                content: "";
+                                display: block;
+                                position: absolute;
+                                height: 14px;
+                                width: 14px;
+                                top: -6px;
+                                left: 50%;
+                                margin-left: -7px;
+                                background: #FFFFFF;
+                                transform: rotate(45deg);
+                            }
+
+                            &.visible {
+                                opacity: 1;
+                            }
+
+                            video {
+                                width: calc(100% - 24px);
+                                border-radius: 6px;
+                                overflow: hidden;
+                                margin: 12px 12px 8px 12px;
+                            }
                         }
                     }
                 }

@@ -48,7 +48,56 @@ window.onload = function() {
             goToSection(sectionId, 'smooth');
         };
     });
+
+    initializeCalendarInteractions();
 };
+
+function initializeCalendarInteractions() {
+    let calendar = document.querySelector('#calendar');
+    let days = calendar.querySelectorAll('.day');
+
+    days.forEach((day) => {
+        if (day.classList.contains('filled')) {
+            let date = day.dataset.date;
+            let popover = day.querySelector('.popover');
+
+            day.onmouseover = () => {
+                if (date !== window.currentDateHovering) {
+                    console.log(date);
+                }
+
+                // setTimeout(() => {
+                popover.classList.add('visible');
+                // }, 200);
+
+                window.currentDateHovering = date;
+
+                let video = popover.querySelector('video');
+                let source = document.createElement('source');
+
+                let today = new Date();
+                let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+
+                if (now.split('T')[0] === date && today.getHours() < 22) {
+                    console.log('not yet today');
+                } else if (now.split('T')[0] !== date) {
+                    source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
+                    source.setAttribute('type', 'video/mp4');
+
+                    video.appendChild(source);
+                    video.currentTime = 0;
+                    video.play();
+                }
+            };
+
+            day.onmouseout = () => {
+                popover.classList.remove('visible');
+
+                popover.querySelector('video').innerHTML = '';
+            };
+        }
+    });
+}
 
 function initialize() {
     window.navigationElements = {
