@@ -62,25 +62,30 @@ function initializeCalendarInteractions() {
             let popover = day.querySelector('.popover');
 
             day.onmouseover = () => {
-                if (date !== window.currentDateHovering) {
-                    console.log(date);
-                }
-
-                // setTimeout(() => {
                 popover.classList.add('visible');
-                // }, 200);
 
-                window.currentDateHovering = date;
-
-                let video = popover.querySelector('video');
+                let videoContainer = popover.querySelector('.videoContainer');
+                let videoContainerLoading = videoContainer.querySelector('.loading');
+                let videoContainerError = videoContainer.querySelector('.error');
+                let video = videoContainer.querySelector('video');
                 let source = document.createElement('source');
+
+                video.addEventListener('loadeddata', function(event) {
+                    video.classList.add('visible');
+                    videoContainerLoading.classList.add('hidden');
+                });
+
+                source.addEventListener('error', function(event) {
+                    videoContainerLoading.classList.add('hidden');
+                    videoContainerError.classList.add('visible');
+                });
 
                 let today = new Date();
                 let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
 
                 if (now.split('T')[0] === date && today.getHours() < 22) {
                     console.log('not yet today');
-                } else if (now.split('T')[0] !== date) {
+                } else {
                     source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
                     source.setAttribute('type', 'video/mp4');
 
