@@ -41,7 +41,7 @@
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<div id='navigation'>
@@ -75,18 +75,42 @@
 				</div>
 			</section>
 			<section data-section-id='about'>
-				<p>
-				TESTINGLorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mollis at turpis quis congue. Sed sollicitudin odio ut arcu feugiat, vitae eleifend orci mattis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. In at condimentum felis, quis suscipit massa. Aenean fermentum eros at pharetra porttitor. In eget convallis dui. Vivamus sit amet nibh at nisi consectetur maximus sit amet eu tellus. Mauris imperdiet nulla in vulputate pretium. Sed congue magna in erat placerat lobortis. Nunc sed magna ante. Nunc iaculis mattis lacus, non tincidunt sem ornare ac.
-				</p>
-				<p>
-				Sed dignissim fringilla nulla, vitae efficitur tortor sollicitudin quis. Praesent mollis, turpis at aliquet dapibus, metus quam dictum tellus, vitae tristique sapien neque tristique dolor. Aliquam erat volutpat. Pellentesque ut consequat ligula. Duis vel ornare justo, at imperdiet felis. Mauris sed elit nec dolor euismod faucibus ac vel leo. Duis ultrices nec eros iaculis iaculis. Duis congue laoreet augue vitae accumsan. Mauris ut eros interdum, accumsan arcu ut, pulvinar quam. Vivamus eleifend elementum mi vel rhoncus. Mauris at diam dui.
-				</p>
-				<p>
-				Duis scelerisque orci ut lorem varius, non consectetur mi convallis. Nam in urna ante. Morbi a nisl a nisi placerat molestie at vel velit. Donec ut nibh mauris. Mauris facilisis odio sed ligula facilisis rhoncus. Nulla in risus arcu. Donec efficitur accumsan odio eu iaculis. Nam laoreet, leo sit amet mollis luctus, augue ante convallis urna, ac dignissim augue erat semper mauris. Suspendisse in vestibulum nisl, vitae laoreet urna. Sed sed magna tincidunt, vulputate leo elementum, ullamcorper diam. Ut ultrices vitae ante at scelerisque. Nullam dapibus enim nec imperdiet suscipit. In vel luctus est. Vestibulum ligula lorem, ultricies nec luctus eu, tincidunt ut eros. Nam sit amet libero eu orci placerat congue ac vitae arcu.
-				</p>
-				<p>
-				Curabitur id condimentum odio. Phasellus mattis metus et tristique facilisis. Aenean cursus posuere justo in accumsan. Morbi imperdiet in lacus at eleifend. In in rutrum mi. Aliquam gravida nisl non lorem ultrices, sed egestas purus posuere. Etiam convallis, augue vel aliquet convallis, odio tellus pulvinar nisl, at tempor libero augue sed metus. Nunc placerat tortor et bibendum tempor. Fusce luctus, nunc sed pharetra semper, nisl turpis convallis eros, non venenatis diam augue sit amet velit. Aenean mollis, dolor quis consectetur congue, quam urna lobortis massa, et vulputate ligula risus eget lacus. Cras sit amet lacinia urna. Sed nunc purus, tempus ut sodales at, euismod commodo nisl. Aenean dui mauris, volutpat a justo at, scelerisque dignissim quam. Suspendisse a pulvinar elit, ut porta nisi.
-				</p>
+				<div class='about-section paragraph-left'>
+					<div class='text'>
+						<h3>Collecting images</h3>
+						<p>
+						A camera is positioned so that it's pointing west at the New York City skyline. Snapshots are taken every minute and saved to a hard drive. The images are compiled into composite images of every 15 minutes from midnight to one hour before sunset.
+						</p>
+					</div>
+					<img src='resources/images/about/sample-composite-image.png'>
+				</div>
+				<div class='about-section paragraph-right'>
+					<img src='https://www.leomancini.net/projects/sunset-quality-training-data-builder/screenshots/animated@2x.png' style='width: 55%; margin-left: -3%; margin-right: -8%;'>
+					<div class='text' style='margin-left: 13%;'>
+						<h3>Building a training data set</h3>
+						<p>
+						Friends and family are invited to rate sunsets from one to five stars. They can view an animated loop or grid of snapshots every minute for 30 minutes before and 60 minutes after sunset. These ratings are saved in an Airtable database.
+						</p>
+					</div>
+				</div>
+				<div class='about-section paragraph-left'>
+					<div class='text'>
+						<h3>Training the model</h3>
+						<p>
+						The collected ratings are matched to the composite images of every 15 minutes from midnight to one hour before sunset. This forms the training data set for a TensorFlow model that is re-trained on top of a MobileNet base model.
+						</p>
+					</div>
+					<img src='resources/images/about/sample-composite-image.png'>
+				</div>
+				<div class='about-section paragraph-right'>
+					<img src='resources/images/about/sample-composite-image.png'>
+					<div class='text'>
+						<h3>Making predictions</h3>
+						<p>
+						Once the model is trained, it is run every day one hour before sunset. Once it has made a prediction, it generates an image with the date, star rating, and confidence level and posts it to the @nycsunsetbot Instagram page.
+						</p>
+					</div>
+				</div>
 			</section>
 		</div>
 		<script src='resources/js/main.js'></script>

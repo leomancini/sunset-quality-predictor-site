@@ -105,11 +105,8 @@ body {
         }
     }
 
-    section {
-        width: 100%;
-    }
-
     section[data-section-id='latest-prediction'] {
+        width: 100%;
         z-index: 3;
         box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 
@@ -247,14 +244,20 @@ body {
     #sections {
         z-index: 1;
 
+        @sectionWidth: 70vw;
+
+        section {
+            width: @sectionWidth;
+            margin: 0 auto;
+        }
+
         section[data-section-id='history'] {
             padding-top: 12px;
 
             #calendar {
-                @calendarWidth: 70vw;
+                @calendarWidth: @sectionWidth;
                 font-size: 0;
                 width: @calendarWidth;
-                margin: 0 auto;
                 user-select: none;
 
                 .monthName {
@@ -482,6 +485,59 @@ body {
                         }
                     }
                 }
+            }
+        }
+
+        section[data-section-id='about'] {
+            padding-top: 32px;
+            padding-bottom: 128px;
+            padding-left: 1%;
+            width: calc(70vw - 16px);
+            font-size: 0;
+
+            .about-section {
+                width: 100%;
+                display: block;
+                margin-top: 88px;
+
+                &.paragraph-left {
+                    .text { margin-right: 88px; }
+                    img {  margin-left: -4%; margin-right: -12%; }
+                }
+
+                &.paragraph-right {
+                    .text { margin-left: 88px; }
+                    img {  margin-right: 0%; margin-left: -10%; }
+                }
+            }
+
+            .text {
+                width: calc(50% - 64px);
+                display: inline-block;
+                vertical-align: middle;
+                max-width: 340px;
+
+                h3 {
+                    font-weight: 700;
+                    font-size: 24px;
+                    line-height: 32px;
+                    margin-top: 0;
+                    width: 100%;
+                }
+
+                p {
+                    color: rgba(0, 0, 0, 0.9);
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 22px;
+                    width: 100%;
+                }
+            }
+
+            img {
+                display: inline-block;
+                width: 60%;
+                vertical-align: middle;
             }
         }
     }
