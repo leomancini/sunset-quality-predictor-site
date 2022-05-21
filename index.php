@@ -25,11 +25,11 @@
 	$confidence = intval($predictions[$firstDateWithPrediction]['confidence']);
 	
 	if ($firstDateWithPrediction === $today) {
-		$predictionDay = 'today\'s';
+		$predictionDay = 'Today\'s';
 	} else if ($firstDateWithPrediction === $yesterday) {
-		$predictionDay = 'yesterday\'s';
+		$predictionDay = 'Yesterday\'s';
 	} else {
-		$predictionDay = 'latest';
+		$predictionDay = 'Latest';
 	}
 ?>
 <!DOCTYPE HTML>
@@ -68,6 +68,13 @@
 				<div class='item' data-section-id='follow'>Follow</div>
 			</div>
 			<section data-section-id='latest'>
+				 <svg class='blurSvgSource'>
+					<filter id='sharpBlur'>
+						<feGaussianBlur stdDeviation='3'></feGaussianBlur>
+						<feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 9 0'></feColorMatrix>
+						<feComposite in2='SourceGraphic' operator='in'></feComposite>
+					</filter>
+				</svg>
 				<div id='content'>
 					<div id='logo'></div>
 					<div id='title'><?php echo $predictionDay; ?> Sunset Prediction</div>
@@ -101,16 +108,16 @@
 							<div class='text'>
 								<h3>Collecting images</h3>
 								<p>
-								A camera is positioned so that it's pointing west at the New York City skyline. Snapshots are taken every minute and saved to a hard drive.<br><br>The images are compiled into composite images of every 15 minutes from midnight to one hour before sunset.
+								A camera is positioned so that it's pointing west at the Manhattan skyline. Snapshots are taken every minute and saved to a hard drive.<br><br>The images are compiled into <a href='https://github.com/leomancini/sunset-quality-predictor/tree/master/model/trainingData' target='_blank'>composite grid images</a> of what the sky looks like throughout the day, with one snapshot for every 15 minutes from midnight to one hour before sunset.
 								</p>
 							</div>
 						</div>
 						<div class='about-section paragraph-right'>
 							<img src='resources/images/about/training-data-builder.png'>
 							<div class='text'>
-								<h3>Building training data set</h3>
+								<h3>Building training data</h3>
 								<p>
-								Friends and family are invited to rate sunsets from one to five stars, representing their opinion of the visual quality and beauty of each sunset.<br><br>They can view the sunset either as an animated loop or grid of snapshots of before and after sunset time.
+								Friends and family are invited to <a href='https://labs.noshado.ws/sunset-quality-predictor/rate/' target='_blank'>rate sunsets</a> from one to five stars, representing their opinion of the visual quality and beauty of each sunset.<br><br>They can view the sunset either as an animated loop or grid of snapshots of before and after sunset time.
 								</p>
 							</div>
 						</div>
@@ -119,7 +126,7 @@
 							<div class='text'>
 								<h3>Training the model</h3>
 								<p>
-								The sunset ratings are averaged out and matched to that day's composite image.<br><br>This forms the training data set for a model that is re-trained on top of a TensorFlow MobileNet base.
+								The croudsourced sunset ratings are averaged out and matched to that day's composite image.<br><br>These composite images labeled with a rating are then used to train an image classification model, using TensorFlow and transfer learning to re-train a <a href='https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v3_small_100_224/feature_vector/5/default/1' target='_blank'>MobileNet base model</a>.
 								</p>
 							</div>
 						</div>
@@ -128,7 +135,7 @@
 							<div class='text'>
 								<h3>Making predictions</h3>
 								<p>
-								Every day, the trained model makes a prediction one hour before sunset.<br><br>It generates an image with the date, star rating, and confidence level and posts it to the <a href='https://www.instagram.com/nycsunsetbot/' target='_blank'>@nycsunsetbot</a> Instagram page.
+								Every day, the trained model looks at the composite image of the sky for that day and makes a prediction one hour before sunset.<br><br>It posts an image with the date, star rating, and confidence level to the <a href='https://www.instagram.com/nycsunsetbot/' target='_blank'>@nycsunsetbot</a> Instagram page.
 								</p>
 							</div>
 						</div>

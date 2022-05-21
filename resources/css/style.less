@@ -297,6 +297,10 @@ body {
                 }
             }
 
+            .blurSvgSource {
+                display: none;
+            }
+
             #content {
                 position: absolute;
                 z-index: 2;
@@ -414,7 +418,7 @@ body {
                     top: 50%;
                     margin-left: -55vw;
                     margin-top: -55vh;
-                    filter: blur(15px);
+                    filter: url("#sharpBlur");
                 }
             }
         }
@@ -609,6 +613,23 @@ body {
                                     z-index: 2;
                                     border-radius: 8px;
                                     transform: scale(0.99);
+                                }
+
+                                &.sunsetHasNotHappenedYet {
+                                    &:hover {
+                                        cursor: wait;
+                                        border-radius: 8px;
+                                        transform: none;
+                                        box-shadow: none;
+                                        transform: scale(0.9);
+                                        opacity: 0.5;
+                                    }
+
+                                    &:active {
+                                        border-radius: 8px;
+                                        transform: none;
+                                        transform: scale(0.8);
+                                    }
                                 }
 
                                 label {
@@ -815,7 +836,7 @@ body {
                     @media @desktop {
                         width: 40%;
                         display: inline-block;
-                        max-width: 340px;
+                        max-width: 372px;
                     }
 
                     h3 {
@@ -932,6 +953,11 @@ body {
                             color: rgba(0, 0, 0, 0.8);
                             background: rgba(255, 255, 255, 1);
                             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+                        }
+
+                        &:active {
+                            z-index: 2;
+                            transform: scale(0.9);
                         }
                     }
                 }
