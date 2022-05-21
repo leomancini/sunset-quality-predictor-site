@@ -6,6 +6,7 @@
 }
 
 .HeaderLarge {
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
     font-size: 60px;
@@ -37,11 +38,12 @@
 html {
     margin: 0;
     font-family: 'Inter', sans-serif;
+    background-color: black;
 }
 
 body {
     margin: 0;
-    background: #ffffff;
+    background-color: black;
 
 	@media @mobile {
 		
@@ -51,434 +53,439 @@ body {
 	
 	}
 
-    #navigation {
-        position: absolute;
-        z-index: 9999;
-        height: 92px;
-        bottom: 0;
-        width: calc(100% - 8px);
-        text-align: center;
-        font-size: 0;
-        margin-left: 8px; // Optically center
-        overflow: visible;
-        user-select: none;
+    #page {
+        background-color: white;
 
-        &.scrolled {
-            position: fixed;
-            top: 0;
-        }
+        #navigation {
+            position: absolute;
+            z-index: 9999;
+            height: 92px;
+            bottom: 0;
+            width: calc(100% - 8px);
+            text-align: center;
+            font-size: 0;
+            // margin-left: 8px; // Optically center
+            overflow: visible;
+            user-select: none;
 
-        .item {
-            display: inline-block;
-            padding: 12px 32px;
-            margin: 24px 8px 0 8px;
-            cursor: pointer;
-            color: #FFFFFF;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
-            transition: 0.2s all;
-            font-size: 16px;
-            border-radius: 32px;
-            font-weight: 600;
-
-            &:hover {
-                color: rgba(255, 255, 255, 1);
-                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 4px 12px rgba(0, 0, 0, 0.2);
-                transform: scale(1.15);
+            &.scrolled {
+                position: fixed;
+                top: 0;
             }
 
-            &:active {
-                transform: scale(0.9);
-                text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px 4px rgba(0, 0, 0, 0.2);
-            }
-
-            &.selected {
-                text-shadow: none;
-                color: rgba(0, 0, 0, 0.8);
-                background: rgba(255, 255, 255, 1);
-                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+            .item {
+                display: inline-block;
+                padding: 12px 32px;
+                margin: 24px 8px 0 8px;
+                cursor: pointer;
+                color: #FFFFFF;
+                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                transition: 0.2s all;
+                font-size: 16px;
+                border-radius: 32px;
+                font-weight: 600;
 
                 &:hover {
-                    cursor: default;
-                    transform: scale(1);
-                }
-            }
-        }
-    }
-
-    section[data-section-id='latest-prediction'] {
-        width: 100%;
-        z-index: 3;
-        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-
-        &.scrolled {
-            position: fixed;
-        }
-
-        @keyframes rotation {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        #content {
-            position: absolute;
-            z-index: 2;
-            text-align: center;
-            width: 100%;
-            mix-blend-mode: overlay;
-            left: 50%;
-            top: 50%;
-            margin-top: -56px;
-            transform: translate(-50%, -50%);
-
-            #logo {
-                width: 56px;
-                height: 56px;
-                background-image: url('../images/logo.png');
-                background-size: 100%;
-                display: inline-block;
-            }
-
-            #title {
-                .HeaderSmall();
-                text-align: center;
-                margin-top: 8px;
-            }
-
-            #date {
-                .HeaderLarge();
-                margin-top: 88px;
-
-                div {
-                    &::selection {
-                        background: black;
-                    }
+                    color: rgba(255, 255, 255, 1);
+                    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 4px 12px rgba(0, 0, 0, 0.2);
+                    transform: scale(1.15);
                 }
 
-                @media @desktop {
-                    div {
-                        display: inline-block;
-                    }
-                }
-
-                @media @mobile {
-                    width: 100vw;
-                    font-size: 56px;
-                    line-height: 68px;
-
-                    div {
-                        display: block;
-                    }
-                }
-            }
-
-            #stars {
-                width: calc(120px * 5);
-                height: 120px;
-                font-size: 0;
-                margin-top: 48px;
-                display: inline-block;
-
-                @media @mobile {
-                    width: 100vw;
+                &:active {
                     transform: scale(0.9);
+                    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px 4px rgba(0, 0, 0, 0.2);
                 }
 
-                .star {
-                    width: 120px;
-                    height: 120px;
+                &.selected {
+                    text-shadow: none;
+                    color: rgba(0, 0, 0, 0.8);
+                    background: rgba(255, 255, 255, 1);
+                    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+
+                    &:hover {
+                        cursor: default;
+                        transform: scale(1);
+                    }
+                }
+            }
+        }
+
+        section[data-section-id='latest-prediction'] {
+            width: 100%;
+            z-index: 3;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+
+            &.scrolled {
+                position: fixed;
+            }
+
+            @keyframes rotation {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            #content {
+                position: absolute;
+                z-index: 2;
+                text-align: center;
+                width: 100%;
+                mix-blend-mode: overlay;
+                left: 50%;
+                top: 50%;
+                margin-top: -56px;
+                transform: translate(-50%, -50%);
+
+                #logo {
+                    width: 56px;
+                    height: 56px;
+                    background-image: url('../images/logo.png');
                     background-size: 100%;
+                    display: inline-block;
+                }
+
+                #title {
+                    .HeaderSmall();
+                    text-align: center;
+                    margin-top: 8px;
+                }
+
+                #date {
+                    .HeaderLarge();
+                    margin-top: 88px;
+
+                    div {
+                        &::selection {
+                            background: black;
+                        }
+                    }
+
+                    @media @desktop {
+                        div {
+                            display: inline-block;
+                        }
+                    }
+
+                    @media @mobile {
+                        width: 100vw;
+                        font-size: 56px;
+                        line-height: 68px;
+
+                        div {
+                            display: block;
+                        }
+                    }
+                }
+
+                #stars {
+                    width: calc(120px * 5);
+                    height: 120px;
+                    font-size: 0;
+                    margin-top: 48px;
                     display: inline-block;
 
                     @media @mobile {
-                        width: 20vw;
-                        height: 20vw;
+                        width: 100vw;
+                        transform: scale(0.9);
                     }
 
-                    &.filled {
-                        background-image: url('../images/star-filled.png');
-                    }
-
-                    &.unfilled {
-                        background-image: url('../images/star-unfilled.png');
-                    }
-                }
-            }
-
-            #confidence {
-                .HeaderSmall();
-                display: inline-block;
-                margin-top: 48px;
-                width: 100%;
-            }
-        }
-
-        #background {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            overflow: hidden;
-            z-index: 1;
-
-            #gradient {
-                height: 110vh;
-                width: 110vw;
-                min-height: 100%;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                margin-left: -55vw;
-                margin-top: -55vh;
-                filter: blur(15px);
-                // animation: rotation 60s infinite linear;
-            }
-        }
-    }
-
-    #sections {
-        z-index: 1;
-
-        @sectionWidth: 70vw;
-
-        section {
-            width: @sectionWidth;
-            margin: 0 auto;
-        }
-
-        section[data-section-id='history'] {
-            padding-top: 12px;
-
-            #calendar {
-                @calendarWidth: @sectionWidth;
-                font-size: 0;
-                width: @calendarWidth;
-                user-select: none;
-
-                .monthName {
-                    display: block;
-                    font-size: 32px;
-                    font-weight: 800;
-                    margin-top: 64px;
-                    margin-left: 8px;
-                    margin-bottom: 12px;
-                }
-
-                .month {
-                    display: block;
-                    margin: 0 auto;
-
-                    @dayMargin: calc((@calendarWidth / 7) / 12);
-                    @daySize: calc((@calendarWidth / 7) - @dayMargin * 2);
-                    @dayHoverScale: 1.2;
-
-                    .day {
-                        font-size: 14px;
-                        width: @daySize;
-                        height: @daySize;
-                        background: rgba(0, 0, 0, 0.025);
-                        margin: @dayMargin;
-                        border-radius: 8px;
+                    .star {
+                        width: 120px;
+                        height: 120px;
+                        background-size: 100%;
                         display: inline-block;
-                        box-sizing: border-box;
-                        vertical-align: top;
-                        transition: 0.2s transform, 0.2s border-radius, 0.2s background;
-                        position: relative;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                        background-size: 120%;
-                        box-shadow: 0 0 0 transparent;
 
-                        label {
-                            position: absolute;
-                            font-size: 20px;
-                            right: 16px;
-                            top: 14px;
-                            cursor: inherit;
-                        }
-                        
-                        &.hidden {
-                            opacity: 0;
-                        }
-
-                        &.empty {
-                            label {
-                                color: rgba(0, 0, 0, 0.1);
-                            }
-
-                            &:hover {
-                                background: rgba(0, 0, 0, 0.05);
-                            }
+                        @media @mobile {
+                            width: 20vw;
+                            height: 20vw;
                         }
 
                         &.filled {
-                            z-index: 1;
+                            background-image: url('../images/star-filled.png');
+                        }
 
-                            &:hover {
-                                z-index: 2;
-                                cursor: pointer;
-                                border-radius: 16px;
-                                transform: scale(@dayHoverScale);
-                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+                        &.unfilled {
+                            background-image: url('../images/star-unfilled.png');
+                        }
+                    }
+                }
 
-                            }
+                #confidence {
+                    .HeaderSmall();
+                    display: inline-block;
+                    margin-top: 48px;
+                    width: 100%;
+                }
+            }
+
+            #background {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                overflow: hidden;
+                z-index: 1;
+
+                #gradient {
+                    height: 110vh;
+                    width: 110vw;
+                    min-height: 100%;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    margin-left: -55vw;
+                    margin-top: -55vh;
+                    filter: blur(15px);
+                    // animation: rotation 60s infinite linear;
+                }
+            }
+        }
+
+        #sections {
+            z-index: 1;
+            overflow: hidden;
+
+            @sectionWidth: 70vw;
+
+            section {
+                width: @sectionWidth;
+                margin: 0 auto;
+            }
+
+            section[data-section-id='history'] {
+                padding-top: 12px;
+
+                #calendar {
+                    @calendarWidth: @sectionWidth;
+                    font-size: 0;
+                    width: @calendarWidth;
+                    user-select: none;
+
+                    .monthName {
+                        display: block;
+                        font-size: 32px;
+                        font-weight: 800;
+                        margin-top: 64px;
+                        margin-left: 8px;
+                        margin-bottom: 12px;
+                    }
+
+                    .month {
+                        display: block;
+                        margin: 0 auto;
+
+                        @dayMargin: calc((@calendarWidth / 7) / 12);
+                        @daySize: calc((@calendarWidth / 7) - @dayMargin * 2);
+                        @dayHoverScale: 1.2;
+
+                        .day {
+                            font-size: 14px;
+                            width: @daySize;
+                            height: @daySize;
+                            background: rgba(0, 0, 0, 0.025);
+                            margin: @dayMargin;
+                            border-radius: 8px;
+                            display: inline-block;
+                            box-sizing: border-box;
+                            vertical-align: top;
+                            transition: 0.2s transform, 0.2s border-radius, 0.2s background;
+                            position: relative;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-size: 120%;
+                            box-shadow: 0 0 0 transparent;
 
                             label {
-                                color: #FFFFFF;
-                                text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
-                            }
-                        }
-
-                        &.day-6 {
-                            .popover {
-                                left: unset;
-                                margin-left: unset;
-                                right: 0;
-
-                                &:before {
-                                    left: unset;
-                                    right: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
-                                }
-                            }
-                        }
-
-                        &.day-7 {
-                            .popover {
-                                left: 0;
-                                margin-left: unset;
-
-                                &:before {
-                                    left: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
-                                    margin-left: unset;
-                                }
-                            }
-                        }
-
-                        .popover {
-                            position: absolute;
-                            top: 100%;
-                            left: 50%;
-                            margin-top: calc((@dayMargin * 2.5) / @dayHoverScale);
-                            width: calc(@calendarWidth * 0.6);
-                            margin-left: calc((@calendarWidth * 0.6) / -2);
-                            background: #FFFFFF;
-                            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
-                            border-radius: 16px;
-                            display: inline-block;
-                            opacity: 0;
-                            transition: 0.2s opacity;
-                            pointer-events: none;
-                            text-align: center;
-                            z-index: 2;
-
-                            &:before {
-                                content: "";
-                                display: block;
                                 position: absolute;
-                                height: 14px;
-                                width: 14px;
-                                top: -6px;
+                                font-size: 20px;
+                                right: 16px;
+                                top: 14px;
+                                cursor: inherit;
+                            }
+                            
+                            &.hidden {
+                                opacity: 0;
+                            }
+
+                            &.empty {
+                                label {
+                                    color: rgba(0, 0, 0, 0.1);
+                                }
+
+                                &:hover {
+                                    background: rgba(0, 0, 0, 0.05);
+                                }
+                            }
+
+                            &.filled {
+                                z-index: 1;
+
+                                &:hover {
+                                    z-index: 2;
+                                    cursor: pointer;
+                                    border-radius: 16px;
+                                    transform: scale(@dayHoverScale);
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+
+                                }
+
+                                label {
+                                    color: #FFFFFF;
+                                    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                                }
+                            }
+
+                            &.day-6 {
+                                .popover {
+                                    left: unset;
+                                    margin-left: unset;
+                                    right: 0;
+
+                                    &:before {
+                                        left: unset;
+                                        right: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
+                                    }
+                                }
+                            }
+
+                            &.day-7 {
+                                .popover {
+                                    left: 0;
+                                    margin-left: unset;
+
+                                    &:before {
+                                        left: calc((((@daySize - @dayMargin) / 2) / @dayHoverScale));
+                                        margin-left: unset;
+                                    }
+                                }
+                            }
+
+                            .popover {
+                                position: absolute;
+                                top: 100%;
                                 left: 50%;
-                                margin-left: -7px;
+                                margin-top: calc((@dayMargin * 2.5) / @dayHoverScale);
+                                width: calc(@calendarWidth * 0.6);
+                                margin-left: calc((@calendarWidth * 0.6) / -2);
                                 background: #FFFFFF;
-                                transform: rotate(45deg);
-                            }
-
-                            &.visible {
-                                opacity: 1;
-                            }
-
-                            .date {
-                                margin-top: 20px;
-                                font-size: 16px;
-                                font-weight: 600;
-                            }
-
-                            .confidence {
-                                color: rgba(0, 0, 0, 0.3);
-                                margin-bottom: 16px;
-                            }
-
-                            .stars {
-                                @starSize: 32px;
-                                width: calc(@starSize * 5);
-                                height: @starSize;
-                                font-size: 0;
-                                margin-top: 16px;
+                                box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 4px 32px rgba(0, 0, 0, 0.05);
+                                border-radius: 16px;
                                 display: inline-block;
+                                opacity: 0;
+                                transition: 0.2s opacity;
+                                pointer-events: none;
+                                text-align: center;
+                                z-index: 2;
 
-                                .star {
-                                    width: @starSize;
+                                &:before {
+                                    content: "";
+                                    display: block;
+                                    position: absolute;
+                                    height: 14px;
+                                    width: 14px;
+                                    top: -6px;
+                                    left: 50%;
+                                    margin-left: -7px;
+                                    background: #FFFFFF;
+                                    transform: rotate(45deg);
+                                }
+
+                                &.visible {
+                                    opacity: 1;
+                                }
+
+                                .date {
+                                    margin-top: 20px;
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                }
+
+                                .confidence {
+                                    color: rgba(0, 0, 0, 0.3);
+                                    margin-bottom: 16px;
+                                }
+
+                                .stars {
+                                    @starSize: 32px;
+                                    width: calc(@starSize * 5);
                                     height: @starSize;
-                                    background-size: 100%;
+                                    font-size: 0;
+                                    margin-top: 16px;
                                     display: inline-block;
 
-                                    &.filled {
-                                        background-image: url('../images/star-filled-small.png');
-                                        opacity: 0.9;
-                                    }
+                                    .star {
+                                        width: @starSize;
+                                        height: @starSize;
+                                        background-size: 100%;
+                                        display: inline-block;
 
-                                    &.unfilled {
-                                        background-image: url('../images/star-unfilled-small.png');
-                                    }
-                                }
-                            }
+                                        &.filled {
+                                            background-image: url('../images/star-filled-small.png');
+                                            opacity: 0.9;
+                                        }
 
-                            .videoContainer {
-                                position: relative;
-                                width: calc(100% - 24px);
-                                margin: 12px;
-                                overflow: hidden; 
-                                font-size: 0;
-
-                                video {
-                                    width: 100%;
-                                    height: 100%;
-                                    left: 0;
-                                    z-index: 3;
-                                    opacity: 0;
-                                    transition: 0.2s opacity;
-                                    border-radius: 6px;
-
-                                    &.visible {
-                                        opacity: 1;
+                                        &.unfilled {
+                                            background-image: url('../images/star-unfilled-small.png');
+                                        }
                                     }
                                 }
 
-                                .error {
-                                    width: 100%;
-                                    height: 100%;
-                                    background: rgba(0, 0, 0, 0.9);
-                                    position: absolute;
-                                    z-index: 2;
-                                    opacity: 0;
-                                    transition: 0.2s opacity;
-                                    border-radius: 6px;
-                                    top: 0;
+                                .videoContainer {
+                                    position: relative;
+                                    width: calc(100% - 24px);
+                                    margin: 12px;
+                                    overflow: hidden; 
+                                    font-size: 0;
 
-                                    &.visible {
-                                        opacity: 1;
-                                    }
-                                }
-
-                                .loading {
-                                    width: 100%;
-                                    height: 100%;
-                                    background: rgba(0, 0, 0, 0.1);
-                                    position: absolute;
-                                    z-index: 2;
-                                    opacity: 1;
-                                    transition: 0.2s opacity;
-                                    border-radius: 6px;
-                                    top: 0;
-
-                                    &.hidden {
+                                    video {
+                                        width: 100%;
+                                        height: 100%;
+                                        left: 0;
+                                        z-index: 3;
                                         opacity: 0;
+                                        transition: 0.2s opacity;
+                                        border-radius: 6px;
+
+                                        &.visible {
+                                            opacity: 1;
+                                        }
+                                    }
+
+                                    .error {
+                                        width: 100%;
+                                        height: 100%;
+                                        background: rgba(0, 0, 0, 0.9);
+                                        position: absolute;
+                                        z-index: 2;
+                                        opacity: 0;
+                                        transition: 0.2s opacity;
+                                        border-radius: 6px;
+                                        top: 0;
+
+                                        &.visible {
+                                            opacity: 1;
+                                        }
+                                    }
+
+                                    .loading {
+                                        width: 100%;
+                                        height: 100%;
+                                        background: rgba(0, 0, 0, 0.1);
+                                        position: absolute;
+                                        z-index: 2;
+                                        opacity: 1;
+                                        transition: 0.2s opacity;
+                                        border-radius: 6px;
+                                        top: 0;
+
+                                        &.hidden {
+                                            opacity: 0;
+                                        }
                                     }
                                 }
                             }
@@ -486,58 +493,197 @@ body {
                     }
                 }
             }
-        }
 
-        section[data-section-id='about'] {
-            padding-top: 32px;
-            padding-bottom: 128px;
-            padding-left: 1%;
-            width: calc(70vw - 16px);
-            font-size: 0;
+            section[data-section-id='about'] {
+                font-size: 0;
 
-            .about-section {
+                a {
+                    transition: 0.2s all;
+                    color: rgba(0, 0, 0, 0.5);
+
+                    &:hover {
+                        color: rgba(0, 0, 0, 1);
+                        text-decoration: none;
+                    }
+                }
+
+                @media @mobile {
+                    width: calc(100vw - 64px);
+                    padding-bottom: 88px;
+                }
+                
+                @media @desktop {
+                    padding-top: 4px;
+                    padding-bottom: 128px;
+                    width: @sectionWidth;
+                }
+
+                .about-section {
+                    width: 100%;
+                    margin-top: 88px;
+
+                    @media @mobile {
+                        
+                    }
+                    
+                    @media @desktop {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        &.paragraph-left {
+                            flex-direction: row-reverse;
+
+                            img {
+                                margin-right: -5%;
+                            }
+                        }
+
+                        &.paragraph-right {
+                            flex-direction: row;
+
+                            .text {
+                                padding-left: 5%;
+                                padding-right: 5%;
+                            }
+
+                            img {
+                                margin-left: -5%;
+                            }
+                        }
+                    }
+                }
+
+                .text {
+                    @media @mobile {
+                        width: 100%; 
+                        display: block;
+                        text-align: center;
+                    }
+                    
+                    @media @desktop {
+                        width: 40%;
+                        display: inline-block;
+                        max-width: 340px;
+                    }
+
+                    h3 {
+                        font-weight: 700;
+                        font-size: 24px;
+                        line-height: 32px;
+                        margin-top: 0;
+                        width: 100%;
+                    }
+
+                    p {
+                        color: rgba(0, 0, 0, 0.9);
+                        font-weight: 500;
+                        font-size: 16px;
+                        line-height: 22px;
+                        width: 100%;
+                    }
+                }
+
+                img {
+                    user-select: none;
+
+                    @media @mobile {
+                        width: calc(100% + 32px); 
+                        display: block;
+                        margin-bottom: 32px;
+                        margin-left: -16px;
+                    }
+                    
+                    @media @desktop {
+                        display: inline-block;
+                        width: 60%;
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+            section[data-section-id='follow'] {
                 width: 100%;
-                display: block;
-                margin-top: 88px;
+                padding: 72px 0 88px 0;
+                background: black;
 
-                &.paragraph-left {
-                    .text { margin-right: 88px; }
-                    img {  margin-left: -4%; margin-right: -12%; }
+                #content {
+                    text-align: center;
+                    margin: 0 auto;
+
+                    @media @mobile {
+                        width: @sectionWidth;
+                    }
+                    
+                    @media @desktop {
+                        width: @sectionWidth / 1.5;
+                    }
+
+                    #eye {
+                        background-image: url('../images/eye.svg');
+                        filter: invert(100%);
+                        width: 40px;
+                        height: 40px;
+                        background-size: 100%;
+                        display: inline-block;
+                    }
+
+                    a {
+                        transition: 0.2s all;
+                        color: rgba(255, 255, 255, 1.0);
+
+                        &:hover {
+                            color: rgba(255, 255, 255, 0.5);
+                            text-decoration: none;
+                        }
+                    }
+
+                    h3 {
+                        font-size: 24px;
+                        line-height: 36px;
+                        font-weight: 600;
+                        color: rgba(255, 255, 255, 1.0);
+                    }
+
+                    h4 {
+                        margin-top: 72px;
+                        font-size: 16px;
+                        font-weight: 400;
+                        color: rgba(255, 255, 255, 0.5);
+
+                        a {
+                            color: rgba(255, 255, 255, 0.5);
+
+                            &:hover {
+                                color: rgba(255, 255, 255, 1);
+                            }
+                        }
+                    }
+
+                    button {
+                        font-family: 'Inter';
+                        display: inline-block;
+                        padding: 12px 32px;
+                        outline: none;
+                        border: none;
+                        margin: 24px 8px 0 8px;
+                        cursor: pointer;
+                        color: #FFFFFF;
+                        transition: 0.2s all;
+                        font-size: 16px;
+                        border-radius: 32px;
+                        font-weight: 600;
+                        text-shadow: none;
+                        box-shadow: 0 0 0 rgba(255, 255, 255, 0.05);
+                        background: rgba(255, 255, 255, 0.2);
+
+                        &:hover {
+                            color: rgba(0, 0, 0, 0.8);
+                            background: rgba(255, 255, 255, 1);
+                            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+                        }
+                    }
                 }
-
-                &.paragraph-right {
-                    .text { margin-left: 88px; }
-                    img {  margin-right: 0%; margin-left: -10%; }
-                }
-            }
-
-            .text {
-                width: calc(50% - 64px);
-                display: inline-block;
-                vertical-align: middle;
-                max-width: 340px;
-
-                h3 {
-                    font-weight: 700;
-                    font-size: 24px;
-                    line-height: 32px;
-                    margin-top: 0;
-                    width: 100%;
-                }
-
-                p {
-                    color: rgba(0, 0, 0, 0.9);
-                    font-weight: 500;
-                    font-size: 16px;
-                    line-height: 22px;
-                    width: 100%;
-                }
-            }
-
-            img {
-                display: inline-block;
-                width: 60%;
-                vertical-align: middle;
             }
         }
     }
