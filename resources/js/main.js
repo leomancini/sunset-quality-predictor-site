@@ -37,8 +37,14 @@ window.onload = function() {
 
     setTimeout(function() {
         if (window.location.hash) {
-            let sectionId = window.location.hash.split('#').join('');
-            goToSection(sectionId);
+            if (window.location.hash.includes('#sunset-')) {
+                let date = window.location.hash.replace('#sunset-', '');
+                openPopover(date);
+                window.previousLocationHash = 'history';
+            } else {
+                let sectionId = window.location.hash.replace('#', '');
+                goToSection(sectionId);
+            }
         }
     }, 100);
 
@@ -67,19 +73,106 @@ function closePopover() {
     popoverVideo.removeAttribute('src');
     popoverVideo.load();
     popoverVideo.innerHTML = '';
-    
+
+    window.location.hash = window.previousLocationHash;
     window.popoverIsOpen = false;
+}
+
+function openPopover(date) {
+    let popover = document.querySelector('#popover');
+    let popoverVideo = popover.querySelector('.videoContainer video');
+
+    let day = document.querySelector(`.day[data-date='${date}']`);
+
+    if (!day.dataset.error) {
+        window.popoverIsOpen = true;
+        window.previousLocationHash = window.location.hash;
+        window.location.hash = `sunset-${date}`;
+
+        popoverBackground.classList.add('visible');
+        popover.classList.add('visible');
+
+        popover.querySelector('.date').innerText = day.dataset.dateFormatted;
+        popover.querySelector('.confidence .value').innerText = day.dataset.confidence;
+        popover.querySelector('.stars').style.backgroundImage = `url('resources/images/stars-color/${day.dataset.rating}.png')`;
+
+        let videoContainer = popover.querySelector('.videoContainer');
+        let videoContainerLoading = videoContainer.querySelector('.loading');
+        let videoContainerError = videoContainer.querySelector('.error');
+        let video = videoContainer.querySelector('video');
+        let source = document.createElement('source');
+
+        // Show video if it is already loaded from a previous mouseover
+        if (video.readyState === 4) {
+            video.classList.add('visible');
+            videoContainerLoading.classList.add('hidden');
+        }   
+
+        // Show video when it is loaded on first mouseover
+        video.addEventListener('loadeddata', function(event) {
+            video.classList.add('visible');
+            videoContainerLoading.classList.add('hidden');
+        });
+
+        source.addEventListener('error', function(event) {
+            videoContainerLoading.classList.add('hidden');
+            videoContainerError.classList.add('visible');
+        });
+
+        let today = new Date();
+        let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+
+        if (now.split('T')[0] === date && today.getHours() < 22) {
+            console.log('not yet today');
+        } else {
+            source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
+            source.setAttribute('type', 'video/mp4');
+
+            video.appendChild(source);
+            video.currentTime = 0;
+            video.play();
+        }
+    }
 }
 
 function initializeCalendarInteractions() {
     let calendar = document.querySelector('#calendar');
     let days = calendar.querySelectorAll('.day');
 
-    let popover = document.querySelector('#popover');
     let popoverBackground = document.querySelector('#popoverBackground');
-    let popoverVideo = popover.querySelector('.videoContainer video');
-
     popoverBackground.onclick = closePopover;
+
+    let months = calendar.querySelectorAll('.month');
+
+    months.forEach((month) => {
+        let monthNavigationButtonBack = month.querySelector(`.monthNavigation[data-direction='back']`);
+        let monthNavigationButtonForward = month.querySelector(`.monthNavigation[data-direction='forward']`);
+
+        monthNavigationButtonBack.onclick = () => {
+            let currentVisibleMonthIndex = parseInt(calendar.querySelector('.month.visible').id.replace('month-', ''));
+
+            if (currentVisibleMonthIndex !== 0) {
+                monthNavigationButtonBack.classList.add('visible');
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex}`).classList.remove('visible');
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1}`).classList.add('visible');
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1} .monthNavigation[data-direction='forward']`).classList.add('visible');
+            }
+
+            if (currentVisibleMonthIndex === 1) {
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1} .monthNavigation[data-direction='back']`).classList.remove('visible');
+            }
+        };
+
+        monthNavigationButtonForward.onclick = () => {
+            let currentVisibleMonthIndex = parseInt(calendar.querySelector('.month.visible').id.replace('month-', ''));
+
+            if (currentVisibleMonthIndex + 1 < months.length) {
+                monthNavigationButtonForward.classList.add('visible');
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex}`).classList.remove('visible');
+                calendar.querySelector(`.month#month-${currentVisibleMonthIndex + 1}`).classList.add('visible');
+            }
+        };
+    });
 
     days.forEach((day) => {
         if (day.classList.contains('filled')) {
@@ -149,52 +242,7 @@ function initializeCalendarInteractions() {
             }
 
             day.onclick = () => {
-                if (!day.dataset.error) {
-                    window.popoverIsOpen = true;
-                    popoverBackground.classList.add('visible');
-                    popover.classList.add('visible');
-
-                    popover.querySelector('.date').innerText = day.dataset.dateFormatted;
-                    popover.querySelector('.confidence .value').innerText = day.dataset.confidence;
-                    popover.querySelector('.stars').style.backgroundImage = `url('resources/images/stars-color/${day.dataset.rating}.png')`;
-
-                    let videoContainer = popover.querySelector('.videoContainer');
-                    let videoContainerLoading = videoContainer.querySelector('.loading');
-                    let videoContainerError = videoContainer.querySelector('.error');
-                    let video = videoContainer.querySelector('video');
-                    let source = document.createElement('source');
-
-                    // Show video if it is already loaded from a previous mouseover
-                    if (video.readyState === 4) {
-                        video.classList.add('visible');
-                        videoContainerLoading.classList.add('hidden');
-                    }   
-
-                    // Show video when it is loaded on first mouseover
-                    video.addEventListener('loadeddata', function(event) {
-                        video.classList.add('visible');
-                        videoContainerLoading.classList.add('hidden');
-                    });
-
-                    source.addEventListener('error', function(event) {
-                        videoContainerLoading.classList.add('hidden');
-                        videoContainerError.classList.add('visible');
-                    });
-
-                    let today = new Date();
-                    let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
-
-                    if (now.split('T')[0] === date && today.getHours() < 22) {
-                        console.log('not yet today');
-                    } else {
-                        source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
-                        source.setAttribute('type', 'video/mp4');
-
-                        video.appendChild(source);
-                        video.currentTime = 0;
-                        video.play();
-                    }
-                }
+                openPopover(date);
             }
         }
     });
@@ -205,7 +253,7 @@ document.onkeydown = function(event) {
     let isEscape = false;
 
     if ('key' in event) {
-        isEscape = (event.key === "Escape" || evt.key === "Esc");
+        isEscape = (event.key === 'Escape' || event.key === 'Esc');
     } else {
         isEscape = (event.keyCode === 27);
     }

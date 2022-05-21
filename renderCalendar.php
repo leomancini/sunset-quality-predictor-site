@@ -1,35 +1,71 @@
 <?php
 	function renderCalendar($predictions) {	
+		// $period = new DatePeriod(
+		// 	new DateTime('2022-05-03'),
+		// 	new DateInterval('P1D'),
+		// 	new DateTime('2022-07-31')
+		// );
+
 		$period = new DatePeriod(
-			new DateTime('2022-05-03'),
+			new DateTime('2022-02-03'),
 			new DateInterval('P1D'),
-			new DateTime('2022-05-31')
+			new DateTime('last day of this month')
 		);
 
+		$monthKey = 0;
+
+		$months = [];
 		$dates = [];
 		foreach ($period as $date) {
+			$months[] = $date->format('m');
 			$dates[] = $date;
 		}
 
+		$months = array_unique($months);
+
 		foreach ($dates as $key => $date) {
-			if ($key === 0) {
-				echo "<div class='monthName'>".$date->format('F')."</div>";
-				echo "<div class='month'>";
-				$firstWeekOfMonth = false;
-			} else if (($dates[$key - 1]->format('m') !== $date->format('m'))) {
+			if ($dates[$key - 1] && ($dates[$key - 1]->format('m') !== $date->format('m'))) {
 				echo "</div>";
+			}
+
+			if ($key === 0 || ($dates[$key - 1] && $dates[$key - 1]->format('m') !== $date->format('m'))) {
+				echo "<div class='month".($monthKey === (count($months) - 1) ? ' visible' : '')."' id='month-".$monthKey."'>";
+				echo "<div class='monthHeader'>";
+				echo '<div class="monthNavigation'.((count($months) > 1) ? ' visible' : '').'" data-direction="back">'.date('F', strtotime($dates[$key]->format('Y-m').' -1 month')).'</div>';
 				echo "<div class='monthName'>".$date->format('F')."</div>";
-				echo "<div class='month'>";
+				echo '<div class="monthNavigation" data-direction="forward">'.date('F', strtotime($dates[$key]->format('Y-m').' +1 month')).'</div>';
+				echo '</div>';
+				echo "<div class='dayNames'>";
+				echo '<div class="dayName">Sun</div>';
+				echo '<div class="dayName">Mon</div>';
+				echo '<div class="dayName">Tue</div>';
+				echo '<div class="dayName">Wed</div>';
+				echo '<div class="dayName">Thu</div>';
+				echo '<div class="dayName">Fri</div>';
+				echo '<div class="dayName">Sat</div>';
+				echo '</div>';
+
+				$monthKey++;
 				$firstWeekOfMonth = false;
 			}
 
 			if (!$firstWeekOfMonth) {
-				$x = 1;
+				$weekDaysBeforeMonthStarts = 1;
 
-				while($x <= intval($date->format('N'))) {
-					echo "<div class='day hidden'></div>";
-					$x++;
+				// Get number of weekdays before month starts
+				while($weekDaysBeforeMonthStarts <= intval($date->format('N'))) {
+					$weekDaysBeforeMonthStarts++;
 					$firstWeekOfMonth = true;
+				}
+
+				// Only show hidden days if there are less than 7
+				if ($weekDaysBeforeMonthStarts <= 7) {
+					$hiddenDays = 1;
+
+					while($hiddenDays <= intval($date->format('N'))) {
+						$hiddenDays++;
+						echo "<div class='day hidden'></div>";
+					}
 				}
 			}
 			
