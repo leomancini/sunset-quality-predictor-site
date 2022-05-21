@@ -44,6 +44,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
+		<div id='curtain' class='visible'></div>
 		<div id='page'>
 			<div id='popover'>
 				<div id='header'>

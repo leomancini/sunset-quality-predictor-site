@@ -1,33 +1,3 @@
-function getOffset(element) {
-    const boundingBox = element.getBoundingClientRect();
-
-    return {
-        left: boundingBox.left + window.scrollX,
-        top: boundingBox.top + window.scrollY
-    };
-}
-
-function goToSection(sectionId, behavior) {
-    window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
-    window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
-
-    if (sectionId === 'latest') {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior
-        });
-    } else {
-        window.scrollTo({
-          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - window.navigationHeight - window.navigationOffset,
-          left: 0,
-          behavior
-        });
-    }
-
-    window.location.hash = sectionId;
-}
-
 window.onload = function() {
     initialize();
 
@@ -36,6 +6,10 @@ window.onload = function() {
     window.navigationOffset = 0;
 
     setTimeout(function() {
+        if (window.location.hash === '#latest' || !window.location.hash) {
+            document.querySelector('#navigation').classList.add('preVisible');
+        }
+
         if (window.location.hash) {
             if (window.location.hash.includes('#sunset-')) {
                 let date = window.location.hash.replace('#sunset-', '');
@@ -46,17 +20,51 @@ window.onload = function() {
                 goToSection(sectionId);
             }
         }
+
+        setTimeout(function() {
+            document.querySelector('#curtain').classList.remove('visible');
+            window.navigationElements.headerSection.querySelector('#content').classList.add('visible');
+
+            if (window.navigationElements.navigation.classList.contains('preVisible')) {
+                setTimeout(function() {
+                    window.navigationElements.navigation.classList.add('visible');
+
+                    setTimeout(function() {
+                        window.navigationElements.navigation.classList.remove('preVisible');
+                    }, 2000);
+                }, 500);
+            }
+        }, 300);
     }, 100);
 
     window.navigationElements.navigationItems.forEach((navigationItem) => {
         navigationItem.onclick = () => {
             let sectionId = navigationItem.dataset.sectionId;
+            window.scrollingToSection = true;
+
             goToSection(sectionId, 'smooth');
+
+            setTimeout(() => {
+                window.scrollingToSection = false;
+            }, 700);
         };
     });
 
     initializeCalendarInteractions();
 };
+
+function initialize() {
+    window.scrollingToSection = false;
+
+    window.navigationElements = {
+        'navigation': document.querySelector('#navigation'),
+        'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
+        'headerSection': document.querySelector(`section[data-section-id='latest']`),
+        'allOtherSections': document.querySelector('#sections')
+    };
+
+    window.navigationElements.headerSection.style.height = `${window.innerHeight}px`;
+}
 
 function closePopover() {
     let popover = document.querySelector('#popover');
@@ -78,9 +86,13 @@ function closePopover() {
 
     window.location.hash = window.previousLocationHash;
     window.popoverIsOpen = false;
+
+    enableScrolling();
 }
 
 function openPopover(date) {
+    disableScrolling();
+
     let popover = document.querySelector('#popover');
     let popoverVideo = popover.querySelector('.videoContainer video');
 
@@ -252,46 +264,138 @@ function initializeCalendarInteractions() {
 
 document.onkeydown = function(event) {
     event = event || window.event;
-    let isEscape = false;
+
+    let isEscape, isArrowLeft, isArrowRight = false;
 
     if ('key' in event) {
         isEscape = (event.key === 'Escape' || event.key === 'Esc');
+        isArrowLeft = (event.key === 'ArrowLeft');
+        isArrowRight = (event.key === 'ArrowRight');
     } else {
         isEscape = (event.keyCode === 27);
+        isArrowLeft = (event.keyCode === 37);
+        isArrowRight = (event.keyCode === 39);
     }
 
     if (isEscape) {
         if (window.popoverIsOpen) { closePopover(); }
     }
+
+    if (window.popoverIsOpen) {
+        if (isArrowLeft) {
+            console.log('left');
+        }
+
+        if (isArrowRight) {
+            console.log('right');
+        }
+    }
 };
 
-function initialize() {
-    window.navigationElements = {
-        'navigation': document.querySelector('#navigation'),
-        'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
-        'headerSection': document.querySelector(`section[data-section-id='latest']`),
-        'allOtherSections': document.querySelector('#sections')
-    };
+window.onscroll = positionNavigation;
+window.onresize = positionNavigation;
 
-    window.navigationElements.headerSection.style.height = `${window.innerHeight}px`;
+function getOffset(element) {
+    const boundingBox = element.getBoundingClientRect();
+
+    return {
+        left: boundingBox.left + window.scrollX,
+        top: boundingBox.top + window.scrollY
+    };
 }
 
-window.onscroll = positionNavigation;
+function switchToSection(sectionId, behavior) {
+    window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
+    window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
 
-window.onresize = positionNavigation();
+    window.location.hash = sectionId;
+}
+
+function goToSection(sectionId, behavior) {
+    if (sectionId === 'latest') {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior
+        });
+    } else {
+        window.scrollTo({
+          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - window.navigationHeight - window.navigationOffset,
+          left: 0,
+          behavior
+        });
+    }
+
+    switchToSection(sectionId, behavior);
+}
 
 function positionNavigation() {
-    initialize();
-    let { navigation, headerSection, allOtherSections } = window.navigationElements;
-
     if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
-        headerSection.style.top = `${(window.innerHeight * -1) + window.navigationHeight}px`;
-        headerSection.classList.add('scrolled');
-        allOtherSections.style.marginTop = `${window.innerHeight + window.navigationOffset}px`;
-        navigation.classList.add('scrolled');
+        document.querySelector(`section[data-section-id='latest']`).style.top = `${(window.innerHeight * -1) + window.navigationHeight}px`;
+        document.querySelector(`section[data-section-id='latest']`).classList.add('scrolled');
+        document.querySelector('#sections').style.marginTop = `${window.innerHeight + window.navigationOffset}px`;
+        document.querySelector('#navigation').classList.add('scrolled');
     } else {
-        headerSection.classList.remove('scrolled');
-        navigation.classList.remove('scrolled');
-        allOtherSections.style.marginTop = `0px`;
+        document.querySelector(`section[data-section-id='latest']`).classList.remove('scrolled');
+        document.querySelector('#navigation').classList.remove('scrolled');
+        document.querySelector('#sections').style.marginTop = `0px`;
     }
+
+    if (!window.scrollingToSection) {
+        if (window.scrollY < (document.querySelector(`section[data-section-id='latest']`)).offsetHeight -  window.navigationHeight) {
+            switchToSection('latest', null);
+        } else if ((window.scrollY + (window.innerHeight / 1.5) - window.navigationHeight) > (getOffset(document.querySelector(`section[data-section-id='about']`)).top - window.navigationHeight) + parseInt(document.querySelector(`section[data-section-id='about']`).offsetHeight)) {
+            switchToSection('follow', null);
+        } else {
+            let sections = document.querySelectorAll(`section`);
+
+            sections.forEach((section) => {
+                let sectionId = section.dataset.sectionId;
+                
+                if (sectionId !== 'latest' && ((window.scrollY + window.navigationHeight) > getOffset(section).top) && (window.scrollY <= (getOffset(section).top - window.navigationHeight) + parseInt(section.offsetHeight))) {
+                    switchToSection(sectionId, null);
+                }
+            });
+        }
+    }
+}
+
+// From https://stackoverflow.com/a/4770179
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+    let disabledKeys = { 37: 1, 38: 1, 39: 1, 40: 1, 32: 1, 33: 1, 34: 1, 35: 1, 36: 1 };
+
+    if (disabledKeys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+let supportsPassive = false;
+
+try {
+    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+        get: function () { supportsPassive = true; } 
+    }));
+} catch(e) {}
+
+let wheelOpt = supportsPassive ? { passive: false } : false;
+let wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+function disableScrolling() {
+    window.addEventListener('DOMMouseScroll', preventDefault, false);
+    window.addEventListener(wheelEvent, preventDefault, wheelOpt);
+    window.addEventListener('touchmove', preventDefault, wheelOpt);
+    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+
+function enableScrolling() {
+    window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
+    window.removeEventListener('touchmove', preventDefault, wheelOpt);
+    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
 }
