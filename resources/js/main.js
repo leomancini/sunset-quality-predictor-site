@@ -11,7 +11,7 @@ function goToSection(sectionId, behavior) {
     window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
     window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
 
-    if (sectionId === 'latest-prediction') {
+    if (sectionId === 'latest') {
         window.scrollTo({
           top: 0,
           left: 0,
@@ -68,11 +68,13 @@ function closePopover() {
 
     popover.querySelector('.videoContainer .error').classList.remove('visible');
 
-    popoverVideo.classList.remove('visible');
-    popoverVideo.pause();
-    popoverVideo.removeAttribute('src');
-    popoverVideo.load();
-    popoverVideo.innerHTML = '';
+    setTimeout(function() {
+        popoverVideo.classList.remove('visible');
+        popoverVideo.pause();
+        popoverVideo.removeAttribute('src');
+        popoverVideo.load();
+        popoverVideo.innerHTML = '';
+    }, 300);
 
     window.location.hash = window.previousLocationHash;
     window.popoverIsOpen = false;
@@ -267,7 +269,7 @@ function initialize() {
     window.navigationElements = {
         'navigation': document.querySelector('#navigation'),
         'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
-        'headerSection': document.querySelector(`section[data-section-id='latest-prediction']`),
+        'headerSection': document.querySelector(`section[data-section-id='latest']`),
         'allOtherSections': document.querySelector('#sections')
     };
 

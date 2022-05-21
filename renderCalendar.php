@@ -1,13 +1,9 @@
 <?php
 	function renderCalendar($predictions) {	
-		// $period = new DatePeriod(
-		// 	new DateTime('2022-05-03'),
-		// 	new DateInterval('P1D'),
-		// 	new DateTime('2022-07-31')
-		// );
+		$startDate = '2022-05-01';
 
 		$period = new DatePeriod(
-			new DateTime('2022-02-03'),
+			new DateTime($startDate),
 			new DateInterval('P1D'),
 			new DateTime('last day of this month')
 		);
@@ -16,6 +12,7 @@
 
 		$months = [];
 		$dates = [];
+		
 		foreach ($period as $date) {
 			$months[] = $date->format('m');
 			$dates[] = $date;

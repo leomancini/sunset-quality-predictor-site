@@ -138,7 +138,6 @@ body {
                 width: 100%;
                 overflow: hidden; 
                 font-size: 0;
-                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 4px 64px rgba(0, 0, 0, 0.3);
                 border-radius: 16px;
 
                 video {
@@ -147,11 +146,14 @@ body {
                     left: 0;
                     z-index: 3;
                     opacity: 0;
-                    transition: 0.2s opacity;
+                    transition: 0.2s all;
                     border-radius: 16px;
+                    transform: scale(0.9);
+                    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 4px 64px rgba(0, 0, 0, 0.3);
 
                     &.visible {
                         opacity: 1;
+                        transform: scale(1);
                     }
                 }
 
@@ -249,7 +251,7 @@ body {
             }
         }
 
-        section[data-section-id='latest-prediction'] {
+        section[data-section-id='latest'] {
             width: 100%;
             z-index: 3;
             box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
@@ -456,6 +458,10 @@ body {
                                 background-position: 6px center;
                                 padding-left: 28px;
                                 padding-right: 14px;
+
+                                &:hover {
+                                    cursor: w-resize;
+                                }
                             }
 
                             &[data-direction='forward'] {
@@ -463,6 +469,10 @@ body {
                                 background-position: right 6px center;
                                 padding-right: 28px;
                                 padding-left: 14px;
+
+                                &:hover {
+                                    cursor: e-resize;
+                                }
                             }
                         }
 
@@ -653,6 +663,10 @@ body {
 
                                         &.visible {
                                             opacity: 1;
+
+                                            &:hover {
+                                                cursor: not-allowed;
+                                            }
                                         }
                                     }
 
@@ -669,6 +683,10 @@ body {
 
                                         &.hidden {
                                             opacity: 0;
+
+                                            &:hover {
+                                                cursor: progress;
+                                            }
                                         }
                                     }
                                 }

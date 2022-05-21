@@ -61,12 +61,12 @@
 			</div>
 			<div id='popoverBackground'></div>
 			<div id='navigation'>
-				<div class='item selected' data-section-id='latest-prediction'>Latest</div>
+				<div class='item selected' data-section-id='latest'>Latest</div>
 				<div class='item' data-section-id='history'>History</div>
 				<div class='item' data-section-id='about'>About</div>
 				<div class='item' data-section-id='follow'>Follow</div>
 			</div>
-			<section data-section-id='latest-prediction'>
+			<section data-section-id='latest'>
 				<div id='content'>
 					<div id='logo'></div>
 					<div id='title'><?php echo $predictionDay; ?> Sunset Prediction</div>
