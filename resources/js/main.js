@@ -1,6 +1,7 @@
 window.onload = initialize;
 
 function initialize() {
+    console.log(window.location.hash);
     window.scrollingToSection = false;
 
     window.navigationElements = {
@@ -15,18 +16,20 @@ function initialize() {
     window.navigationOffset = 0;
 
     setTimeout(function() {
-        if (window.location.hash === '#latest' || !window.location.hash) {
-            document.querySelector('#navigation').classList.add('preVisible');
-        }
-
         if (window.location.hash) {
             if (window.location.hash.includes('#sunset-')) {
                 let date = window.location.hash.replace('#sunset-', '');
+                goToSection('history');
                 openPopover(date);
                 window.previousLocationHash = 'history';
             } else {
                 let sectionId = window.location.hash.replace('#', '');
+                window.previousLocationHash = sectionId;
                 goToSection(sectionId);
+
+                if (window.location.hash === '#latest' || !window.location.hash) {
+                    document.querySelector('#navigation').classList.add('preVisible');
+                }
             }
         }
 
@@ -59,7 +62,8 @@ function initialize() {
         };
     });
 
-    positionNavigation();
+    positionNavigation({ initialLoad: true });
+
     initializeCalendarInteractions();
 }
 
@@ -330,7 +334,7 @@ function goToSection(sectionId, behavior) {
     switchToSection(sectionId, behavior);
 }
 
-function positionNavigation() {
+function positionNavigation(params) {
     document.querySelector(`section[data-section-id='latest']`).style.height = `${window.innerHeight}px`;
 
     if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
@@ -344,21 +348,23 @@ function positionNavigation() {
         document.querySelector('#sections').style.marginTop = `0px`;
     }
 
-    if (!window.scrollingToSection) {
-        if (window.scrollY < (document.querySelector(`section[data-section-id='latest']`)).offsetHeight -  window.navigationHeight) {
-            switchToSection('latest', null);
-        } else if ((window.scrollY + (window.innerHeight / 1.5) - window.navigationHeight) > (getOffset(document.querySelector(`section[data-section-id='about']`)).top - window.navigationHeight) + parseInt(document.querySelector(`section[data-section-id='about']`).offsetHeight)) {
-            switchToSection('follow', null);
-        } else {
-            let sections = document.querySelectorAll(`section`);
+    if (!params.initialLoad) {
+        if (!window.scrollingToSection) {
+            if (window.scrollY < (document.querySelector(`section[data-section-id='latest']`)).offsetHeight -  window.navigationHeight) {
+                switchToSection('latest', null);
+            } else if ((window.scrollY + (window.innerHeight / 1.5) - window.navigationHeight) > (getOffset(document.querySelector(`section[data-section-id='about']`)).top - window.navigationHeight) + parseInt(document.querySelector(`section[data-section-id='about']`).offsetHeight)) {
+                switchToSection('follow', null);
+            } else {
+                let sections = document.querySelectorAll(`section`);
 
-            sections.forEach((section) => {
-                let sectionId = section.dataset.sectionId;
-                
-                if (sectionId !== 'latest' && ((window.scrollY + window.navigationHeight) > getOffset(section).top) && (window.scrollY <= (getOffset(section).top - window.navigationHeight) + parseInt(section.offsetHeight))) {
-                    switchToSection(sectionId, null);
-                }
-            });
+                sections.forEach((section) => {
+                    let sectionId = section.dataset.sectionId;
+                    
+                    if (sectionId !== 'latest' && ((window.scrollY + window.navigationHeight) > getOffset(section).top) && (window.scrollY <= (getOffset(section).top - window.navigationHeight) + parseInt(section.offsetHeight))) {
+                        switchToSection(sectionId, null);
+                    }
+                });
+            }
         }
     }
 }

@@ -35,6 +35,12 @@
     }
 }
 
+.rainbowText() {
+    background: linear-gradient(138deg, rgba(0,181,235,1) 0%, rgba(83,96,230,1) 25%, rgba(247,109,232,1) 50%, rgba(255,133,161,1) 75%, rgba(255,70,81,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 html {
     margin: 0;
     font-family: 'Inter', sans-serif;
@@ -771,7 +777,7 @@ body {
                     color: rgba(0, 0, 0, 0.5);
 
                     &:hover {
-                        color: rgba(0, 0, 0, 1);
+                        .rainbowText();
                         text-decoration: none;
                     }
                 }
@@ -902,10 +908,9 @@ body {
 
                     a {
                         transition: 0.2s all;
-                        color: rgba(255, 255, 255, 1.0);
+                        color: rgba(255, 255, 255, 1);
 
                         &:hover {
-                            color: rgba(255, 255, 255, 0.5);
                             text-decoration: none;
                         }
                     }
@@ -914,7 +919,11 @@ body {
                         font-size: 24px;
                         line-height: 36px;
                         font-weight: 600;
-                        color: rgba(255, 255, 255, 1.0);
+                        color: rgba(255, 255, 255, 1);
+
+                        a {
+                            .rainbowText();
+                        }
                     }
 
                     h4 {
