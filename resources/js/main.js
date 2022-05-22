@@ -67,6 +67,18 @@ function initialize() {
     initializeCalendarInteractions();
 }
 
+function resetPopover() {
+    let popover = document.querySelector('#popover');
+    let popoverVideo = popover.querySelector('.videoContainer video');
+
+    popover.querySelector('.videoContainer .error').classList.remove('visible');
+
+    popoverVideo.pause();
+    popoverVideo.removeAttribute('src');
+    popoverVideo.load();
+    popoverVideo.innerHTML = '';
+}
+
 function closePopover() {
     let popover = document.querySelector('#popover');
     let popoverBackground = document.querySelector('#popoverBackground');
@@ -78,11 +90,7 @@ function closePopover() {
     popover.querySelector('.videoContainer .error').classList.remove('visible');
 
     setTimeout(function() {
-        popoverVideo.classList.remove('visible');
-        popoverVideo.pause();
-        popoverVideo.removeAttribute('src');
-        popoverVideo.load();
-        popoverVideo.innerHTML = '';
+        resetPopover();
     }, 300);
 
     window.location.hash = window.previousLocationHash;
@@ -121,12 +129,26 @@ function openPopover(date) {
         if (video.readyState === 4) {
             video.classList.add('visible');
             videoContainerLoading.classList.add('hidden');
+
+            window.popoverVideoSize = {
+                width: popoverVideo.offsetWidth,
+                height: popoverVideo.offsetHeight
+            };
+
+            popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
         }   
 
         // Show video when it is loaded on first mouseover
         video.addEventListener('loadeddata', function(event) {
             video.classList.add('visible');
             videoContainerLoading.classList.add('hidden');
+
+            window.popoverVideoSize = {
+                width: popoverVideo.offsetWidth,
+                height: popoverVideo.offsetHeight
+            };
+
+            popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
         });
 
         source.addEventListener('error', function(event) {
@@ -287,18 +309,54 @@ document.onkeydown = function(event) {
     }
 
     if (window.popoverIsOpen) {
+        let currentDate = new Date(window.location.hash.replace('#sunset-', ''));
+
+        let nextDateRaw = new Date(currentDate);
+        nextDateRaw.setDate(currentDate.getDate() + 1);
+        let nextDate = nextDateRaw.toISOString().split('T')[0];
+
+        let previousDateRaw = new Date(currentDate);
+        previousDateRaw.setDate(currentDate.getDate() - 1);
+        let previousDate = previousDateRaw.toISOString().split('T')[0];
+
         if (isArrowLeft) {
-            console.log('left');
+            let previousCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
+            let shouldShowPopover = previousCalendarDayElement && previousCalendarDayElement.classList.contains('filled') && !previousCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+            if (shouldShowPopover) {
+                resetPopover();
+                openPopover(previousDate);
+            } else {
+                closePopover();
+            }
         }
 
         if (isArrowRight) {
-            console.log('right');
+            let nextCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
+            let shouldShowPopover = nextCalendarDayElement && nextCalendarDayElement.classList.contains('filled') && !nextCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+            if (shouldShowPopover) {
+                resetPopover();
+                openPopover(nextDate);
+            } else {
+                closePopover();
+            }
         }
     }
 };
 
-window.onscroll = positionNavigation;
-window.onresize = positionNavigation;
+window.onscroll = () => {
+    positionNavigation({ initialLoad: false });
+};
+
+window.onresize = () => {
+    positionNavigation({ initialLoad: false });
+
+    if (window.popoverIsOpen) {
+        document.querySelector('.videoContainer video').style.height = null;
+        document.querySelector('.videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+    }
+};
 
 function getOffset(element) {
     const boundingBox = element.getBoundingClientRect();
