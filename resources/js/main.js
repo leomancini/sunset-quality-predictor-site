@@ -165,10 +165,8 @@ function openPopover(date, onError) {
         });
 
         source.addEventListener('error', function(event) {
-            if (onError.direction === 'previous') {
-                goToPrevious(date);
-            } else if (onError.direction === 'next') {
-                goToNext(date);
+            if (onError && onError.direction) {
+                switchPopover(date, onError.direction);
             }
         });
 
@@ -178,12 +176,8 @@ function openPopover(date, onError) {
         video.appendChild(source);
         video.currentTime = 0;
     } else {
-        if (onError) {
-            if (onError.direction === 'previous') {
-                goToPrevious(date);
-            } else if (onError.direction === 'next') {
-                goToNext(date);
-            }
+        if (onError && onError.direction) {
+            switchPopover(date, onError.direction);
         }
     }
 }
@@ -313,45 +307,33 @@ function initializeCalendarInteractions() {
     });
 }
 
-function goToPrevious(fromDate) {
-    let currentDate = new Date(fromDate);
+function switchPopover(currentDate, direction) {
+    let fromDate = new Date(currentDate);
+    let toDate;
 
-    let previousDateRaw = new Date(currentDate);
-    previousDateRaw.setDate(currentDate.getDate() - 1);
-    let previousDate = previousDateRaw.toISOString().split('T')[0];
+    if (direction === 'previous') {
+        let previousDateRaw = new Date(fromDate);
+        previousDateRaw.setDate(fromDate.getDate() - 1);
+        let previousDate = previousDateRaw.toISOString().split('T')[0];
 
-    let previousCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
-    let shouldShowPopover = previousCalendarDayElement && previousCalendarDayElement.classList.contains('filled') && !previousCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+        toDate = previousDate;
+    } else if (direction === 'next') {
+        let nextDateRaw = new Date(fromDate);
+        nextDateRaw.setDate(fromDate.getDate() + 1);
+        let nextDate = nextDateRaw.toISOString().split('T')[0];
 
-    if (shouldShowPopover) {
-        resetPopover();
-
-        setTimeout(() => {
-            openPopover(previousDate, {
-                direction: 'previous'
-            });
-        }, 100);
-    } else {
-        closePopover();
+        toDate = nextDate;
     }
-}
 
-function goToNext(fromDate) {
-    let currentDate = new Date(fromDate);
-
-    let nextDateRaw = new Date(currentDate);
-    nextDateRaw.setDate(currentDate.getDate() + 1);
-    let nextDate = nextDateRaw.toISOString().split('T')[0];
-
-    let nextCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
-    let shouldShowPopover = nextCalendarDayElement && nextCalendarDayElement.classList.contains('filled') && !nextCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+    let toDateCalendarDayElement = document.querySelector(`.day[data-date='${toDate}']`);
+    let shouldShowPopover = toDateCalendarDayElement && toDateCalendarDayElement.classList.contains('filled') && !toDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
 
     if (shouldShowPopover) {
         resetPopover();
         
         setTimeout(() => {
-            openPopover(nextDate, {
-                direction: 'next'
+            openPopover(toDate, {
+                direction
             });
         }, 100);
     } else {
@@ -379,15 +361,14 @@ document.onkeydown = function(event) {
     }
 
     if (window.popoverIsOpen) {
-        // let popover = document.querySelector('#popover');
         let currentDate = window.location.hash.replace('#sunset-', '');
 
         if (isArrowLeft) {
-            goToPrevious(currentDate);
+            switchPopover(currentDate, 'previous');
         }
 
         if (isArrowRight) {
-            goToNext(currentDate);
+            switchPopover(currentDate, 'next');
         }
     }
 };
