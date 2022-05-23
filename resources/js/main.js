@@ -1,7 +1,6 @@
 window.onload = initialize;
 
 function initialize() {
-    console.log(window.location.hash);
     window.scrollingToSection = false;
 
     window.navigationElements = {
@@ -15,12 +14,12 @@ function initialize() {
     window.navigationHeight = 44 + (window.navigationBottomPadding * 2);
     window.navigationOffset = 0;
 
-    setTimeout(function() {
+    setTimeout(() => {
         if (window.location.hash) {
             if (window.location.hash.includes('#sunset-')) {
                 let date = window.location.hash.replace('#sunset-', '');
                 goToSection('history');
-                openPopover(date);
+                openPopover(date, null);
                 window.previousLocationHash = 'history';
             } else {
                 let sectionId = window.location.hash.replace('#', '');
@@ -33,15 +32,15 @@ function initialize() {
             }
         }
 
-        setTimeout(function() {
+        setTimeout(() => {
             document.querySelector('#curtain').classList.remove('visible');
             window.navigationElements.headerSection.querySelector('#content').classList.add('visible');
 
             if (window.navigationElements.navigation.classList.contains('preVisible')) {
-                setTimeout(function() {
+                setTimeout(() => {
                     window.navigationElements.navigation.classList.add('visible');
 
-                    setTimeout(function() {
+                    setTimeout(() => {
                         window.navigationElements.navigation.classList.remove('preVisible');
                     }, 2000);
                 }, 500);
@@ -69,14 +68,20 @@ function initialize() {
 
 function resetPopover() {
     let popover = document.querySelector('#popover');
-    let popoverVideo = popover.querySelector('.videoContainer video');
+    let popoverVideoContainer = popover.querySelector('.videoContainer');
+    let popoverVideo = popoverVideoContainer.querySelector('.videoContainer video');
 
-    popover.querySelector('.videoContainer .error').classList.remove('visible');
+    popoverVideo.classList.remove('visible');
 
-    popoverVideo.pause();
-    popoverVideo.removeAttribute('src');
-    popoverVideo.load();
-    popoverVideo.innerHTML = '';
+    popoverVideoContainer.querySelector('.loading').classList.add('visible');
+    popoverVideoContainer.querySelector('.error').classList.remove('visible');
+
+    setTimeout(() => {
+        popoverVideo.pause();
+        popoverVideo.removeAttribute('src');
+        popoverVideo.load();
+        popoverVideo.innerHTML = '';
+    }, 100);
 }
 
 function closePopover() {
@@ -89,7 +94,7 @@ function closePopover() {
 
     popover.querySelector('.videoContainer .error').classList.remove('visible');
 
-    setTimeout(function() {
+    setTimeout(() => {
         resetPopover();
     }, 300);
 
@@ -99,7 +104,7 @@ function closePopover() {
     enableScrolling();
 }
 
-function openPopover(date) {
+function openPopover(date, onError) {
     disableScrolling();
 
     let popover = document.querySelector('#popover');
@@ -109,7 +114,7 @@ function openPopover(date) {
 
     if (!day.dataset.error) {
         window.popoverIsOpen = true;
-        window.previousLocationHash = window.location.hash;
+        window.previousLocationHash = 'history';
         window.location.hash = `sunset-${date}`;
 
         popoverBackground.classList.add('visible');
@@ -127,7 +132,6 @@ function openPopover(date) {
 
         // Show video if it is already loaded from a previous mouseover
         if (video.readyState === 4) {
-            video.classList.add('visible');
             videoContainerLoading.classList.add('hidden');
 
             window.popoverVideoSize = {
@@ -136,11 +140,15 @@ function openPopover(date) {
             };
 
             popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
+
+            setTimeout(() => {
+                video.classList.add('visible');
+                video.play();
+            }, 300);
         }   
 
         // Show video when it is loaded on first mouseover
         video.addEventListener('loadeddata', function(event) {
-            video.classList.add('visible');
             videoContainerLoading.classList.add('hidden');
 
             window.popoverVideoSize = {
@@ -149,11 +157,19 @@ function openPopover(date) {
             };
 
             popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
+
+            setTimeout(() => {
+                video.classList.add('visible');
+                video.play();
+            }, 300);
         });
 
         source.addEventListener('error', function(event) {
-            videoContainerLoading.classList.add('hidden');
-            videoContainerError.classList.add('visible');
+            if (onError.direction === 'previous') {
+                goToPrevious(date);
+            } else if (onError.direction === 'next') {
+                goToNext(date);
+            }
         });
 
         source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
@@ -161,7 +177,14 @@ function openPopover(date) {
 
         video.appendChild(source);
         video.currentTime = 0;
-        video.play();
+    } else {
+        if (onError) {
+            if (onError.direction === 'previous') {
+                goToPrevious(date);
+            } else if (onError.direction === 'next') {
+                goToNext(date);
+            }
+        }
     }
 }
 
@@ -253,6 +276,7 @@ function initializeCalendarInteractions() {
                         source.addEventListener('error', function(event) {
                             videoContainerLoading.classList.add('hidden');
                             videoContainerError.classList.add('visible');
+
                             day.dataset.error = true;
                         });
 
@@ -280,13 +304,59 @@ function initializeCalendarInteractions() {
 
             day.onclick = () => {
                 if (sunsetHasHappened) {
-                    openPopover(date);
+                    openPopover(date, null);
                 } else {
                     alert('Sunset has not happened yet today!');
                 }
             }
         }
     });
+}
+
+function goToPrevious(fromDate) {
+    let currentDate = new Date(fromDate);
+
+    let previousDateRaw = new Date(currentDate);
+    previousDateRaw.setDate(currentDate.getDate() - 1);
+    let previousDate = previousDateRaw.toISOString().split('T')[0];
+
+    let previousCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
+    let shouldShowPopover = previousCalendarDayElement && previousCalendarDayElement.classList.contains('filled') && !previousCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+    if (shouldShowPopover) {
+        resetPopover();
+
+        setTimeout(() => {
+            openPopover(previousDate, {
+                direction: 'previous'
+            });
+        }, 100);
+    } else {
+        closePopover();
+    }
+}
+
+function goToNext(fromDate) {
+    let currentDate = new Date(fromDate);
+
+    let nextDateRaw = new Date(currentDate);
+    nextDateRaw.setDate(currentDate.getDate() + 1);
+    let nextDate = nextDateRaw.toISOString().split('T')[0];
+
+    let nextCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
+    let shouldShowPopover = nextCalendarDayElement && nextCalendarDayElement.classList.contains('filled') && !nextCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+    if (shouldShowPopover) {
+        resetPopover();
+        
+        setTimeout(() => {
+            openPopover(nextDate, {
+                direction: 'next'
+            });
+        }, 100);
+    } else {
+        closePopover();
+    }
 }
 
 document.onkeydown = function(event) {
@@ -309,38 +379,15 @@ document.onkeydown = function(event) {
     }
 
     if (window.popoverIsOpen) {
-        let currentDate = new Date(window.location.hash.replace('#sunset-', ''));
-
-        let nextDateRaw = new Date(currentDate);
-        nextDateRaw.setDate(currentDate.getDate() + 1);
-        let nextDate = nextDateRaw.toISOString().split('T')[0];
-
-        let previousDateRaw = new Date(currentDate);
-        previousDateRaw.setDate(currentDate.getDate() - 1);
-        let previousDate = previousDateRaw.toISOString().split('T')[0];
+        // let popover = document.querySelector('#popover');
+        let currentDate = window.location.hash.replace('#sunset-', '');
 
         if (isArrowLeft) {
-            let previousCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
-            let shouldShowPopover = previousCalendarDayElement && previousCalendarDayElement.classList.contains('filled') && !previousCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
-
-            if (shouldShowPopover) {
-                resetPopover();
-                openPopover(previousDate);
-            } else {
-                closePopover();
-            }
+            goToPrevious(currentDate);
         }
 
         if (isArrowRight) {
-            let nextCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
-            let shouldShowPopover = nextCalendarDayElement && nextCalendarDayElement.classList.contains('filled') && !nextCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
-
-            if (shouldShowPopover) {
-                resetPopover();
-                openPopover(nextDate);
-            } else {
-                closePopover();
-            }
+            goToNext(currentDate);
         }
     }
 };
