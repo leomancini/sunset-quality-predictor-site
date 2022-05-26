@@ -100,6 +100,9 @@ body {
         }
 
         #popover {
+            @navigationWidth: 48px;
+            @navigationPadding: 32px;
+
             position: fixed;
             display: inline-block;
             transition: 0.2s all;
@@ -108,7 +111,7 @@ body {
             z-index: 6;
             top: 50%;
             left: 50%;
-            width: calc(100% - 128px);
+            width: calc(100% - 128px - (@navigationWidth + @navigationPadding * 2));
             transform: translate(-50%, -50%);
             max-width: 1080px;
             opacity: 0;
@@ -118,6 +121,59 @@ body {
             &.visible {
                 opacity: 1;
                 pointer-events: all;
+            }
+
+            .navigation {
+                width: @navigationWidth;
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                bottom: 0;
+                pointer-events: none;
+
+                &.left {
+                    left: -@navigationWidth - @navigationPadding;
+
+                    .arrow {
+                        background-image: url('../images/icons/circle-arrow-left.svg');
+                    }
+                }
+
+                &.right {
+                    right: -@navigationWidth - @navigationPadding;
+
+                    .arrow {
+                        background-image: url('../images/icons/circle-arrow-right.svg');
+                    }
+                }
+
+                .arrow {
+                    padding: 24px 0;
+                    width: @navigationWidth;
+                    height: @navigationWidth;
+                    background-size: 32px;
+                    background-position: 50%;
+                    background-repeat: no-repeat;
+                    filter: invert(100%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+                    transition: 0.2s all;
+                    opacity: 0;
+                    pointer-events: none;
+
+                    &.visible {
+                        opacity: 0.5;
+                        pointer-events: all;
+
+                        &:hover {
+                            opacity: 1;
+                            cursor: pointer;
+                        }
+
+                        &:active {
+                            transform: scale(0.8);
+                        }
+                    }
+                }
             }
 
             #header {
@@ -854,7 +910,7 @@ body {
 
                     p {
                         color: rgba(0, 0, 0, 0.9);
-                        font-weight: 500;
+                        font-weight: 450;
                         font-size: 16px;
                         line-height: 22px;
                         width: 100%;
@@ -922,6 +978,14 @@ body {
 
                         a {
                             .rainbowText();
+
+                            &:hover {
+                                background: unset;
+                                -webkit-background-clip: unset;
+                                -webkit-text-fill-color: unset;
+                                color: rgba(255, 255, 255, 1);
+                                text-decoration: underline;
+                            }
                         }
                     }
 

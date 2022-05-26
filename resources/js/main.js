@@ -2,6 +2,7 @@ window.onload = initialize;
 
 function initialize() {
     window.scrollingToSection = false;
+    window.popoverIsOpen = false;
 
     window.navigationElements = {
         'navigation': document.querySelector('#navigation'),
@@ -61,6 +62,16 @@ function initialize() {
         };
     });
 
+    document.querySelector('#popover .navigation.left .arrow').onclick = (e) => {
+        let currentDate = window.location.hash.replace('#sunset-', '');
+        switchPopover(currentDate, 'previous');
+    }
+
+    document.querySelector('#popover .navigation.right .arrow').onclick = (e) => {
+        let currentDate = window.location.hash.replace('#sunset-', '');
+        switchPopover(currentDate, 'next');
+    }
+
     positionNavigation({ initialLoad: true });
 
     initializeCalendarInteractions();
@@ -104,6 +115,11 @@ function closePopover() {
     enableScrolling();
 }
 
+function centerVideoNavigation() {
+    document.querySelector('#popover .navigation.left').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+    document.querySelector('#popover .navigation.right').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+}
+
 function openPopover(date, onError) {
     disableScrolling();
 
@@ -111,6 +127,13 @@ function openPopover(date, onError) {
     let popoverVideo = popover.querySelector('.videoContainer video');
 
     let day = document.querySelector(`.day[data-date='${date}']`);
+
+    if (!window.popoverIsOpen) {
+        popoverVideo.style.height = null;
+        popoverVideo.style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+
+        centerVideoNavigation();
+    }
 
     if (!day.dataset.error) {
         window.popoverIsOpen = true;
@@ -140,6 +163,7 @@ function openPopover(date, onError) {
             };
 
             popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
+            centerVideoNavigation();
 
             setTimeout(() => {
                 video.classList.add('visible');
@@ -157,7 +181,8 @@ function openPopover(date, onError) {
             };
 
             popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
-
+            centerVideoNavigation();
+            
             setTimeout(() => {
                 video.classList.add('visible');
                 video.play();
@@ -175,6 +200,30 @@ function openPopover(date, onError) {
 
         video.appendChild(source);
         video.currentTime = 0;
+
+        let previousArrow = document.querySelector('#popover .navigation.left .arrow');
+        let shouldShowPreviousArrow = false;
+        let previousDate = getToDate(date, 'previous');
+        let previousDateCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
+        shouldShowPreviousArrow = previousDateCalendarDayElement && previousDateCalendarDayElement.classList.contains('filled') && !previousDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+        if (shouldShowPreviousArrow) {
+            previousArrow.classList.add('visible');
+        } else {
+            previousArrow.classList.remove('visible');
+        }
+
+        let nextArrow = document.querySelector('#popover .navigation.right .arrow');
+        let shouldShowNextArrow = false;
+        let nextDate = getToDate(date, 'next');
+        let nextDateCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
+        shouldShowNextArrow = nextDateCalendarDayElement && nextDateCalendarDayElement.classList.contains('filled') && !nextDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+
+        if (shouldShowNextArrow) {
+            nextArrow.classList.add('visible');
+        } else {
+            nextArrow.classList.remove('visible');
+        }
     } else {
         if (onError && onError.direction) {
             switchPopover(date, onError.direction);
@@ -307,7 +356,7 @@ function initializeCalendarInteractions() {
     });
 }
 
-function switchPopover(currentDate, direction) {
+function getToDate(currentDate, direction) {
     let fromDate = new Date(currentDate);
     let toDate;
 
@@ -324,6 +373,13 @@ function switchPopover(currentDate, direction) {
 
         toDate = nextDate;
     }
+
+    return toDate;
+}
+
+function switchPopover(currentDate, direction) {
+    let fromDate = new Date(currentDate);
+    let toDate = getToDate(currentDate, direction);
 
     let toDateCalendarDayElement = document.querySelector(`.day[data-date='${toDate}']`);
     let shouldShowPopover = toDateCalendarDayElement && toDateCalendarDayElement.classList.contains('filled') && !toDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
@@ -381,8 +437,10 @@ window.onresize = () => {
     positionNavigation({ initialLoad: false });
 
     if (window.popoverIsOpen) {
-        document.querySelector('.videoContainer video').style.height = null;
-        document.querySelector('.videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+        document.querySelector('#popover .videoContainer video').style.height = null;
+        document.querySelector('#popover .videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+
+        centerVideoNavigation();
     }
 };
 
