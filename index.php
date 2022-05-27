@@ -66,7 +66,9 @@
 					<div class='arrow'></div>
 				</div>
 			</div>
-			<div id='popoverBackground'></div>
+			<div id='popoverBackground'>
+				<div id='popoverCloseButton'></div>
+			</div>
 			<div id='navigation'>
 				<div class='item selected' data-section-id='latest'>Latest</div>
 				<div class='item' data-section-id='history'>History</div>

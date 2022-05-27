@@ -99,6 +99,32 @@ body {
             }
         }
 
+        #popoverCloseButton {
+            width: 48px;
+            height: 48px;
+            top: 40px;
+            right: 40px;
+            z-index: 6;
+            position: fixed;
+            background-image: url('../images/icons/close.svg');
+            background-size: 32px;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            filter: invert(100%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+            transition: 0.2s all;
+            opacity: 0.5;
+            pointer-events: all;
+
+            &:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+
+            &:active {
+                transform: scale(0.8);
+            }
+        }
+
         #popover {
             @navigationWidth: 48px;
             @navigationPadding: 32px;
@@ -136,7 +162,7 @@ body {
                     left: -@navigationWidth - @navigationPadding;
 
                     .arrow {
-                        background-image: url('../images/icons/circle-arrow-left.svg');
+                        background-image: url('../images/icons/chevron-left.svg');
                     }
                 }
 
@@ -144,7 +170,7 @@ body {
                     right: -@navigationWidth - @navigationPadding;
 
                     .arrow {
-                        background-image: url('../images/icons/circle-arrow-right.svg');
+                        background-image: url('../images/icons/chevron-right.svg');
                     }
                 }
 
