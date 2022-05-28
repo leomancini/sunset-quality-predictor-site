@@ -37,7 +37,7 @@
 	<head>
 		<title>NYC Sunset Quality Predictions</title>
 		<link rel='stylesheet/less' href='resources/css/style.less'>
-		<script src='//cdnjs.cloudflare.com/ajax/libs/less.js/3.11.1/less.min.js'></script>
+		<script src='https://library.noshado.ws/js/less/3.11.1/less.min.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<link rel='preconnect' href='https://fonts.googleapis.com'>
 		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
