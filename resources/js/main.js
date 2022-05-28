@@ -1,3 +1,55 @@
+document.onkeydown = function(event) {
+    event = event || window.event;
+
+    let isEscape, isArrowLeft, isArrowRight = false;
+
+    if ('key' in event) {
+        isEscape = (event.key === 'Escape' || event.key === 'Esc');
+        isArrowLeft = (event.key === 'ArrowLeft');
+        isArrowRight = (event.key === 'ArrowRight');
+    } else {
+        isEscape = (event.keyCode === 27);
+        isArrowLeft = (event.keyCode === 37);
+        isArrowRight = (event.keyCode === 39);
+    }
+
+    if (isEscape) {
+        if (window.popoverIsOpen) { closePopover(); }
+    }
+
+    if (window.popoverIsOpen) {
+        let currentDate = window.location.hash.replace('#sunset-', '');
+
+        if (isArrowLeft) {
+            switchPopover(currentDate, 'previous');
+        }
+
+        if (isArrowRight) {
+            switchPopover(currentDate, 'next');
+        }
+    }
+};
+
+window.onmousemove = function (e) {
+    let offset = 24;
+
+    if (window.hoveringOverDayWithoutVideo) {
+        window.navigationElements.dayWithoutVideoTooltip.style.top = (e.clientY + offset) + 'px';
+        window.navigationElements.dayWithoutVideoTooltip.style.left = (e.clientX + offset) + 'px';  
+    }
+};
+
+window.onresize = () => {
+    positionNavigation({ initialLoad: false });
+
+    if (window.popoverIsOpen) {
+        document.querySelector('#popover .videoContainer video').style.height = null;
+        document.querySelector('#popover .videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
+
+        centerVideoNavigation();
+    }
+};
+
 window.onload = initialize;
 
 function initialize() {
@@ -77,434 +129,6 @@ function initialize() {
     initializeCalendarInteractions();
 }
 
-function resetPopover() {
-    let popover = document.querySelector('#popover');
-    let popoverVideoContainer = popover.querySelector('.videoContainer');
-    let popoverVideo = popoverVideoContainer.querySelector('.videoContainer video');
-
-    popoverVideo.classList.remove('visible');
-
-    popoverVideoContainer.querySelector('.loading').classList.add('visible');
-    popoverVideoContainer.querySelector('.error').classList.remove('visible');
-
-    setTimeout(() => {
-        popoverVideo.pause();
-        popoverVideo.removeAttribute('src');
-        popoverVideo.load();
-        popoverVideo.innerHTML = '';
-    }, 100);
-}
-
-function closePopover() {
-    let popover = document.querySelector('#popover');
-    let popoverBackground = document.querySelector('#popoverBackground');
-    let popoverVideo = popover.querySelector('.videoContainer video');
-
-    popoverBackground.classList.remove('visible');
-    popover.classList.remove('visible');
-
-    popover.querySelector('.videoContainer .error').classList.remove('visible');
-
-    setTimeout(() => {
-        resetPopover();
-    }, 300);
-
-    window.location.hash = window.previousLocationHash;
-    window.popoverIsOpen = false;
-
-    enableScrolling();
-}
-
-function centerVideoNavigation() {
-    document.querySelector('#popover .navigation.left').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-    document.querySelector('#popover .navigation.right').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-}
-
-function openPopover(date, onError) {
-    disableScrolling();
-
-    let popover = document.querySelector('#popover');
-    let popoverVideo = popover.querySelector('.videoContainer video');
-
-    let day = document.querySelector(`.day[data-date='${date}']`);
-
-    if (!window.popoverIsOpen) {
-        popoverVideo.style.height = null;
-        popoverVideo.style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-
-        centerVideoNavigation();
-    }
-
-    if (!day.dataset.error) {
-        window.popoverIsOpen = true;
-        window.previousLocationHash = 'history';
-        window.location.hash = `sunset-${date}`;
-
-        popoverBackground.classList.add('visible');
-        popover.classList.add('visible');
-
-        popover.querySelector('.date').innerText = day.dataset.dateFormatted;
-        popover.querySelector('.confidence .value').innerText = day.dataset.confidence;
-        popover.querySelector('.stars').style.backgroundImage = `url('resources/images/stars-color/${day.dataset.rating}.png')`;
-
-        let videoContainer = popover.querySelector('.videoContainer');
-        let videoContainerLoading = videoContainer.querySelector('.loading');
-        let videoContainerError = videoContainer.querySelector('.error');
-        let video = videoContainer.querySelector('video');
-        let source = document.createElement('source');
-
-        // Show video if it is already loaded from a previous mouseover
-        if (video.readyState === 4) {
-            videoContainerLoading.classList.add('hidden');
-
-            window.popoverVideoSize = {
-                width: popoverVideo.offsetWidth,
-                height: popoverVideo.offsetHeight
-            };
-
-            popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
-            centerVideoNavigation();
-
-            setTimeout(() => {
-                video.classList.add('visible');
-                video.play();
-            }, 300);
-        }   
-
-        // Show video when it is loaded on first mouseover
-        video.addEventListener('loadeddata', function(event) {
-            videoContainerLoading.classList.add('hidden');
-
-            window.popoverVideoSize = {
-                width: popoverVideo.offsetWidth,
-                height: popoverVideo.offsetHeight
-            };
-
-            popoverVideo.style.height = `${window.popoverVideoSize.height}px`;
-            centerVideoNavigation();
-            
-            setTimeout(() => {
-                video.classList.add('visible');
-                video.play();
-            }, 300);
-        });
-
-        source.addEventListener('error', function(event) {
-            if (onError && onError.direction) {
-                switchPopover(date, onError.direction);
-            }
-        });
-
-        source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
-        source.setAttribute('type', 'video/mp4');
-
-        video.appendChild(source);
-        video.currentTime = 0;
-
-        let previousArrow = document.querySelector('#popover .navigation.left .arrow');
-        let shouldShowPreviousArrow = false;
-        let previousDate = getToDate(date, 'previous');
-        let previousDateCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
-        shouldShowPreviousArrow = previousDateCalendarDayElement && previousDateCalendarDayElement.classList.contains('filled') && !previousDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
-
-        if (shouldShowPreviousArrow) {
-            previousArrow.classList.add('visible');
-        } else {
-            previousArrow.classList.remove('visible');
-        }
-
-        let nextArrow = document.querySelector('#popover .navigation.right .arrow');
-        let shouldShowNextArrow = false;
-        let nextDate = getToDate(date, 'next');
-        let nextDateCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
-        shouldShowNextArrow = nextDateCalendarDayElement && nextDateCalendarDayElement.classList.contains('filled') && !nextDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
-
-        if (shouldShowNextArrow) {
-            nextArrow.classList.add('visible');
-        } else {
-            nextArrow.classList.remove('visible');
-        }
-    } else {
-        if (onError && onError.direction) {
-            switchPopover(date, onError.direction);
-        }
-    }
-}
-
-function initializeCalendarInteractions() {
-    let calendar = document.querySelector('#calendar');
-    let days = calendar.querySelectorAll('.day');
-
-    let popoverBackground = document.querySelector('#popoverBackground');
-    popoverBackground.onclick = closePopover;
-
-    let months = calendar.querySelectorAll('.month');
-
-    months.forEach((month) => {
-        let monthNavigationButtonBack = month.querySelector(`.monthNavigation[data-direction='back']`);
-        let monthNavigationButtonForward = month.querySelector(`.monthNavigation[data-direction='forward']`);
-
-        monthNavigationButtonBack.onclick = () => {
-            let currentVisibleMonthIndex = parseInt(calendar.querySelector('.month.visible').id.replace('month-', ''));
-
-            if (currentVisibleMonthIndex !== 0) {
-                monthNavigationButtonBack.classList.add('visible');
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex}`).classList.remove('visible');
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1}`).classList.add('visible');
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1} .monthNavigation[data-direction='forward']`).classList.add('visible');
-            }
-
-            if (currentVisibleMonthIndex === 1) {
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex - 1} .monthNavigation[data-direction='back']`).classList.remove('visible');
-            }
-        };
-
-        monthNavigationButtonForward.onclick = () => {
-            let currentVisibleMonthIndex = parseInt(calendar.querySelector('.month.visible').id.replace('month-', ''));
-
-            if (currentVisibleMonthIndex + 1 < months.length) {
-                monthNavigationButtonForward.classList.add('visible');
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex}`).classList.remove('visible');
-                calendar.querySelector(`.month#month-${currentVisibleMonthIndex + 1}`).classList.add('visible');
-            }
-        };
-    });
-
-    days.forEach((day) => {
-        if (day.classList.contains('filled')) {
-            let date = day.dataset.date;
-            let today = new Date();
-            let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
-
-            let sunsetHasHappened = true;
-
-            if (now.split('T')[0] === date && today.getHours() < 22) {
-                sunsetHasHappened = false;
-                day.classList.add('sunsetHasNotHappenedYet');
-            }
-
-            let mouseIsOver = false;
-
-            day.onmouseover = () => {
-                mouseIsOver = true;
-
-                if (sunsetHasHappened) {
-                    let expandButton = day.querySelector('.expand');
-                    let videoContainer = day.querySelector('.videoContainer');
-                    let videoContainerLoading = videoContainer.querySelector('.loading');
-                    let videoContainerError = videoContainer.querySelector('.error');
-                    let video = videoContainer.querySelector('video');
-                    let source = document.createElement('source');
-
-                    if (!day.dataset.error) {
-                         // Show video if it is already loaded from a previous mouseover
-                        if (video.readyState === 4 && mouseIsOver) {
-                            video.classList.add('visible');
-                            expandButton.classList.add('visible');
-                            videoContainerLoading.classList.add('hidden');
-                        } else {
-                            // Show video when it is loaded on first mouseover
-                            video.addEventListener('loadeddata', function(event) {
-                                if (mouseIsOver) {  
-                                    video.classList.add('visible');
-                                    expandButton.classList.add('visible');
-                                    videoContainerLoading.classList.add('hidden');
-                                }
-                            });
-                        }
-
-                        source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
-                        source.setAttribute('type', 'video/mp4');
-
-                        source.addEventListener('error', function(event) {
-                            videoContainerLoading.classList.add('hidden');
-                            videoContainerError.classList.add('visible');
-
-                            day.dataset.error = true;
-                        });
-
-                        video.appendChild(source);
-                        video.currentTime = 0;
-                        video.play();
-                    } else {
-                        console.log('repeat error');
-                        videoContainerLoading.classList.add('hidden');
-                        videoContainerError.classList.add('visible');
-                    }
-                } else {
-                    window.hoveringOverDayWithoutVideo = true;
-                    window.navigationElements.dayWithoutVideoTooltip.classList.add('visible');
-                }
-            }
-
-            day.onmouseout = () => {
-                mouseIsOver = false;
-
-                if (sunsetHasHappened) {
-                    day.querySelector('.videoContainer video').classList.remove('visible');
-                    day.querySelector('.videoContainer video').innerHTML = '';
-                    day.querySelector('.expand').classList.remove('visible');
-                    day.querySelector('.videoContainer .error').classList.remove('visible');
-                } else {
-                    window.navigationElements.dayWithoutVideoTooltip.classList.remove('visible');
-
-                    window.hoveringOverDayWithoutVideo = false;
-                }
-            }
-
-            day.onclick = () => {
-                if (sunsetHasHappened) {
-                    openPopover(date, null);
-                }
-            }
-        }
-    });
-}
-
-function getToDate(currentDate, direction) {
-    let fromDate = new Date(currentDate);
-    let toDate;
-
-    if (direction === 'previous') {
-        let previousDateRaw = new Date(fromDate);
-        previousDateRaw.setDate(fromDate.getDate() - 1);
-        let previousDate = previousDateRaw.toISOString().split('T')[0];
-
-        toDate = previousDate;
-    } else if (direction === 'next') {
-        let nextDateRaw = new Date(fromDate);
-        nextDateRaw.setDate(fromDate.getDate() + 1);
-        let nextDate = nextDateRaw.toISOString().split('T')[0];
-
-        toDate = nextDate;
-    }
-
-    return toDate;
-}
-
-function switchPopover(currentDate, direction) {
-    let fromDate = new Date(currentDate);
-    let toDate = getToDate(currentDate, direction);
-
-    let toDateCalendarDayElement = document.querySelector(`.day[data-date='${toDate}']`);
-    let shouldShowPopover = toDateCalendarDayElement && toDateCalendarDayElement.classList.contains('filled') && !toDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
-
-    if (shouldShowPopover) {
-        resetPopover();
-        
-        setTimeout(() => {
-            openPopover(toDate, {
-                direction
-            });
-        }, 100);
-    } else {
-        closePopover();
-    }
-}
-
-document.onkeydown = function(event) {
-    event = event || window.event;
-
-    let isEscape, isArrowLeft, isArrowRight = false;
-
-    if ('key' in event) {
-        isEscape = (event.key === 'Escape' || event.key === 'Esc');
-        isArrowLeft = (event.key === 'ArrowLeft');
-        isArrowRight = (event.key === 'ArrowRight');
-    } else {
-        isEscape = (event.keyCode === 27);
-        isArrowLeft = (event.keyCode === 37);
-        isArrowRight = (event.keyCode === 39);
-    }
-
-    if (isEscape) {
-        if (window.popoverIsOpen) { closePopover(); }
-    }
-
-    if (window.popoverIsOpen) {
-        let currentDate = window.location.hash.replace('#sunset-', '');
-
-        if (isArrowLeft) {
-            switchPopover(currentDate, 'previous');
-        }
-
-        if (isArrowRight) {
-            switchPopover(currentDate, 'next');
-        }
-    }
-};
-
-function monitorScrolling() {
-    if (window.scrollTimer != -1) {
-        clearTimeout(window.scrollTimer);
-    }
-
-    window.scrollTimer = window.setTimeout("scrollStopped()", 500);
-}
-
-function scrollStopped() {
-    window.scrollingToSection = false;
-}
-
-window.onmousemove = function (e) {
-    let offset = 24;
-
-    if (window.hoveringOverDayWithoutVideo) {
-        window.navigationElements.dayWithoutVideoTooltip.style.top = (e.clientY + offset) + 'px';
-        window.navigationElements.dayWithoutVideoTooltip.style.left = (e.clientX + offset) + 'px';  
-    }
-};
-
-window.onscroll = () => {
-    positionNavigation({ initialLoad: false });
-    monitorScrolling();
-};
-
-window.onresize = () => {
-    positionNavigation({ initialLoad: false });
-
-    if (window.popoverIsOpen) {
-        document.querySelector('#popover .videoContainer video').style.height = null;
-        document.querySelector('#popover .videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-
-        centerVideoNavigation();
-    }
-};
-
-function getOffset(element) {
-    const boundingBox = element.getBoundingClientRect();
-
-    return {
-        left: boundingBox.left + window.scrollX,
-        top: boundingBox.top + window.scrollY
-    };
-}
-
-function switchToSection(sectionId, behavior) {
-    window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
-    window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
-
-    window.location.hash = sectionId;
-}
-
-function goToSection(sectionId, behavior) {
-    if (sectionId === 'latest') {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior
-        });
-    } else {
-        window.scrollTo({
-          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - window.navigationHeight - window.navigationOffset,
-          left: 0,
-          behavior
-        });
-    }
-
-    switchToSection(sectionId, behavior);
-}
-
 function positionNavigation(params) {
     document.querySelector(`section[data-section-id='latest']`).style.height = `${window.innerHeight}px`;
 
@@ -540,42 +164,27 @@ function positionNavigation(params) {
     }
 }
 
-// From https://stackoverflow.com/a/4770179
+function switchToSection(sectionId, behavior) {
+    window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
+    window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
 
-function preventDefault(e) {
-    e.preventDefault();
+    window.location.hash = sectionId;
 }
 
-function preventDefaultForScrollKeys(e) {
-    let disabledKeys = { 37: 1, 38: 1, 39: 1, 40: 1, 32: 1, 33: 1, 34: 1, 35: 1, 36: 1 };
-
-    if (disabledKeys[e.keyCode]) {
-        preventDefault(e);
-        return false;
+function goToSection(sectionId, behavior) {
+    if (sectionId === 'latest') {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior
+        });
+    } else {
+        window.scrollTo({
+          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - window.navigationHeight - window.navigationOffset,
+          left: 0,
+          behavior
+        });
     }
-}
 
-let supportsPassive = false;
-
-try {
-    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-        get: function () { supportsPassive = true; } 
-    }));
-} catch(e) {}
-
-let wheelOpt = supportsPassive ? { passive: false } : false;
-let wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-
-function disableScrolling() {
-    window.addEventListener('DOMMouseScroll', preventDefault, false);
-    window.addEventListener(wheelEvent, preventDefault, wheelOpt);
-    window.addEventListener('touchmove', preventDefault, wheelOpt);
-    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-}
-
-function enableScrolling() {
-    window.removeEventListener('DOMMouseScroll', preventDefault, false);
-    window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
-    window.removeEventListener('touchmove', preventDefault, wheelOpt);
-    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+    switchToSection(sectionId, behavior);
 }

@@ -84,7 +84,7 @@
 
 				echo '<div class="expand"></div>';
 
-				echo '<div class="videoContainer"><video playsinline autoplay muted loop></video><div class="loading"></div><div class="error"></div></div>';
+				echo '<div class="videoContainer"><video playsinline autoplay muted loop></video><div class="loading hidden"></div><div class="error"></div></div>';
 			} else {
 				echo "<div class='day empty'>";
 			}

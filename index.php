@@ -159,6 +159,10 @@
 				</section>
 			</div>
 		</div>
+		<script src='resources/js/functions.js'></script>
 		<script src='resources/js/main.js'></script>
+		<script src='resources/js/calendar.js'></script>
+		<script src='resources/js/scroll.js'></script>
+		<script src='resources/js/popover.js'></script>
 	</body>
 </html>
