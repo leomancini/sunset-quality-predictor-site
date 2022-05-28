@@ -43,7 +43,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
 	</head>
-	<body>
+	<body ontouchstart=''>
 		<div id='curtain' class='visible'></div>
 		<div id='page'>
 			<div id='popover'>
@@ -70,10 +70,10 @@
 				<div id='popoverCloseButton'></div>
 			</div>
 			<div id='navigation'>
-				<div class='item selected' data-section-id='latest'>Latest</div>
-				<div class='item' data-section-id='history'>History</div>
-				<div class='item' data-section-id='about'>About</div>
-				<div class='item' data-section-id='follow'>Follow</div>
+				<div class='item selected' data-section-id='latest'><div class='icon'></div><label>Latest</label></div>
+				<div class='item' data-section-id='history'><div class='icon'></div><label>History</label></div>
+				<div class='item' data-section-id='about'><div class='icon'></div><label>About</label></div>
+				<div class='item' data-section-id='follow'><div class='icon'></div><label>Follow</label></div>
 			</div>
 			<section data-section-id='latest'>
 				 <svg class='blurSvgSource'>

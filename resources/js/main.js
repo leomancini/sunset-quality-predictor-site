@@ -1,6 +1,7 @@
 window.onload = initialize;
 
 function initialize() {
+    window.scrollTimer = -1;
     window.scrollingToSection = false;
     window.popoverIsOpen = false;
 
@@ -8,7 +9,8 @@ function initialize() {
         'navigation': document.querySelector('#navigation'),
         'navigationItems': document.querySelector('#navigation').querySelectorAll('.item'),
         'headerSection': document.querySelector(`section[data-section-id='latest']`),
-        'allOtherSections': document.querySelector('#sections')
+        'allOtherSections': document.querySelector('#sections'),
+        'dayWithoutVideoTooltip': document.querySelector('#dayWithoutVideoTooltip')
     };
 
     window.navigationBottomPadding = 24;
@@ -55,10 +57,6 @@ function initialize() {
             window.scrollingToSection = true;
 
             goToSection(sectionId, 'smooth');
-
-            setTimeout(() => {
-                window.scrollingToSection = false;
-            }, 1000);
         };
     });
 
@@ -331,6 +329,9 @@ function initializeCalendarInteractions() {
                         videoContainerLoading.classList.add('hidden');
                         videoContainerError.classList.add('visible');
                     }
+                } else {
+                    window.hoveringOverDayWithoutVideo = true;
+                    window.navigationElements.dayWithoutVideoTooltip.classList.add('visible');
                 }
             }
 
@@ -342,14 +343,16 @@ function initializeCalendarInteractions() {
                     day.querySelector('.videoContainer video').innerHTML = '';
                     day.querySelector('.expand').classList.remove('visible');
                     day.querySelector('.videoContainer .error').classList.remove('visible');
+                } else {
+                    window.navigationElements.dayWithoutVideoTooltip.classList.remove('visible');
+
+                    window.hoveringOverDayWithoutVideo = false;
                 }
             }
 
             day.onclick = () => {
                 if (sunsetHasHappened) {
                     openPopover(date, null);
-                } else {
-                    alert('Sunset has not happened yet today!');
                 }
             }
         }
@@ -429,8 +432,30 @@ document.onkeydown = function(event) {
     }
 };
 
+function monitorScrolling() {
+    if (window.scrollTimer != -1) {
+        clearTimeout(window.scrollTimer);
+    }
+
+    window.scrollTimer = window.setTimeout("scrollStopped()", 500);
+}
+
+function scrollStopped() {
+    window.scrollingToSection = false;
+}
+
+window.onmousemove = function (e) {
+    let offset = 24;
+
+    if (window.hoveringOverDayWithoutVideo) {
+        window.navigationElements.dayWithoutVideoTooltip.style.top = (e.clientY + offset) + 'px';
+        window.navigationElements.dayWithoutVideoTooltip.style.left = (e.clientX + offset) + 'px';  
+    }
+};
+
 window.onscroll = () => {
     positionNavigation({ initialLoad: false });
+    monitorScrolling();
 };
 
 window.onresize = () => {

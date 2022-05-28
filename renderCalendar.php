@@ -94,6 +94,8 @@
 			echo '</div>';
 		}
 
+		echo '<div id="dayWithoutVideoTooltip">Sunset video not ready</div>';
+
 		echo "</div>";
 	}
 ?>
