@@ -29,10 +29,12 @@ function initialize() {
                 window.previousLocationHash = sectionId;
                 goToSection(sectionId);
 
-                if (window.location.hash === '#latest' || !window.location.hash) {
+                if (window.location.hash === '#latest') {
                     document.querySelector('#navigation').classList.add('preVisible');
                 }
             }
+        } else {
+            document.querySelector('#navigation').classList.add('preVisible');
         }
 
         setTimeout(() => {
