@@ -35,13 +35,13 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Sunset Prediction</title>
+		<title>NYC Sunset Quality Predictions</title>
 		<link rel='stylesheet/less' href='resources/css/style.less'>
 		<script src='//cdnjs.cloudflare.com/ajax/libs/less.js/3.11.1/less.min.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+		<link rel='preconnect' href='https://fonts.googleapis.com'>
+		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+		<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap' rel='stylesheet'>
 	</head>
 	<body ontouchstart=''>
 		<div id='curtain' class='visible'></div>
