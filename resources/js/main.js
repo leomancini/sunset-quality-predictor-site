@@ -40,7 +40,7 @@ window.onmousemove = function (e) {
 };
 
 window.onresize = () => {
-    positionNavigation({ initialLoad: false });
+    positionNavigation({ trigger: 'resize' });
 
     if (window.popoverIsOpen) {
         document.querySelector('#popover .videoContainer video').style.height = null;
@@ -53,6 +53,10 @@ window.onresize = () => {
 window.onload = initialize;
 
 function initialize() {
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.isMobile = true;
+    }
+
     window.scrollTimer = -1;
     window.scrollingToSection = false;
     window.popoverIsOpen = false;
@@ -127,26 +131,48 @@ function initialize() {
         switchPopover(currentDate, 'next');
     }
 
-    positionNavigation({ initialLoad: true });
+    positionNavigation({ trigger: 'load' });
 
     initializeCalendarInteractions();
 }
 
 function positionNavigation(params) {
-    document.querySelector(`section[data-section-id='latest']`).style.height = `${window.innerHeight}px`;
+    if (window.isMobile) {
+        let viewportHeight;
 
-    if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
-        document.querySelector(`section[data-section-id='latest']`).style.top = `${(window.innerHeight * -1) + window.navigationHeight}px`;
-        document.querySelector(`section[data-section-id='latest']`).classList.add('scrolled');
-        document.querySelector('#sections').style.marginTop = `${window.innerHeight + window.navigationOffset}px`;
-        document.querySelector('#navigation').classList.add('scrolled');
+        if (params.trigger === 'load') {
+            document.querySelector(`section[data-section-id='latest']`).style.height = `${window.innerHeight}px`;
+            window.viewportHeight = window.innerHeight;
+        } else {
+            if (params.trigger !== 'resize') {
+                if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
+                    document.querySelector(`section[data-section-id='latest']`).style.top = `${(window.viewportHeight * -1) + window.navigationHeight}px`;
+                    document.querySelector(`section[data-section-id='latest']`).classList.add('scrolled');
+                    document.querySelector('#sections').style.marginTop = `${window.viewportHeight + window.navigationOffset}px`;
+                    document.querySelector('#navigation').classList.add('scrolled');
+                } else {
+                    document.querySelector(`section[data-section-id='latest']`).classList.remove('scrolled');
+                    document.querySelector('#navigation').classList.remove('scrolled');
+                    document.querySelector('#sections').style.marginTop = `0px`;
+                }
+            }
+        }
     } else {
-        document.querySelector(`section[data-section-id='latest']`).classList.remove('scrolled');
-        document.querySelector('#navigation').classList.remove('scrolled');
-        document.querySelector('#sections').style.marginTop = `0px`;
+        document.querySelector(`section[data-section-id='latest']`).style.height = `${window.innerHeight}px`;
+
+        if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
+            document.querySelector(`section[data-section-id='latest']`).style.top = `${(window.innerHeight * -1) + window.navigationHeight}px`;
+            document.querySelector(`section[data-section-id='latest']`).classList.add('scrolled');
+            document.querySelector('#sections').style.marginTop = `${window.innerHeight + window.navigationOffset}px`;
+            document.querySelector('#navigation').classList.add('scrolled');
+        } else {
+            document.querySelector(`section[data-section-id='latest']`).classList.remove('scrolled');
+            document.querySelector('#navigation').classList.remove('scrolled');
+            document.querySelector('#sections').style.marginTop = `0px`;
+        } 
     }
 
-    if (!params.initialLoad) {
+    if (params.trigger !== 'load') {
         if (!window.scrollingToSection) {
             if (window.scrollY < (document.querySelector(`section[data-section-id='latest']`)).offsetHeight -  window.navigationHeight) {
                 switchToSection('latest', null);
