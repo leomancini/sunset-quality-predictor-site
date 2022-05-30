@@ -83,10 +83,12 @@ function initialize() {
 
                 if (window.location.hash === '#latest') {
                     document.querySelector('#navigation').classList.add('preVisible');
+                    disableScrolling();
                 }
             }
         } else {
             document.querySelector('#navigation').classList.add('preVisible');
+            disableScrolling();
         }
 
         setTimeout(() => {
@@ -99,6 +101,7 @@ function initialize() {
 
                     setTimeout(() => {
                         window.navigationElements.navigation.classList.remove('preVisible');
+                        enableScrolling();
                     }, 2000);
                 }, 500);
             }
