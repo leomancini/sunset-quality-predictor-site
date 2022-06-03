@@ -85,7 +85,7 @@
 				</svg>
 				<div id='content'>
 					<div id='logo'></div>
-					<div id='title'><?php echo $predictionDay; ?> Sunset Prediction</div>
+					<div id='title'><div class='predictionDay'><?php echo $predictionDay; ?></div> Sunset Prediction</div>
 					<div id='date'><div class='day'><?php echo date('l', $date); ?></div> <div class='date'><?php echo date('F j', $date); ?></div></div>
 					<div id='stars'>
 						<div class='star <?php echo ($rating >= 1) ? 'filled' : 'unfilled'; ?>'></div>
@@ -152,7 +152,7 @@
 				<section data-section-id='follow'>
 					<div id='content'>
 						<div id='eye'></div>
-						<h3>Follow <a href='https://www.instagram.com/nycsunsetbot/' target='_blank'>@nycsunsetbot</a> for<br>daily sunset predictions and timelapses</h3>
+						<h3><span>Follow <a href='https://www.instagram.com/nycsunsetbot/' target='_blank'>@nycsunsetbot</a> for </span><span>daily sunset predictions and timelapses</span></h3>
 						<a href='https://www.instagram.com/nycsunsetbot/' target='_blank'><button>View on Instagram</button></a>
 						<h4>Made in New York City by <a href='https://leomancini.net/' target='_blank'>Leo Mancini</a></h4>
 					</div>

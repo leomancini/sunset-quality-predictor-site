@@ -57,74 +57,76 @@ function initializeCalendarInteractions() {
 
             let mouseIsOver = false;
 
-            day.onmouseover = () => {
-                mouseIsOver = true;
+            if (!isMobile) {
+                day.onmouseover = () => {
+                    mouseIsOver = true;
 
-                if (sunsetHasHappened) {
-                    let video = videoContainer.querySelector('video');
-                    let source = document.createElement('source');
+                    if (sunsetHasHappened) {
+                        let video = videoContainer.querySelector('video');
+                        let source = document.createElement('source');
 
-                    if (!day.dataset.error) {
-                        videoContainerLoading.classList.remove('hidden');
+                        if (!day.dataset.error) {
+                            videoContainerLoading.classList.remove('hidden');
 
-                         // Show video if it is already loaded from a previous mouseover
-                        if (video.readyState === 4 && mouseIsOver) {
-                            video.classList.add('visible');
-                            expandButton.classList.add('visible');
-                            videoContainerLoading.classList.add('hidden');
-                        } else {
-                            // Show video when it is loaded on first mouseover
-                            video.addEventListener('loadeddata', function(event) {
-                                if (mouseIsOver) {  
-                                    video.classList.add('visible');
-                                    expandButton.classList.add('visible');
-                                    videoContainerLoading.classList.add('hidden');
-                                }
+                             // Show video if it is already loaded from a previous mouseover
+                            if (video.readyState === 4 && mouseIsOver) {
+                                video.classList.add('visible');
+                                expandButton.classList.add('visible');
+                                videoContainerLoading.classList.add('hidden');
+                            } else {
+                                // Show video when it is loaded on first mouseover
+                                video.addEventListener('loadeddata', function(event) {
+                                    if (mouseIsOver) {  
+                                        video.classList.add('visible');
+                                        expandButton.classList.add('visible');
+                                        videoContainerLoading.classList.add('hidden');
+                                    }
+                                });
+                            }
+
+                            source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
+                            source.setAttribute('type', 'video/mp4');
+
+                            source.addEventListener('error', function(event) {
+                                videoContainerLoading.classList.add('hidden');
+                                videoContainerError.classList.add('visible');
+
+                                day.dataset.error = true;
                             });
-                        }
 
-                        source.setAttribute('src', `https://nycsunsetbot.leo.gd/publish/history/sunsets/${date}.mp4`);
-                        source.setAttribute('type', 'video/mp4');
-
-                        source.addEventListener('error', function(event) {
+                            video.appendChild(source);
+                            video.currentTime = 0;
+                            video.play();
+                        } else {
                             videoContainerLoading.classList.add('hidden');
                             videoContainerError.classList.add('visible');
-
-                            day.dataset.error = true;
-                        });
-
-                        video.appendChild(source);
-                        video.currentTime = 0;
-                        video.play();
+                        }
                     } else {
-                        videoContainerLoading.classList.add('hidden');
-                        videoContainerError.classList.add('visible');
+                        window.hoveringOverDayWithoutVideo = true;
+                        window.navigationElements.dayWithoutVideoTooltip.classList.add('visible');
                     }
-                } else {
-                    window.hoveringOverDayWithoutVideo = true;
-                    window.navigationElements.dayWithoutVideoTooltip.classList.add('visible');
                 }
-            }
 
-            day.onmouseout = () => {
-                mouseIsOver = false;
-                videoContainerLoading.classList.add('hidden');
+                day.onmouseout = () => {
+                    mouseIsOver = false;
+                    videoContainerLoading.classList.add('hidden');
 
-                if (sunsetHasHappened) {
-                    day.querySelector('.videoContainer video').classList.remove('visible');
-                    day.querySelector('.videoContainer video').innerHTML = '';
-                    day.querySelector('.expand').classList.remove('visible');
-                    day.querySelector('.videoContainer .error').classList.remove('visible');
-                } else {
-                    window.navigationElements.dayWithoutVideoTooltip.classList.remove('visible');
+                    if (sunsetHasHappened) {
+                        day.querySelector('.videoContainer video').classList.remove('visible');
+                        day.querySelector('.videoContainer video').innerHTML = '';
+                        day.querySelector('.expand').classList.remove('visible');
+                        day.querySelector('.videoContainer .error').classList.remove('visible');
+                    } else {
+                        window.navigationElements.dayWithoutVideoTooltip.classList.remove('visible');
 
-                    window.hoveringOverDayWithoutVideo = false;
+                        window.hoveringOverDayWithoutVideo = false;
+                    }
                 }
-            }
 
-            day.onclick = () => {
-                if (sunsetHasHappened) {
-                    openPopover(date, null);
+                day.onclick = () => {
+                    if (sunsetHasHappened) {
+                        openPopover(date, null);
+                    }
                 }
             }
         }

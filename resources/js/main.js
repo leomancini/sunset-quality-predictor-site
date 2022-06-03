@@ -145,7 +145,7 @@ function positionNavigation(params) {
             window.viewportHeight = window.innerHeight;
         } else {
             if (params.trigger !== 'resize') {
-                if (window.scrollY > (window.innerHeight - window.navigationHeight)) {
+                if (window.pageYOffset > (window.viewportHeight - window.navigationHeight)) {
                     document.querySelector(`section[data-section-id='latest']`).style.top = `${(window.viewportHeight * -1) + window.navigationHeight}px`;
                     document.querySelector(`section[data-section-id='latest']`).classList.add('scrolled');
                     document.querySelector('#sections').style.marginTop = `${window.viewportHeight + window.navigationOffset}px`;
