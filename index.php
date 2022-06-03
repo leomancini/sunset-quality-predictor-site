@@ -86,7 +86,7 @@
 				<div id='content'>
 					<div id='logo'></div>
 					<div id='title'><?php echo $predictionDay; ?> Sunset Prediction</div>
-					<div id='date'><div class='day'><?php echo date('l', $date); ?></div> <div class='date'><?php echo date('M j', $date); ?></div></div>
+					<div id='date'><div class='day'><?php echo date('l', $date); ?></div> <div class='date'><?php echo date('F j', $date); ?></div></div>
 					<div id='stars'>
 						<div class='star <?php echo ($rating >= 1) ? 'filled' : 'unfilled'; ?>'></div>
 						<div class='star <?php echo ($rating >= 2) ? 'filled' : 'unfilled'; ?>'></div>
