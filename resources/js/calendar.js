@@ -55,9 +55,9 @@ function initializeCalendarInteractions() {
                 day.classList.add('sunsetHasNotHappenedYet');
             }
 
-            let mouseIsOver = false;
+            if (!window.isMobile) {
+                let mouseIsOver = false;
 
-            if (!isMobile) {
                 day.onmouseover = () => {
                     mouseIsOver = true;
 
