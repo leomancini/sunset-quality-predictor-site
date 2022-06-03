@@ -1,5 +1,5 @@
 window.onscroll = () => {
-    positionNavigation({ initialLoad: false });
+    positionNavigation({ trigger: 'scroll' });
     monitorScrolling();
 };
 
@@ -34,7 +34,7 @@ function preventDefaultForScrollKeys(e) {
 let supportsPassive = false;
 
 try {
-    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+    window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
         get: function () { supportsPassive = true; } 
     }));
 } catch(e) {}

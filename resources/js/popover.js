@@ -7,7 +7,6 @@ function openPopover(date, onError) {
     let day = document.querySelector(`.day[data-date='${date}']`);
 
     if (!window.popoverIsOpen) {
-        console.log('here');
         popoverVideo.style.height = null;
         popoverVideo.style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
 
