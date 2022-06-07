@@ -70,7 +70,7 @@
 				$rating = intval($predictions[$date->format('Y-m-d')]['rating']);
 				$confidence = intval($predictions[$date->format('Y-m-d')]['confidence']);
 
-				echo "<div class='day filled day-".$date->format('N')."' data-date='".$date->format('Y-m-d')."' data-date-formatted='".$date->format('l M j, Y')."' data-rating='".$rating."' data-confidence='".$confidence."' style='background-image: url(\"resources/images/thumbnails/thumbnail-".$rating.".jpg\")'>";
+				echo "<div class='day filled day-".$date->format('N')."' data-date='".$date->format('Y-m-d')."' data-date-formatted='".$date->format('l F j, Y')."' data-rating='".$rating."' data-confidence='".$confidence."' style='background-image: url(\"resources/images/thumbnails/thumbnail-".$rating.".jpg\")'>";
 
 				echo "<div class='stars'>";
 
