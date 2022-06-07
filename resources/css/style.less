@@ -468,8 +468,19 @@ body {
                 mix-blend-mode: overlay;
                 left: 50%;
                 top: 50%;
-                margin-top: -56px;
                 transform: translate(-50%, -50%) scale(0.9);
+
+                @media @mobile {
+                    margin-top: -24px;
+                }
+
+                @media only screen and (max-height: 600px) {
+                    margin-top: -48px;
+                }
+
+                @media @desktop {
+                    margin-top: -56px;
+                }
 
                 &.visible {
                     transition: 1s all;
@@ -487,7 +498,7 @@ body {
                 #title {
                     .HeaderSmall();
                     text-align: center;
-                        margin-top: 8px;
+                    margin-top: 8px;
 
                     @media @desktop {
                         .predictionDay {
@@ -522,7 +533,7 @@ body {
                     }
 
                     @media @mobile {
-                        margin-top: 64px;
+                        margin-top: 8vh;
                         width: 100vw;
                         font-size: 56px;
                         line-height: 68px;
@@ -535,14 +546,19 @@ body {
 
                 #stars {
                     width: calc(120px * 5);
-                    height: 120px;
                     font-size: 0;
-                    margin-top: 48px;
                     display: inline-block;
 
                     @media @mobile {
                         width: 100vw;
+                        height: 100%;
                         transform: scale(0.9);
+                        margin-top: 8vh;
+                    }
+
+                    @media @desktop {
+                        height: 120px;
+                        margin-top: 48px;
                     }
 
                     .star {
@@ -576,7 +592,11 @@ body {
                     }
 
                     @media @mobile {
-                        margin-top: 16px;
+                        margin-top: 4vh;
+                    }
+
+                    @media only screen and (max-height: 600px) {
+                        display: none;
                     }
                 }
             }
@@ -621,8 +641,15 @@ body {
             }
 
             section[data-section-id='history'] {
-                padding-top: 12px;
-                padding-bottom: 88px;
+                @media @mobile {
+                    padding-top: 24px;
+                    padding-bottom: 64px;
+                }
+
+                @media @desktop {
+                    padding-top: 12px;
+                    padding-bottom: 88px;
+                }
 
                 @calendarWidth: @sectionWidth;
                 @dayMargin: calc((@calendarWidth / 7) / 12);
@@ -712,10 +739,17 @@ body {
                             background-color: rgba(0, 0, 0, 0.05);
                             background-repeat: no-repeat;
                             background-size: 20px;
-                            margin-top: 20px;
                             transition: 0.2s all;
                             pointer-events: none;
                             opacity: 0;
+
+                            @media @mobile {
+                                margin-top: 0;
+                            }
+
+                            @media @desktop {
+                                margin-top: 20px;
+                            }
 
                             &.visible {
                                 pointer-events: all;
@@ -767,10 +801,18 @@ body {
                             display: block;
                             font-size: 32px;
                             font-weight: 800;
-                            margin-top: 64px;
-                            margin-bottom: 48px;
                             text-align: center;
                             width: 128px;
+
+                            @media @mobile {
+                                margin-top: 28px;
+                                margin-bottom: 32px;
+                            }
+
+                            @media @desktop {
+                                margin-top: 64px;
+                                margin-bottom: 48px;
+                            }
                         }
                     }
 
@@ -804,9 +846,7 @@ body {
                         }
 
                         .day {
-                            font-size: 14px;
                             background: rgba(0, 0, 0, 0.025);
-                            border-radius: 8px;
                             display: inline-block;
                             box-sizing: border-box;
                             vertical-align: top;
@@ -822,12 +862,14 @@ body {
                                 width: @daySizeMobile;
                                 height: @daySizeMobile;
                                 margin: @dayMarginMobile;
+                                border-radius: 6px;
                             }
 
                             @media @desktop {
                                 width: @daySize;
                                 height: @daySize;
                                 margin: @dayMargin;
+                                border-radius: 8px;
                             }
 
                             label {
@@ -835,7 +877,7 @@ body {
                                 position: absolute;
 
                                 @media @mobile {
-                                    font-size: 20px;
+                                    font-size: 18px;
                                     top: 50%;
                                     left: 50%;
                                     transform: translate(-50%, -50%);
@@ -1051,6 +1093,18 @@ body {
                 font-size: 0;
                 padding-top: 4px;
 
+                .content {
+                    @media @mobile {
+                        width: calc(100vw - 64px);
+                        padding-bottom: 64px;
+                    }
+                    
+                    @media @desktop {
+                        padding-bottom: 128px;
+                        width: @sectionWidth;
+                    }
+                }
+
                 a {
                     transition: 0.2s all;
                     color: rgba(0, 0, 0, 0.5);
@@ -1061,29 +1115,15 @@ body {
                     }
                 }
 
-                @media @mobile {
-                    .content {
-                        width: calc(100vw - 64px);
-                        padding-bottom: 88px;
-                    }
-                }
-                
-                @media @desktop {
-                    .content {
-                        padding-bottom: 128px;
-                        width: @sectionWidth;
-                    }
-                }
-
                 .about-section {
                     width: 100%;
-                    margin-top: 88px;
 
                     @media @mobile {
-                        
+                        margin-top: 64px;
                     }
                     
                     @media @desktop {
+                        margin-top: 88px;
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
@@ -1145,10 +1185,10 @@ body {
                     user-select: none;
 
                     @media @mobile {
-                        width: calc(100% + 32px); 
+                        width: calc(100% + 48px); 
                         display: block;
                         margin-bottom: 32px;
-                        margin-left: -16px;
+                        margin-left: -24px;
                     }
                     
                     @media @desktop {
@@ -1161,8 +1201,15 @@ body {
 
             section[data-section-id='follow'] {
                 width: 100%;
-                padding: 72px 0;
                 background: black;
+
+                @media @mobile {
+                    padding: 60px 0 88px 0;
+                }
+                
+                @media @desktop {
+                    padding: 72px 0;
+                }
 
                 #content {
                     text-align: center;
