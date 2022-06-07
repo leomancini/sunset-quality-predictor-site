@@ -112,23 +112,45 @@ function initialize() {
         }, 300);
     }, 100);
 
-    window.navigationElements.navigationItems.forEach((navigationItem) => {
-        navigationItem.onclick = () => {
-            let sectionId = navigationItem.dataset.sectionId;
-            window.scrollingToSection = true;
 
-            goToSection(sectionId, 'smooth');
-        };
-    });
+    if (window.isMobile) {
+        window.navigationElements.navigationItems.forEach((navigationItem) => {
+            navigationItem.ontouchstart = () => {
+                let sectionId = navigationItem.dataset.sectionId;
+                window.scrollingToSection = true;
 
-    document.querySelector('#popover .navigation.left .arrow').onclick = (e) => {
-        let currentDate = window.location.hash.replace('#sunset-', '');
-        switchPopover(currentDate, 'previous');
-    }
+                goToSection(sectionId, 'smooth');
+            };
+        });
 
-    document.querySelector('#popover .navigation.right .arrow').onclick = (e) => {
-        let currentDate = window.location.hash.replace('#sunset-', '');
-        switchPopover(currentDate, 'next');
+        document.querySelector('#popover .navigation.left .arrow').ontouchstart = (e) => {
+            let currentDate = window.location.hash.replace('#sunset-', '');
+            switchPopover(currentDate, 'previous');
+        }
+
+        document.querySelector('#popover .navigation.right .arrow').ontouchstart = (e) => {
+            let currentDate = window.location.hash.replace('#sunset-', '');
+            switchPopover(currentDate, 'next');
+        }
+    } else {
+        window.navigationElements.navigationItems.forEach((navigationItem) => {
+            navigationItem.onclick = () => {
+                let sectionId = navigationItem.dataset.sectionId;
+                window.scrollingToSection = true;
+
+                goToSection(sectionId, 'smooth');
+            };
+        });
+
+        document.querySelector('#popover .navigation.left .arrow').onclick = (e) => {
+            let currentDate = window.location.hash.replace('#sunset-', '');
+            switchPopover(currentDate, 'previous');
+        }
+
+        document.querySelector('#popover .navigation.right .arrow').onclick = (e) => {
+            let currentDate = window.location.hash.replace('#sunset-', '');
+            switchPopover(currentDate, 'next');
+        }
     }
 
     positionNavigation({ trigger: 'load' });

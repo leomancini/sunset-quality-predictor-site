@@ -103,8 +103,6 @@ body {
         #popoverCloseButton {
             width: 48px;
             height: 48px;
-            top: 40px;
-            right: 40px;
             z-index: 6;
             position: fixed;
             background-image: url('../images/icons/close.svg');
@@ -124,6 +122,16 @@ body {
             &:active {
                 transform: scale(0.8);
             }
+
+            @media @mobile {
+                top: 20px;
+                right: 20px;
+            }
+
+            @media @desktop {
+                top: 40px;
+                right: 40px;
+            }
         }
 
         #popover {
@@ -138,12 +146,21 @@ body {
             z-index: 6;
             top: 50%;
             left: 50%;
-            width: calc(100% - 128px - (@navigationWidth + @navigationPadding * 2));
             transform: translate(-50%, -50%);
             max-width: 1080px;
             opacity: 0;
             pointer-events: none;
             margin-top: -16px;
+
+            @media @mobile {
+                width: calc(100% - 64px);
+                height: calc(100% - 144px);
+                margin-top: 48px;
+            }
+
+            @media @desktop {
+                width: calc(100% - 128px - (@navigationWidth + @navigationPadding * 2));
+            }
 
             &.visible {
                 opacity: 1;
@@ -160,7 +177,13 @@ body {
                 pointer-events: none;
 
                 &.left {
-                    left: -@navigationWidth - @navigationPadding;
+                    @media @mobile {
+                        left: 0;
+                    }
+
+                    @media @desktop {
+                        left: -@navigationWidth - @navigationPadding;
+                    }
 
                     .arrow {
                         background-image: url('../images/icons/chevron-left.svg');
@@ -168,7 +191,13 @@ body {
                 }
 
                 &.right {
-                    right: -@navigationWidth - @navigationPadding;
+                    @media @mobile {
+                        right: 0;
+                    }
+
+                    @media @desktop {
+                        right: -@navigationWidth - @navigationPadding;
+                    }
 
                     .arrow {
                         background-image: url('../images/icons/chevron-right.svg');
@@ -204,11 +233,18 @@ body {
             }
 
             #header {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 12px;
+                @media @mobile {
+                    position: absolute;
+                    top: -86px;
+                    text-align: left;
+                }
+
+                @media @desktop {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 12px;
+                }
 
                 .date {
                     color: rgba(255, 255, 255, 1);
@@ -220,7 +256,15 @@ body {
 
                 .rating {
                     display: flex;
-                    align-items: center;
+
+                    @media @mobile {
+                        align-items: flex-start;
+                        flex-direction: column-reverse;
+                    }
+
+                    @media @desktop {
+                        align-items: center;
+                    }
 
                     .confidence {
                         color: rgba(255, 255, 255, 0.5);
@@ -235,7 +279,14 @@ body {
                         display: inline-block;
                         background-size: 100%;
                         background-repeat: no-repeat;
-                        margin-right: -20px;
+                    
+                        @media @mobile {
+                            margin-left: -20px;
+                        }
+
+                        @media @desktop {
+                            margin-right: -20px;
+                        }
                     }
                 }
             }
@@ -244,9 +295,20 @@ body {
                 position: relative;
                 width: 100%;
                 font-size: 0;
-                border-radius: 16px;
                 background: black;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 4px 48px rgba(0, 0, 0, 0.2);
+
+                @media @mobile {
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    border-radius: 12px;
+                    margin-top: -24px;
+                }
+
+                @media @desktop {
+                    border-radius: 16px;
+                }
 
                 video {
                     width: 100%;
@@ -255,10 +317,17 @@ body {
                     z-index: 3;
                     transition: 0.2s all;
                     opacity: 0;
-                    border-radius: 16px;
 
                     &.visible {
                         opacity: 1;
+                    }
+
+                    @media @mobile {
+                        border-radius: 12px;
+                    }
+
+                    @media @desktop {
+                        border-radius: 16px;
                     }
                 }
 
@@ -270,11 +339,18 @@ body {
                     z-index: 2;
                     opacity: 0;
                     transition: 0.2s opacity;
-                    border-radius: 16px;
                     top: 0;
 
                     &.visible {
                         opacity: 1;
+                    }
+                    
+                    @media @mobile {
+                        border-radius: 12px;
+                    }
+
+                    @media @desktop {
+                        border-radius: 16px;
                     }
                 }
 
@@ -290,11 +366,18 @@ body {
                     z-index: 2;
                     opacity: 0.5;
                     transition: 0.2s opacity;
-                    border-radius: 16px;
                     top: 0;
 
                     &.hidden {
                         opacity: 0;
+                    }
+                    
+                    @media @mobile {
+                        border-radius: 12px;
+                    }
+
+                    @media @desktop {
+                        border-radius: 16px;
                     }
                 }
             }

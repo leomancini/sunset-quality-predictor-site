@@ -3,7 +3,13 @@ function initializeCalendarInteractions() {
     let days = calendar.querySelectorAll('.day');
 
     let popoverBackground = document.querySelector('#popoverBackground');
-    popoverBackground.onclick = closePopover;
+    let popoverCloseButton = document.querySelector('#popoverBackground #popoverCloseButton');
+
+    if (window.isMobile) {
+        popoverCloseButton.onclick = closePopover;
+    } else {
+        popoverBackground.onclick = closePopover;
+    }
 
     let months = calendar.querySelectorAll('.month');
 
@@ -123,6 +129,12 @@ function initializeCalendarInteractions() {
                     }
                 }
 
+                day.onclick = () => {
+                    if (sunsetHasHappened) {
+                        openPopover(date, null);
+                    }
+                }
+            } else {
                 day.onclick = () => {
                     if (sunsetHasHappened) {
                         openPopover(date, null);
