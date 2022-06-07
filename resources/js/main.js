@@ -43,9 +43,7 @@ window.onresize = () => {
     positionNavigation({ trigger: 'resize' });
 
     if (window.popoverIsOpen) {
-        document.querySelector('#popover .videoContainer video').style.height = null;
-        document.querySelector('#popover .videoContainer video').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-
+        setVideoHeight();
         centerVideoNavigation();
     }
 };
@@ -53,13 +51,13 @@ window.onresize = () => {
 window.onload = initialize;
 
 function initialize() {
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        window.isMobile = true;
-    }
-
     window.scrollTimer = -1;
     window.scrollingToSection = false;
     window.popoverIsOpen = false;
+
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.isMobile = true;
+    }
 
     window.navigationElements = {
         'navigation': document.querySelector('#navigation'),

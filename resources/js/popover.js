@@ -2,14 +2,13 @@ function openPopover(date, onError) {
     disableScrolling();
 
     let popover = document.querySelector('#popover');
+    let popoverVideoContainer = popover.querySelector('.videoContainer video');
     let popoverVideo = popover.querySelector('.videoContainer video');
 
     let day = document.querySelector(`.day[data-date='${date}']`);
 
     if (!window.popoverIsOpen) {
-        popoverVideo.style.height = null;
-        popoverVideo.style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
-
+        setVideoHeight();
         centerVideoNavigation();
     }
 
@@ -31,12 +30,11 @@ function openPopover(date, onError) {
         let video = videoContainer.querySelector('video');
         let source = document.createElement('source');
 
-        // Show video if it is already loaded from a previous mouseover
+        // Show video if it is already loaded
         if (video.readyState === 4) {
             videoContainerLoading.classList.add('hidden');
 
-            popoverVideo.style.height = null;
-            popoverVideo.style.height = `${popoverVideo.offsetHeight}px`;
+            setVideoHeight();
             centerVideoNavigation();
 
             setTimeout(() => {
@@ -45,12 +43,11 @@ function openPopover(date, onError) {
             }, 300);
         }   
 
-        // Show video when it is loaded on first mouseover
+        // Show video when it is finished loading
         video.addEventListener('loadeddata', function(event) {
             videoContainerLoading.classList.add('hidden');
 
-            popoverVideo.style.height = null;
-            popoverVideo.style.height = `${popoverVideo.offsetHeight}px`;
+            setVideoHeight();
             centerVideoNavigation();
             
             setTimeout(() => {
@@ -164,6 +161,18 @@ function centerVideoNavigation() {
         document.querySelector('#popover .navigation.left').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
         document.querySelector('#popover .navigation.right').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
     }
+}
+
+function setVideoHeight() {
+    let videoSize = {
+        width: 1920,
+        height: 1080
+    };
+
+    let popover = document.querySelector('#popover');
+    let videoContainer = popover.querySelector('.videoContainer');
+
+    videoContainer.style.height = `${Math.round(popover.offsetWidth * (videoSize.height / videoSize.width))}px`;
 }
 
 function getToDate(currentDate, direction) {
