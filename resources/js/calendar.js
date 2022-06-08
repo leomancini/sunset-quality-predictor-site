@@ -5,7 +5,7 @@ function initializeCalendarInteractions() {
     let popoverBackground = document.querySelector('#popoverBackground');
     let popoverCloseButton = document.querySelector('#popoverBackground #popoverCloseButton');
 
-    if (window.isMobile) {
+    if (window.isMobile || window.isTablet) {
         popoverCloseButton.onclick = closePopover;
     } else {
         popoverBackground.onclick = closePopover;

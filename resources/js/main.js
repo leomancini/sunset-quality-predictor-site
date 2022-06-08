@@ -56,7 +56,7 @@ function initialize() {
     window.popoverIsOpen = false;
 
     const userAgent = navigator.userAgent.toLowerCase();
-    
+
     if(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Instagram/i.test(userAgent)) {
         window.isMobile = true;
     }
@@ -117,7 +117,7 @@ function initialize() {
     }, 100);
 
 
-    if (window.isMobile) {
+    if (window.isMobile || window.isTablet) {
         window.navigationElements.navigationItems.forEach((navigationItem) => {
             navigationItem.ontouchstart = () => {
                 let sectionId = navigationItem.dataset.sectionId;
@@ -163,7 +163,7 @@ function initialize() {
 }
 
 function positionNavigation(params) {
-    if (window.isMobile) {
+    if (window.isMobile || window.isTablet) {
         let viewportHeight;
 
         if (params.trigger === 'load') {
