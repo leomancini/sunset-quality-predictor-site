@@ -55,8 +55,14 @@ function initialize() {
     window.scrollingToSection = false;
     window.popoverIsOpen = false;
 
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    if(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Instagram/i.test(userAgent)) {
         window.isMobile = true;
+    }
+
+    if(/(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent)) {
+        window.isTablet = true;
     }
 
     window.navigationElements = {

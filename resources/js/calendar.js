@@ -56,12 +56,12 @@ function initializeCalendarInteractions() {
 
             let sunsetHasHappened = true;
 
-            if (now.split('T')[0] === date && today.getHours() < 22) {
+            if (now.split('T')[0] === date && today.getHours() < 23) {
                 sunsetHasHappened = false;
                 day.classList.add('sunsetHasNotHappenedYet');
             }
 
-            if (!window.isMobile) {
+            if (!window.isMobile && !window.isTablet) {
                 let mouseIsOver = false;
 
                 day.onmouseover = () => {
@@ -128,16 +128,14 @@ function initializeCalendarInteractions() {
                         window.hoveringOverDayWithoutVideo = false;
                     }
                 }
+            }
 
-                day.onclick = () => {
-                    if (sunsetHasHappened) {
-                        openPopover(date, null);
-                    }
-                }
-            } else {
-                day.onclick = () => {
-                    if (sunsetHasHappened) {
-                        openPopover(date, null);
+            day.onclick = () => {
+                if (sunsetHasHappened) {
+                    openPopover(date, null);
+                } else {
+                    if (window.isMobile || window.isTablet) {
+                        alert(`Sunset video not ready for ${day.dataset.dateFormatted}. Check again after 10 PM Eastern Time.`);
                     }
                 }
             }

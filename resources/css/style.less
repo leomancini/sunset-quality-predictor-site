@@ -2,7 +2,10 @@
 @desktop: ~"only screen and (min-width: 800px)";
 
 * {
-	-webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -76,6 +79,9 @@ body {
         overflow-y: scroll;
         overflow-x: hidden; 
         -webkit-overflow-scrolling: touch;
+        // touch-action: manipulation;
+        touch-action: pan-y;
+        pointer-events: none;
 
         #popoverBackground {
             position: fixed;
@@ -89,6 +95,7 @@ body {
             pointer-events: none;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.9);
 
             &.visible {
                 opacity: 1;
@@ -97,14 +104,6 @@ body {
                 #popoverCloseButton {
                     pointer-events: all;
                 }
-            }
-
-            @media @mobile {
-                background-color: rgba(0, 0, 0, 0.9);
-            }
-
-            @media @desktop {
-                background-color: rgba(0, 0, 0, 0.8);
             }
         }
 
@@ -163,6 +162,7 @@ body {
             max-width: 1080px;
             opacity: 0;
             pointer-events: none;
+            user-select: none;
             margin-top: -16px;
 
             @media @mobile {
@@ -178,6 +178,10 @@ body {
             &.visible {
                 opacity: 1;
                 pointer-events: all;
+
+                .navigation {
+                    pointer-events: all;
+                }
             }
 
             .navigation {
@@ -293,6 +297,10 @@ body {
                         color: rgba(255, 255, 255, 0.5);
                         display: inline-block;
                         text-align: right;
+
+                        @media @desktop {
+                            margin-top: 2px;
+                        }
                     }
 
                     .stars {
@@ -433,6 +441,7 @@ body {
             &.visible {
                 bottom: 0;
                 opacity: 1;
+                pointer-events: all;
             }
 
             &.scrolled {
@@ -453,14 +462,7 @@ body {
                     margin: 24px 4px 0 4px;
 
                     outline: none;
-                    touch-action: manipulation;
-                    -ms-touch-action: manipulation;
                     cursor: pointer;
-                    tap-highlight-color: rgba(0, 0, 0, 0);
-                    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
                     user-select: none;
 
                     label {
@@ -474,6 +476,7 @@ body {
                         background-position: 50%;
                         background-repeat: no-repeat;
                         filter: invert(100%) drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1)) drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1));
+                        pointer-events: all;
                     }
 
                     &[data-section-id='latest'] .icon {
@@ -500,6 +503,7 @@ body {
 
                     label {
                         cursor: pointer;
+                        pointer-events: all;
                         font-size: 16px;
                         font-weight: 600;
                         color: #FFFFFF;
@@ -775,7 +779,6 @@ body {
                 }
 
                 #calendar {
-
                     font-size: 0;
                     user-select: none;
                     z-index: 2;
@@ -961,6 +964,7 @@ body {
                             background-size: 120%;
                             box-shadow: 0 0 0 transparent;
                             overflow: hidden;
+                            pointer-events: all;
 
                             @media @mobile {
                                 width: @daySizeMobile;
@@ -1212,6 +1216,7 @@ body {
                 a {
                     transition: 0.2s all;
                     color: rgba(0, 0, 0, 0.5);
+                    pointer-events: all;
 
                     &:hover {
                         .rainbowText();
@@ -1339,6 +1344,7 @@ body {
                     a {
                         transition: 0.2s all;
                         color: rgba(255, 255, 255, 1);
+                        pointer-events: all;
 
                         &:hover {
                             text-decoration: none;
@@ -1366,6 +1372,7 @@ body {
 
                         a {
                             .rainbowText();
+                            pointer-events: all;
 
                             &:hover {
                                 background: unset;
@@ -1385,6 +1392,7 @@ body {
 
                         a {
                             color: rgba(255, 255, 255, 0.5);
+                            pointer-events: all;
 
                             &:hover {
                                 color: rgba(255, 255, 255, 1);
@@ -1407,6 +1415,7 @@ body {
                         text-shadow: none;
                         box-shadow: 0 0 0 rgba(255, 255, 255, 0.05);
                         background: rgba(255, 255, 255, 0.2);
+                        pointer-events: all;
 
                         @media @desktop {
                             font-size: 16px;
