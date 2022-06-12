@@ -56,7 +56,7 @@ function initializeCalendarInteractions() {
 
             let sunsetHasHappened = true;
 
-            if (now.split('T')[0] === date && today.getHours() < 23) {
+            if (now.split('T')[0] === date && today.getHours() < 22) {
                 sunsetHasHappened = false;
                 day.classList.add('sunsetHasNotHappenedYet');
             }
