@@ -157,7 +157,7 @@ function switchPopover(currentDate, direction) {
 }
 
 function centerVideoNavigation() {
-    if (!window.isMobile && !window.isTablet) {
+    if (!window.isMobile) {
         document.querySelector('#popover .navigation.left').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
         document.querySelector('#popover .navigation.right').style.height = `${document.querySelector('.videoContainer video').offsetHeight}px`;
     }

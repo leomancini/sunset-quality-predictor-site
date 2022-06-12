@@ -1,5 +1,6 @@
 @mobile: ~"only screen and (max-width: 799px)";
 @desktop: ~"only screen and (min-width: 800px)";
+@hasMouse: ~"not all and (hover: none)";
 
 * {
     touch-action: manipulation;
@@ -238,14 +239,12 @@ body {
                         opacity: 0.5;
                         pointer-events: all;
 
-                        @media @mobile {
-                            &:active {
-                                transform: scale(0.8);
-                                opacity: 1;
-                            }
+                        &:active {
+                            transform: scale(0.8);
+                            opacity: 1;
                         }
 
-                        @media @desktop {
+                        @media @hasMouse {
                             &:active {
                                 transform: scale(0.8);
                             }
@@ -520,10 +519,12 @@ body {
                     }
                 }
 
-                &:hover {
-                    color: rgba(255, 255, 255, 1);
-                    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 4px 12px rgba(0, 0, 0, 0.2);
-                    transform: scale(1.15);
+                @media @hasMouse {
+                    &:hover {
+                        color: rgba(255, 255, 255, 1);
+                        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 4px 12px rgba(0, 0, 0, 0.2);
+                        transform: scale(1.15);
+                    }
                 }
 
                 &:active {
@@ -541,9 +542,11 @@ body {
                     background: rgba(255, 255, 255, 1);
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 4px 24px rgba(0, 0, 0, 0.05);
 
-                    &:hover {
-                        cursor: default;
-                        transform: scale(1);
+                    @media @hasMouse {
+                        &:hover {
+                            cursor: default;
+                            transform: scale(1);
+                        }
                     }
 
                     @media @mobile {
@@ -868,7 +871,7 @@ body {
                                 pointer-events: all;
                                 opacity: 0.5;
 
-                                @media @desktop {
+                                @media @hasMouse {
                                     &:hover {
                                         cursor: pointer;
                                         transform: scale(1.2);
@@ -889,7 +892,7 @@ body {
                                 padding-left: 28px;
                                 padding-right: 14px;
 
-                                @media @desktop {
+                                @media @hasMouse {
                                     &:hover {
                                         cursor: w-resize;
                                     }
@@ -902,7 +905,7 @@ body {
                                 padding-right: 28px;
                                 padding-left: 14px;
 
-                                @media @desktop {
+                                @media @hasMouse {
                                     &:hover {
                                         cursor: e-resize;
                                     }
@@ -1013,23 +1016,23 @@ body {
                                     color: rgba(0, 0, 0, 0.1);
                                 }
 
-                                &:hover {
-                                    background: rgba(0, 0, 0, 0.05);
-                                    cursor: not-allowed;
+                                @media @hasMouse {
+                                    &:hover {
+                                        background: rgba(0, 0, 0, 0.05);
+                                        cursor: not-allowed;
+                                    }
                                 }
                             }
 
                             &.filled {
                                 z-index: 1;
 
-                                @media @mobile {
-                                    &:active {
-                                        z-index: 2;
-                                        transform: scale(0.9);
-                                    }
+                                &:active {
+                                    z-index: 2;
+                                    transform: scale(0.9);
                                 }
 
-                                @media @desktop {
+                                @media @hasMouse {
                                     &:hover {
                                         z-index: 2;
                                         cursor: pointer;
@@ -1166,8 +1169,10 @@ body {
                                         &.visible {
                                             opacity: 1;
 
-                                            &:hover {
-                                                cursor: not-allowed;
+                                            @media @hasMouse {
+                                                &:hover {
+                                                    cursor: not-allowed;
+                                                }
                                             }
                                         }
                                     }
@@ -1190,8 +1195,10 @@ body {
                                         &.hidden {
                                             opacity: 0;
 
-                                            &:hover {
-                                                cursor: progress;
+                                            @media @hasMouse {
+                                                &:hover {
+                                                    cursor: progress;
+                                                }
                                             }
                                         }
                                     }
@@ -1223,10 +1230,17 @@ body {
                     transition: 0.2s all;
                     color: rgba(0, 0, 0, 0.5);
                     pointer-events: all;
-
-                    &:hover {
+             
+                    &:active {
                         .rainbowText();
                         text-decoration: none;
+                    }
+
+                    @media @hasMouse {
+                        &:hover {
+                            .rainbowText();
+                            text-decoration: none;
+                        }
                     }
                 }
 
@@ -1353,8 +1367,14 @@ body {
                         color: rgba(255, 255, 255, 1);
                         pointer-events: all;
 
-                        &:hover {
+                        &:active {
                             text-decoration: none;
+                        }
+
+                        @media @hasMouse {
+                            &:hover {
+                                text-decoration: none;
+                            }
                         }
                     }
 
@@ -1384,12 +1404,22 @@ body {
                             .rainbowText();
                             pointer-events: all;
 
-                            &:hover {
+                            &:active {
                                 background: unset;
                                 -webkit-background-clip: unset;
                                 -webkit-text-fill-color: unset;
                                 color: rgba(255, 255, 255, 1);
                                 text-decoration: underline;
+                            }
+
+                            @media @hasMouse {
+                                &:hover {
+                                    background: unset;
+                                    -webkit-background-clip: unset;
+                                    -webkit-text-fill-color: unset;
+                                    color: rgba(255, 255, 255, 1);
+                                    text-decoration: underline;
+                                }
                             }
                         }
                     }
@@ -1403,9 +1433,15 @@ body {
                         a {
                             color: rgba(255, 255, 255, 0.5);
                             pointer-events: all;
-
-                            &:hover {
+                            
+                            &:active {
                                 color: rgba(255, 255, 255, 1);
+                            }
+
+                            @media @hasMouse {
+                                &:hover {
+                                    color: rgba(255, 255, 255, 1);
+                                }
                             }
                         }
                     }
@@ -1427,16 +1463,23 @@ body {
                         box-shadow: 0 0 0 rgba(255, 255, 255, 0.05);
                         background: rgba(255, 255, 255, 0.2);
                         pointer-events: all;
+                        user-select: none;
+                        -webkit-user-select: none;
 
-                        &:hover {
-                            color: rgba(0, 0, 0, 0.8);
-                            background: rgba(255, 255, 255, 1);
-                            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+                        @media @hasMouse {
+                            &:hover {
+                                color: rgba(0, 0, 0, 0.8);
+                                background: rgba(255, 255, 255, 1);
+                                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
+                            }
                         }
 
                         &:active {
                             z-index: 2;
                             transform: scale(0.9);
+                            color: rgba(0, 0, 0, 0.8);
+                            background: rgba(255, 255, 255, 1);
+                            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.05);
                         }
                     }
                 }

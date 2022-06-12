@@ -160,9 +160,9 @@
 			</div>
 		</div>
 		<script src='resources/js/functions.js'></script>
-		<script src='resources/js/main.js?v=1243554434'></script>
+		<script src='resources/js/main.js'></script>
 		<script src='resources/js/calendar.js'></script>
 		<script src='resources/js/scroll.js'></script>
-		<script src='resources/js/popover.js'></script>
+		<script src='resources/js/popover.js?v=1243554434'></script>
 	</body>
 </html>
