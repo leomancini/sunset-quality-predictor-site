@@ -163,6 +163,7 @@ body {
             opacity: 0;
             pointer-events: none;
             user-select: none;
+            -webkit-user-select: none;
             margin-top: -16px;
 
             @media @mobile {
@@ -431,6 +432,7 @@ body {
             margin-left: 8px; // Optically center
             overflow: visible;
             user-select: none;
+            -webkit-user-select: none;
 
             &.preVisible {
                 opacity: 0;
@@ -455,11 +457,7 @@ body {
                 transition: 0.2s all;
                 overflow: hidden;
                 user-select: none;
-
-                label {
-                    user-select: none;
-                    transition: 0.2s all;
-                }
+                -webkit-user-select: none;
 
                 @media @mobile {
                     border-radius: 48px;
@@ -482,6 +480,7 @@ body {
                         background-repeat: no-repeat;
                         filter: invert(100%) drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1)) drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1));
                         pointer-events: all;
+                        transition: 0.2s all;
                     }
 
                     &[data-section-id='latest'] .icon {
@@ -513,6 +512,7 @@ body {
                         font-weight: 600;
                         color: #FFFFFF;
                         text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05), 0px 2px 8px rgba(0, 0, 0, 0.2);
+                        transition: 0.2s all;
                     }
 
                     .icon {
@@ -786,6 +786,7 @@ body {
                 #calendar {
                     font-size: 0;
                     user-select: none;
+                    -webkit-user-select: none;
                     z-index: 2;
 
                     @media @mobile {
@@ -1297,6 +1298,7 @@ body {
 
                 img {
                     user-select: none;
+                    -webkit-user-select: none;
 
                     @media @mobile {
                         width: calc(100% + 48px); 
