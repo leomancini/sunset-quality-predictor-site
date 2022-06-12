@@ -36,7 +36,7 @@
 <html>
 	<head>
 		<title>NYC Sunset Quality Predictions</title>
-		<link rel='stylesheet/less' href='resources/css/style.less?v=2343655678433'>
+		<link rel='stylesheet/less' href='resources/css/style.less?v=233564755678433'>
 		<script src='https://library.noshado.ws/js/less/3.11.1/less.min.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 		<link rel='preconnect' href='https://fonts.googleapis.com'>
@@ -160,7 +160,7 @@
 			</div>
 		</div>
 		<script src='resources/js/functions.js'></script>
-		<script src='resources/js/main.js'></script>
+		<script src='resources/js/main.js?v=1243554434'></script>
 		<script src='resources/js/calendar.js'></script>
 		<script src='resources/js/scroll.js'></script>
 		<script src='resources/js/popover.js'></script>

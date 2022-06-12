@@ -112,6 +112,8 @@ function initialize() {
                         enableScrolling();
                     }, 2000);
                 }, 500);
+            } else {
+                window.navigationElements.navigation.classList.add('visible');
             }
         }, 300);
     }, 100);
@@ -119,7 +121,7 @@ function initialize() {
 
     if (window.isMobile || window.isTablet) {
         window.navigationElements.navigationItems.forEach((navigationItem) => {
-            navigationItem.ontouchstart = () => {
+            navigationItem.ontouchend = () => {
                 let sectionId = navigationItem.dataset.sectionId;
                 window.scrollingToSection = true;
 
@@ -127,12 +129,12 @@ function initialize() {
             };
         });
 
-        document.querySelector('#popover .navigation.left .arrow').ontouchstart = (e) => {
+        document.querySelector('#popover .navigation.left .arrow').ontouchend = (e) => {
             let currentDate = window.location.hash.replace('#sunset-', '');
             switchPopover(currentDate, 'previous');
         }
 
-        document.querySelector('#popover .navigation.right .arrow').ontouchstart = (e) => {
+        document.querySelector('#popover .navigation.right .arrow').ontouchend = (e) => {
             let currentDate = window.location.hash.replace('#sunset-', '');
             switchPopover(currentDate, 'next');
         }
@@ -227,6 +229,12 @@ function switchToSection(sectionId, behavior) {
 }
 
 function goToSection(sectionId, behavior) {
+    let offset = window.navigationHeight;
+
+    if (window.isMobile || window.isTablet) {
+        offset = 88;
+    }
+
     if (sectionId === 'latest') {
         window.scrollTo({
           top: 0,
@@ -235,7 +243,7 @@ function goToSection(sectionId, behavior) {
         });
     } else {
         window.scrollTo({
-          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - window.navigationHeight - window.navigationOffset,
+          top: getOffset(document.querySelector(`section[data-section-id='${sectionId}']`)).top - offset,
           left: 0,
           behavior
         });

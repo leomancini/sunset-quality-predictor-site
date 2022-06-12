@@ -454,6 +454,12 @@ body {
                 cursor: pointer;
                 transition: 0.2s all;
                 overflow: hidden;
+                user-select: none;
+
+                label {
+                    user-select: none;
+                    transition: 0.2s all;
+                }
 
                 @media @mobile {
                     border-radius: 48px;
@@ -463,7 +469,6 @@ body {
 
                     outline: none;
                     cursor: pointer;
-                    user-select: none;
 
                     label {
                         display: none;
