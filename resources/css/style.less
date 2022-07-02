@@ -1,5 +1,6 @@
 @mobile: ~"only screen and (max-width: 799px)";
 @desktop: ~"only screen and (min-width: 800px)";
+@desktopMax: ~"only screen and (min-width: 1440px)";
 @hasMouse: ~"not all and (hover: none)";
 
 * {
@@ -746,6 +747,7 @@ body {
             overflow: hidden;
 
             @sectionWidth: 70vw;
+            @sectionWidthMax: 1008px; // 1440 * 0.7
 
             section {
                 width: 100%;
@@ -753,6 +755,10 @@ body {
                 .content {
                     width: @sectionWidth;
                     margin: 0 auto;
+
+                    @media @desktopMax {
+                        width: @sectionWidthMax!important;
+                    }
                 }
             }
 
@@ -768,8 +774,11 @@ body {
                 }
 
                 @calendarWidth: @sectionWidth;
+                @calendarWidthMax: @sectionWidthMax;
                 @dayMargin: calc((@calendarWidth / 7) / 12);
+                @dayMarginMax: calc((@calendarWidthMax / 7) / 12);
                 @daySize: calc((@calendarWidth / 7) - @dayMargin * 2);
+                @daySizeMax: calc((@calendarWidthMax / 7) - @dayMarginMax * 2);
                 @dayHoverScale: 1.3;
 
                 @calendarWidthMobile: 84vw;
@@ -783,6 +792,10 @@ body {
 
                     @media @desktop {
                         width: @calendarWidth;
+                    }
+
+                    @media @desktopMax {
+                        width: @calendarWidthMax;
                     }
                 }
 
@@ -798,6 +811,10 @@ body {
 
                     @media @desktop {
                         width: @calendarWidth;
+                    }
+
+                    @media @desktopMax {
+                        width: @calendarWidthMax;
                     }
 
                     #dayWithoutVideoTooltip {
@@ -834,6 +851,10 @@ body {
 
                         @media @desktop {
                             margin: 0 @dayMargin 48px @dayMargin;
+                        }
+
+                        @media @desktopMax {
+                            margin: 0 @dayMarginMax 48px @dayMarginMax;
                         }
 
                         &:after {
@@ -958,6 +979,11 @@ body {
                                     width: @daySize;
                                     margin: 0 @dayMargin 16px @dayMargin;
                                 }
+
+                                @media @desktopMax {
+                                    width: @daySizeMax;
+                                    margin: 0 @dayMarginMax 16px @dayMarginMax;
+                                }
                             }
                         }
 
@@ -986,6 +1012,13 @@ body {
                                 width: @daySize;
                                 height: @daySize;
                                 margin: @dayMargin;
+                                border-radius: 8px;
+                            }
+
+                            @media @desktopMax {
+                                width: @daySizeMax;
+                                height: @daySizeMax;
+                                margin: @dayMarginMax;
                                 border-radius: 8px;
                             }
 
@@ -1072,6 +1105,27 @@ body {
                                 }
 
                                 .stars {
+                                    font-size: 0;
+                                    display: inline-block;
+                                    position: absolute;
+                                    bottom: 12px;
+                                    left: 50%;
+                                    z-index: 3;
+                                    pointer-events: none;
+
+                                    .star {
+                                        background-size: 100%;
+                                        display: inline-block;
+
+                                        &.filled {
+                                            background-image: url('../images/star-filled.png');
+                                        }
+
+                                        &.unfilled {
+                                            background-image: url('../images/star-unfilled.png');
+                                        }
+                                    }
+
                                     @media @mobile {
                                         display: none;
                                     }
@@ -1081,28 +1135,24 @@ body {
 
                                         width: calc(@daySize * 0.8);
                                         height: @starSize;
-                                        font-size: 0;
-                                        display: inline-block;
-                                        position: absolute;
-                                        bottom: 12px;
-                                        left: 50%;
                                         margin-left: calc((@daySize * 0.8) * -0.5);
-                                        z-index: 3;
-                                        pointer-events: none;
 
                                         .star {
                                             width: @starSize;
                                             height: @starSize;
-                                            background-size: 100%;
-                                            display: inline-block;
+                                        }
+                                    }
 
-                                            &.filled {
-                                                background-image: url('../images/star-filled.png');
-                                            }
+                                    @media @desktopMax {
+                                        @starSizeMax: calc((@daySizeMax * 0.8) / 5);
 
-                                            &.unfilled {
-                                                background-image: url('../images/star-unfilled.png');
-                                            }
+                                        width: calc(@daySizeMax * 0.8);
+                                        height: @starSizeMax;
+                                        margin-left: calc((@daySizeMax * 0.8) * -0.5);
+
+                                        .star {
+                                            width: @starSizeMax;
+                                            height: @starSizeMax;
                                         }
                                     }
                                 }
