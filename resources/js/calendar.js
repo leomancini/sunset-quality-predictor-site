@@ -73,12 +73,14 @@ function initializeCalendarInteractions() {
 
                         if (!day.dataset.error) {
                             videoContainerLoading.classList.remove('hidden');
+                            day.classList.add('isLoading');
 
-                             // Show video if it is already loaded from a previous mouseover
+                            // Show video if it is already loaded from a previous mouseover
                             if (video.readyState === 4 && mouseIsOver) {
                                 video.classList.add('visible');
                                 expandButton.classList.add('visible');
                                 videoContainerLoading.classList.add('hidden');
+                                day.classList.remove('isLoading');
                             } else {
                                 // Show video when it is loaded on first mouseover
                                 video.addEventListener('loadeddata', function(event) {
@@ -86,6 +88,7 @@ function initializeCalendarInteractions() {
                                         video.classList.add('visible');
                                         expandButton.classList.add('visible');
                                         videoContainerLoading.classList.add('hidden');
+                                        day.classList.remove('isLoading');
                                     }
                                 });
                             }
@@ -96,7 +99,7 @@ function initializeCalendarInteractions() {
                             source.addEventListener('error', function(event) {
                                 videoContainerLoading.classList.add('hidden');
                                 videoContainerError.classList.add('visible');
-
+                                day.classList.remove('isLoading');
                                 day.dataset.error = true;
                             });
 
@@ -106,6 +109,7 @@ function initializeCalendarInteractions() {
                         } else {
                             videoContainerLoading.classList.add('hidden');
                             videoContainerError.classList.add('visible');
+                            day.classList.remove('isLoading');
                         }
                     } else {
                         window.hoveringOverDayWithoutVideo = true;
@@ -116,6 +120,7 @@ function initializeCalendarInteractions() {
                 day.onmouseout = () => {
                     mouseIsOver = false;
                     videoContainerLoading.classList.add('hidden');
+                    day.classList.remove('isLoading');
 
                     if (sunsetHasHappened) {
                         day.querySelector('.videoContainer video').classList.remove('visible');

@@ -1022,6 +1022,14 @@ body {
                                 border-radius: 8px;
                             }
 
+                            &.isLoading {
+                                @media @mobile {
+                                    label {
+                                        display: none;
+                                    }
+                                }
+                            }
+
                             label {
                                 cursor: inherit;
                                 position: absolute;
@@ -1233,7 +1241,6 @@ body {
                                         background-color: rgba(0, 0, 0, 0.5);
                                         background-image: url('../images/spinner-128.png');
                                         background-size: 48px;
-                                        background-position: 50% calc(50% - 4px);
                                         background-repeat: no-repeat;
                                         position: absolute;
                                         z-index: 2;
@@ -1241,6 +1248,14 @@ body {
                                         transition: 0.2s opacity;
                                         border-radius: 6px;
                                         top: 0;
+
+                                        @media @mobile {
+                                            background-position: 50% 50%;
+                                        }
+
+                                        @media @desktop {
+                                            background-position: 50% calc(50% - 4px);
+                                        }
 
                                         &.hidden {
                                             opacity: 0;
