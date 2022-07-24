@@ -12,7 +12,7 @@ function openPopover(date, onError) {
         centerVideoNavigation();
     }
 
-    if (!day.dataset.error) {
+    if (day && !day.dataset.error) {
         window.popoverIsOpen = true;
         window.previousLocationHash = 'history';
         window.location.hash = `sunset-${date}`;
