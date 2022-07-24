@@ -225,7 +225,9 @@ function switchToSection(sectionId, behavior) {
     window.navigationElements.navigationItems.forEach((navigationItem) => { navigationItem.classList.remove('selected'); });
     window.navigationElements.navigation.querySelector(`.item[data-section-id='${sectionId}']`).classList.add('selected');
 
-    window.location.hash = sectionId;
+    if (!window.popoverIsOpen) {
+        window.location.hash = sectionId;
+    }
 }
 
 function goToSection(sectionId, behavior) {
