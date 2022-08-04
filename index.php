@@ -39,6 +39,7 @@
 		<link rel='stylesheet/less' href='resources/css/style.less?v=55678433'>
 		<script src='https://library.noshado.ws/js/less/3.11.1/less.min.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+		<link rel='apple-touch-icon' href='//nycsunsetbot.leo.gd/resources/images/favicon/apple-touch-icon.png'>
 		<link rel='preconnect' href='https://fonts.googleapis.com'>
 		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 		<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap' rel='stylesheet'>
