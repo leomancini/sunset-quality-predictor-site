@@ -28,9 +28,13 @@
 			if ($key === 0 || ($dates[$key - 1] && $dates[$key - 1]->format('m') !== $date->format('m'))) {
 				echo "<div class='month".($monthKey === (count($months) - 1) ? ' visible' : '')."' id='month-".$monthKey."'>";
 				echo "<div class='monthHeader'>";
+				echo "<div class='monthNavigationWrapper'>";
 				echo '<div class="monthNavigation'.((count($months) > 1) ? ' visible' : '').'" data-direction="back">'.date('F', strtotime($dates[$key]->format('Y-m').' -1 month')).'</div>';
+				echo '</div>';
 				echo "<div class='monthName'>".$date->format('F')."</div>";
+				echo "<div class='monthNavigationWrapper'>";
 				echo '<div class="monthNavigation" data-direction="forward">'.date('F', strtotime($dates[$key]->format('Y-m').' +1 month')).'</div>';
+				echo '</div>';
 				echo '</div>';
 				echo "<div class='dayNames'>";
 				echo '<div class="dayName">Sun</div>';

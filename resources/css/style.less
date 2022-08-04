@@ -867,68 +867,74 @@ body {
                             bottom: 0;
                         }
 
-                        .monthNavigation {
-                            font-size: 16px;
-                            font-weight: 500;
-                            line-height: 33px;
-                            height: 32px;
-                            border-radius: 8px;
-                            background-color: rgba(0, 0, 0, 0.05);
-                            background-repeat: no-repeat;
-                            background-size: 20px;
-                            transition: 0.2s all;
-                            pointer-events: none;
-                            opacity: 0;
+                        .monthNavigationWrapper {
+                            width: 20%;
 
-                            @media @mobile {
-                                margin-top: 0;
-                            }
+                            .monthNavigation {
+                                display: inline-block;
+                                font-size: 16px;
+                                font-weight: 500;
+                                line-height: 33px;
+                                height: 32px;
+                                border-radius: 8px;
+                                background-color: rgba(0, 0, 0, 0.05);
+                                background-repeat: no-repeat;
+                                background-size: 20px;
+                                transition: 0.2s all;
+                                pointer-events: none;
+                                opacity: 0;
 
-                            @media @desktop {
-                                margin-top: 20px;
-                            }
+                                @media @mobile {
+                                    margin-top: 0;
+                                }
 
-                            &.visible {
-                                pointer-events: all;
-                                opacity: 0.5;
+                                @media @desktop {
+                                    margin-top: 20px;
+                                }
 
-                                @media @hasMouse {
-                                    &:hover {
+                                &.visible {
+                                    pointer-events: all;
+                                    opacity: 0.5;
+
+                                    @media @hasMouse {
+                                        &:hover {
+                                            cursor: pointer;
+                                            transform: scale(1.2);
+                                            opacity: 0.7;
+                                        }
+                                    }
+
+                                    &:active {
                                         cursor: pointer;
-                                        transform: scale(1.2);
-                                        opacity: 0.7;
+                                        transform: scale(0.99);
+                                        background-color: rgba(0, 0, 0, 0.1);
                                     }
                                 }
 
-                                &:active {
-                                    cursor: pointer;
-                                    transform: scale(0.99);
-                                    background-color: rgba(0, 0, 0, 0.1);
-                                }
-                            }
+                                &[data-direction='back'] {
+                                    background-image: url('../images/icons/chevron-left.svg');
+                                    background-position: 6px center;
+                                    padding-left: 28px;
+                                    padding-right: 14px;
 
-                            &[data-direction='back'] {
-                                background-image: url('../images/icons/chevron-left.svg');
-                                background-position: 6px center;
-                                padding-left: 28px;
-                                padding-right: 14px;
-
-                                @media @hasMouse {
-                                    &:hover {
-                                        cursor: w-resize;
+                                    @media @hasMouse {
+                                        &:hover {
+                                            cursor: w-resize;
+                                        }
                                     }
                                 }
-                            }
 
-                            &[data-direction='forward'] {
-                                background-image: url('../images/icons/chevron-right.svg');
-                                background-position: right 6px center;
-                                padding-right: 28px;
-                                padding-left: 14px;
+                                &[data-direction='forward'] {
+                                    background-image: url('../images/icons/chevron-right.svg');
+                                    background-position: right 6px center;
+                                    padding-right: 28px;
+                                    padding-left: 14px;
+                                    float: right;
 
-                                @media @hasMouse {
-                                    &:hover {
-                                        cursor: e-resize;
+                                    @media @hasMouse {
+                                        &:hover {
+                                            cursor: e-resize;
+                                        }
                                     }
                                 }
                             }
