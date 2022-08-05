@@ -22,7 +22,7 @@ function openPopover(date, onError) {
 
         popover.querySelector('.date').innerText = day.dataset.dateFormatted;
         popover.querySelector('.confidence .value').innerText = day.dataset.confidence;
-        popover.querySelector('.stars').style.backgroundImage = `url('resources/images/stars-color/${day.dataset.rating}.png')`;
+        popover.querySelector('.stars').style.backgroundImage = `url('${sitePrefix}resources/images/stars-color/${day.dataset.rating}.png')`;
 
         let videoContainer = popover.querySelector('.videoContainer');
         let videoContainerLoading = videoContainer.querySelector('.loading');

@@ -31,18 +31,24 @@
 	} else {
 		$predictionDay = 'Latest';
 	}
+
+	$sitePrefix = '';
+	if ($_SERVER['SERVER_NAME'] === 'nycsunsetbot.leo.gd') {
+		$sitePrefix = 'site/';
+	}
 ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
 		<title>NYC Sunset Quality Predictions</title>
-		<link rel='stylesheet/less' href='resources/css/style.less?v=55678433'>
+		<link rel='stylesheet/less' href='<?php echo $sitePrefix; ?>resources/css/style.less?v=55678433'>
 		<script src='https://library.noshado.ws/js/less/3.11.1/less.min.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 		<link rel='apple-touch-icon' href='//nycsunsetbot.leo.gd/resources/images/favicon/apple-touch-icon.png'>
 		<link rel='preconnect' href='https://fonts.googleapis.com'>
 		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 		<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap' rel='stylesheet'>
+		<script type='text/javascript'>const sitePrefix = '<?php echo $sitePrefix; ?>';</script>
 	</head>
 	<body ontouchstart=''>
 		<div id='curtain' class='visible'></div>
@@ -98,7 +104,7 @@
 					<div id='confidence'><?php echo $confidence; ?>% Confident</div>
 				</div>
 				<div id='background'>
-					<div id='gradient' style='background-image: url("resources/images/backgrounds/background-<?php echo $rating; ?>.jpg")'></div>
+					<div id='gradient' style='background-image: url("<?php echo $sitePrefix; ?>resources/images/backgrounds/background-<?php echo $rating; ?>.jpg")'></div>
 				</div>
 			</section>
 			<div id='sections'>
@@ -113,7 +119,7 @@
 				<section data-section-id='about'>
 					<div class='content'>
 						<div class='about-section paragraph-left'>
-							<img src='resources/images/about/sample-composite-image.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/sample-composite-image.png'>
 							<div class='text'>
 								<h3>Collecting images</h3>
 								<p>
@@ -122,7 +128,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-right'>
-							<img src='resources/images/about/training-data-builder.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data-builder.png'>
 							<div class='text'>
 								<h3>Building training data</h3>
 								<p>
@@ -131,7 +137,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-left'>
-							<img src='resources/images/about/training-data.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data.png'>
 							<div class='text'>
 								<h3>Training the model</h3>
 								<p>
@@ -140,7 +146,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-right'>
-							<img src='resources/images/about/predictions.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/predictions.png'>
 							<div class='text'>
 								<h3>Making predictions</h3>
 								<p>
@@ -160,10 +166,10 @@
 				</section>
 			</div>
 		</div>
-		<script src='resources/js/functions.js'></script>
-		<script src='resources/js/main.js'></script>
-		<script src='resources/js/calendar.js'></script>
-		<script src='resources/js/scroll.js'></script>
-		<script src='resources/js/popover.js?v=1243554434'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/functions.js'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/main.js'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/calendar.js'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/scroll.js'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/popover.js?v=1243554434'></script>
 	</body>
 </html>
