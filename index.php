@@ -119,7 +119,7 @@
 				<section data-section-id='about'>
 					<div class='content'>
 						<div class='about-section paragraph-left'>
-							<img src='<?php echo $sitePrefix; ?>resources/images/about/sample-composite-image.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/sample-composite-image.jpg'>
 							<div class='text'>
 								<h3>Collecting images</h3>
 								<p>
@@ -128,7 +128,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-right'>
-							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data-builder.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data-builder.jpg'>
 							<div class='text'>
 								<h3>Building training data</h3>
 								<p>
@@ -137,7 +137,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-left'>
-							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/training-data.jpg'>
 							<div class='text'>
 								<h3>Training the model</h3>
 								<p>
@@ -146,7 +146,7 @@
 							</div>
 						</div>
 						<div class='about-section paragraph-right'>
-							<img src='<?php echo $sitePrefix; ?>resources/images/about/predictions.png'>
+							<img src='<?php echo $sitePrefix; ?>resources/images/about/predictions.jpg'>
 							<div class='text'>
 								<h3>Making predictions</h3>
 								<p>
