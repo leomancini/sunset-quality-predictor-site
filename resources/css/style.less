@@ -886,10 +886,18 @@ body {
 
                                 @media @mobile {
                                     margin-top: 0;
+
+                                    .monthNameLong {
+                                        display: none;
+                                    }
                                 }
 
                                 @media @desktop {
                                     margin-top: 20px;
+
+                                    .monthNameShort {
+                                        display: none;
+                                    }
                                 }
 
                                 &.visible {
@@ -942,17 +950,18 @@ body {
 
                         .monthName {
                             display: block;
-                            font-size: 32px;
                             font-weight: 800;
                             text-align: center;
-                            width: 128px;
+                            width: 200px;
 
                             @media @mobile {
+                                font-size: 24px;
                                 margin-top: 28px;
-                                margin-bottom: 32px;
+                                margin-bottom: 28px;
                             }
 
                             @media @desktop {
+                                font-size: 32px;
                                 margin-top: 64px;
                                 margin-bottom: 48px;
                             }
