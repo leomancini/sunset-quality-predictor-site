@@ -106,7 +106,7 @@
 			echo '</div>';
 		}
 
-		echo '<div id="dayWithoutVideoTooltip">Sunset video not ready</div>';
+		echo '<div id="dayWithoutVideoTooltip">Sunset video will be ready today at 10 PM Eastern Time</div>';
 
 		echo "</div>";
 	}
