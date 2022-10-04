@@ -52,11 +52,11 @@ function initializeCalendarInteractions() {
 
             let date = day.dataset.date;
             let today = new Date();
-            let now = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+            let now = getTimeInNewYork();
 
             let sunsetHasHappened = true;
 
-            if (now.split('T')[0] === date && today.getHours() < 22) {
+            if (now.ISOString.split('T')[0] === date && now.date.getHours() < 22) {
                 sunsetHasHappened = false;
                 day.classList.add('sunsetHasNotHappenedYet');
             }
