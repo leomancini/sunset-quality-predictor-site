@@ -255,7 +255,7 @@ function goToSection(sectionId, behavior) {
 }
 
 async function getSunsetTime(date) {
-  const response = await fetch(`http://skyline.noshado.ws/sunset-api-proxy/getSunsetTime.php?lat=40.730610&lng=-73.935242&date=${date}&timezone=ET`);
+  const response = await fetch(`https://nycsunsetbot.leo.gd/api/getSunsetTime.php?lat=40.730610&lng=-73.935242&date=${date}&timezone=ET`);
   const data = await response.json();
 
   return data;
