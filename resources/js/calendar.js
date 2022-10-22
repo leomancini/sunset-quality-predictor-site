@@ -63,7 +63,7 @@ async function initializeCalendarInteractions() {
 
             if (now.ISOString.split('T')[0] === date && (now.date.getTime() < todaySunsetTimeXMinsLater.date.getTime())) {
                 sunsetTimelapseReady = false;
-                day.classList.add('sunsetHasNotHappenedYet');
+                day.classList.add('sunsetTimelapseReady');
             }
 
             if (!window.isMobile && !window.isTablet) {

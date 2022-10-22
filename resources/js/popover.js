@@ -72,7 +72,7 @@ function openPopover(date, onError) {
         let shouldShowPreviousArrow = false;
         let previousDate = getToDate(date, 'previous');
         let previousDateCalendarDayElement = document.querySelector(`.day[data-date='${previousDate}']`);
-        shouldShowPreviousArrow = previousDateCalendarDayElement && previousDateCalendarDayElement.classList.contains('filled') && !previousDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+        shouldShowPreviousArrow = previousDateCalendarDayElement && previousDateCalendarDayElement.classList.contains('filled') && !previousDateCalendarDayElement.classList.contains('sunsetTimelapseReady');
 
         if (shouldShowPreviousArrow) {
             previousArrow.classList.add('visible');
@@ -84,7 +84,7 @@ function openPopover(date, onError) {
         let shouldShowNextArrow = false;
         let nextDate = getToDate(date, 'next');
         let nextDateCalendarDayElement = document.querySelector(`.day[data-date='${nextDate}']`);
-        shouldShowNextArrow = nextDateCalendarDayElement && nextDateCalendarDayElement.classList.contains('filled') && !nextDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+        shouldShowNextArrow = nextDateCalendarDayElement && nextDateCalendarDayElement.classList.contains('filled') && !nextDateCalendarDayElement.classList.contains('sunsetTimelapseReady');
 
         if (shouldShowNextArrow) {
             nextArrow.classList.add('visible');
@@ -141,7 +141,7 @@ function switchPopover(currentDate, direction) {
     let toDate = getToDate(currentDate, direction);
 
     let toDateCalendarDayElement = document.querySelector(`.day[data-date='${toDate}']`);
-    let shouldShowPopover = toDateCalendarDayElement && toDateCalendarDayElement.classList.contains('filled') && !toDateCalendarDayElement.classList.contains('sunsetHasNotHappenedYet');
+    let shouldShowPopover = toDateCalendarDayElement && toDateCalendarDayElement.classList.contains('filled') && !toDateCalendarDayElement.classList.contains('sunsetTimelapseReady');
 
     if (shouldShowPopover) {
         resetPopover();
