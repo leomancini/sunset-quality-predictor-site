@@ -3,9 +3,9 @@ async function initializeCalendarInteractions() {
     let now = getTimeInNewYork();
     let todaySunsetTimeData = await getSunsetTime(now.ISOString.split('T')[0]);
     let todaySunsetTime = new Date(todaySunsetTimeData.results.date);
-    let todaySunsetTime90MinsLater = getTodaySunsetTime90MinsLater(todaySunsetTime);
+    let todaySunsetTimeXMinsLater = getTodaySunsetTimeXMinsLater(todaySunsetTime, 100);
 
-    window.navigationElements.dayWithoutVideoTooltip.innerText = `Sunset video will be ready today after ${todaySunsetTime90MinsLater.formatted} Eastern Time`;
+    window.navigationElements.dayWithoutVideoTooltip.innerText = `Sunset video will be ready today after ${todaySunsetTimeXMinsLater.formatted} Eastern Time`;
 
     let calendar = document.querySelector('#calendar');
     let days = calendar.querySelectorAll('.day');
@@ -61,7 +61,7 @@ async function initializeCalendarInteractions() {
             let date = day.dataset.date;
             let sunsetTimelapseReady = true;
 
-            if (now.ISOString.split('T')[0] === date && (now.date.getTime() < todaySunsetTime90MinsLater.date.getTime())) {
+            if (now.ISOString.split('T')[0] === date && (now.date.getTime() < todaySunsetTimeXMinsLater.date.getTime())) {
                 sunsetTimelapseReady = false;
                 day.classList.add('sunsetHasNotHappenedYet');
             }
@@ -145,7 +145,7 @@ async function initializeCalendarInteractions() {
                     openPopover(date, null);
                 } else {
                     if (window.isMobile || window.isTablet) {
-                        alert(`Sunset video not ready for ${day.dataset.dateFormatted}. Check again after ${todaySunsetTime90MinsLater.formatted} Eastern Time.`);
+                        alert(`Sunset video not ready for ${day.dataset.dateFormatted}. Check again after ${todaySunsetTimeXMinsLater.formatted} Eastern Time.`);
                     }
                 }
             }

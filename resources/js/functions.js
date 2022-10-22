@@ -31,12 +31,12 @@ function getTimeInNewYork() {
     };
 }
 
-function getTodaySunsetTime90MinsLater(todaySunsetTime) {
-    let todaySunsetTime90MinsLater = new Date(todaySunsetTime.getTime() + (90 * 60000));
-    let todaySunsetTime90MinsLaterFormatted = todaySunsetTime90MinsLater.toLocaleString('en-US', { timeStyle: 'short' });
+function getTodaySunsetTimeXMinsLater(todaySunsetTime, delay) {
+    let todaySunsetTimeXMinsLater = new Date(todaySunsetTime.getTime() + (delay * 60000));
+    let todaySunsetTimeXMinsLaterFormatted = todaySunsetTimeXMinsLater.toLocaleString('en-US', { timeStyle: 'short' });
 
     return {
-        date: todaySunsetTime90MinsLater,
-        formatted: todaySunsetTime90MinsLaterFormatted
+        date: todaySunsetTimeXMinsLater,
+        formatted: todaySunsetTimeXMinsLaterFormatted
     };
 }
