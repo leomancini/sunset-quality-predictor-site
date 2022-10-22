@@ -1,4 +1,12 @@
-function initializeCalendarInteractions() {
+async function initializeCalendarInteractions() {
+    let today = new Date();
+    let now = getTimeInNewYork();
+    let todaySunsetTimeData = await getSunsetTime(now.ISOString.split('T')[0]);
+    let todaySunsetTime = new Date(todaySunsetTimeData.results.date);
+    let todaySunsetTime90MinsLater = getTodaySunsetTime90MinsLater(todaySunsetTime);
+
+    window.navigationElements.dayWithoutVideoTooltip.innerText = `Sunset video will be ready today after ${todaySunsetTime90MinsLater.formatted} Eastern Time`;
+
     let calendar = document.querySelector('#calendar');
     let days = calendar.querySelectorAll('.day');
 
@@ -51,13 +59,10 @@ function initializeCalendarInteractions() {
             let videoContainerError = videoContainer.querySelector('.error');
 
             let date = day.dataset.date;
-            let today = new Date();
-            let now = getTimeInNewYork();
+            let sunsetTimelapseReady = true;
 
-            let sunsetHasHappened = true;
-
-            if (now.ISOString.split('T')[0] === date && now.date.getHours() < 22) {
-                sunsetHasHappened = false;
+            if (now.ISOString.split('T')[0] === date && (now.date.getTime() < todaySunsetTime90MinsLater.date.getTime())) {
+                sunsetTimelapseReady = false;
                 day.classList.add('sunsetHasNotHappenedYet');
             }
 
@@ -67,7 +72,7 @@ function initializeCalendarInteractions() {
                 day.onmouseover = () => {
                     mouseIsOver = true;
 
-                    if (sunsetHasHappened) {
+                    if (sunsetTimelapseReady) {
                         let video = videoContainer.querySelector('video');
                         let source = document.createElement('source');
 
@@ -122,7 +127,7 @@ function initializeCalendarInteractions() {
                     videoContainerLoading.classList.add('hidden');
                     day.classList.remove('isLoading');
 
-                    if (sunsetHasHappened) {
+                    if (sunsetTimelapseReady) {
                         day.querySelector('.videoContainer video').classList.remove('visible');
                         day.querySelector('.videoContainer video').innerHTML = '';
                         day.querySelector('.expand').classList.remove('visible');
@@ -136,11 +141,11 @@ function initializeCalendarInteractions() {
             }
 
             day.onclick = () => {
-                if (sunsetHasHappened) {
+                if (sunsetTimelapseReady) {
                     openPopover(date, null);
                 } else {
                     if (window.isMobile || window.isTablet) {
-                        alert(`Sunset video not ready for ${day.dataset.dateFormatted}. Check again after 10 PM Eastern Time.`);
+                        alert(`Sunset video not ready for ${day.dataset.dateFormatted}. Check again after ${todaySunsetTime90MinsLater.formatted} Eastern Time.`);
                     }
                 }
             }

@@ -30,3 +30,13 @@ function getTimeInNewYork() {
         ISOString: (new Date(nowESTorEDT - actualTimezoneOffset)).toISOString().slice(0, -1)
     };
 }
+
+function getTodaySunsetTime90MinsLater(todaySunsetTime) {
+    let todaySunsetTime90MinsLater = new Date(todaySunsetTime.getTime() + (90 * 60000));
+    let todaySunsetTime90MinsLaterFormatted = todaySunsetTime90MinsLater.toLocaleString('en-US', { timeStyle: 'short' });
+
+    return {
+        date: todaySunsetTime90MinsLater,
+        formatted: todaySunsetTime90MinsLaterFormatted
+    };
+}
