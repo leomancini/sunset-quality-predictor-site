@@ -123,7 +123,7 @@
 							<div class='text'>
 								<h3>Collecting images</h3>
 								<p>
-								A camera is positioned so that it's pointing west at the Manhattan skyline. Snapshots are taken every minute and saved to a hard drive.<br><br>The images are compiled into <a href='https://github.com/leomancini/sunset-quality-predictor/tree/master/model/trainingData' target='_blank'>composite grid images</a> of what the sky looks like throughout the day, with one snapshot for every 15 minutes from midnight to one hour before sunset.
+								A camera is positioned so that it's pointing west at the Manhattan skyline. Snapshots are taken every minute and saved to a hard drive.<br><br>The images are compiled into <a href='https://github.com/leomancini/sunset-quality-predictor/tree/master/model/trainingData/4HoursBeforeTo1HourBefore' target='_blank'>composite grid images</a> of what the sky looks like throughout the day, with one snapshot for every 15 minutes from four hours before to one hour before sunset.
 								</p>
 							</div>
 						</div>
