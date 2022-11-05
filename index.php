@@ -170,6 +170,6 @@
 		<script src='<?php echo $sitePrefix; ?>resources/js/main.js'></script>
 		<script src='<?php echo $sitePrefix; ?>resources/js/calendar.js'></script>
 		<script src='<?php echo $sitePrefix; ?>resources/js/scroll.js'></script>
-		<script src='<?php echo $sitePrefix; ?>resources/js/popover.js?v=1243554434'></script>
+		<script src='<?php echo $sitePrefix; ?>resources/js/popover.js'></script>
 	</body>
 </html>
