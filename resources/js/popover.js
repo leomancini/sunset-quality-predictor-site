@@ -181,13 +181,13 @@ function getToDate(currentDate, direction) {
 
     if (direction === 'previous') {
         let previousDateRaw = new Date(fromDate);
-        previousDateRaw.setDate(fromDate.getDate() - 1);
+        previousDateRaw.setUTCDate(fromDate.getUTCDate() - 1);
         let previousDate = previousDateRaw.toISOString().split('T')[0];
 
         toDate = previousDate;
     } else if (direction === 'next') {
         let nextDateRaw = new Date(fromDate);
-        nextDateRaw.setDate(fromDate.getDate() + 1);
+        nextDateRaw.setUTCDate(fromDate.getUTCDate() + 1);
         let nextDate = nextDateRaw.toISOString().split('T')[0];
 
         toDate = nextDate;
