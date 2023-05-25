@@ -1,4 +1,20 @@
 <?php
+	function renderMonthLabel($date, $length) {
+		if (date('y', $date) === date('y')) {
+			switch ($length) {
+				case 'long':
+					return date('F', $date);
+				break;
+				case 'short':
+					return date('M \'y', $date);
+				break;
+			}
+		} else {
+			return date('M \'y', $date);
+		}
+		
+	}
+
 	function renderCalendar($predictions) {
 		global $sitePrefix;
 
@@ -16,31 +32,31 @@
 		$dates = [];
 		
 		foreach ($period as $date) {
-			$months[] = $date->format('m');
+			$months[] = $date->format('m-y');
 			$dates[] = $date;
 		}
 
 		$months = array_unique($months);
 
 		foreach ($dates as $key => $date) {
-			if ($dates[$key - 1] && ($dates[$key - 1]->format('m') !== $date->format('m'))) {
+			if ($dates[$key - 1] && ($dates[$key - 1]->format('m-y') !== $date->format('m-y'))) {
 				echo "</div>";
 			}
 
-			if ($key === 0 || ($dates[$key - 1] && $dates[$key - 1]->format('m') !== $date->format('m'))) {
+			if ($key === 0 || ($dates[$key - 1] && $dates[$key - 1]->format('m-y') !== $date->format('m-y'))) {
 				echo "<div class='month".($monthKey === (count($months) - 1) ? ' visible' : '')."' id='month-".$monthKey."'>";
 				echo "<div class='monthHeader'>";
 				echo "<div class='monthNavigationWrapper'>";
 				echo '<div class="monthNavigation'.((count($months) > 1) ? ' visible' : '').'" data-direction="back">';
-				echo "<span class='monthNameLong'>".date('F', strtotime($dates[$key]->format('Y-m').' -1 month')).'</span>';
-				echo "<span class='monthNameShort'>".date('M', strtotime($dates[$key]->format('Y-m').' -1 month')).'</span>';
+				echo "<span class='monthNameLong'>".renderMonthLabel(strtotime($dates[$key]->format('Y-m').' -1 month'), 'long').'</span>';
+				echo "<span class='monthNameShort'>".renderMonthLabel(strtotime($dates[$key]->format('Y-m').' -1 month'), 'short').'</span>';
 				echo '</div>';
 				echo '</div>';
-				echo "<div class='monthName'>".$date->format('F')."</div>";
+				echo "<div class='monthName'>".renderMonthLabel(strtotime($dates[$key]->format('Y-m')), 'long')."</div>";
 				echo "<div class='monthNavigationWrapper'>";
 				echo '<div class="monthNavigation" data-direction="forward">';
-				echo "<span class='monthNameLong'>".date('F', strtotime($dates[$key]->format('Y-m').' +1 month')).'</span>';
-				echo "<span class='monthNameShort'>".date('M', strtotime($dates[$key]->format('Y-m').' +1 month')).'</span>';
+				echo "<span class='monthNameLong'>".renderMonthLabel(strtotime($dates[$key]->format('Y-m').' +1 month'), 'long').'</span>';
+				echo "<span class='monthNameShort'>".renderMonthLabel(strtotime($dates[$key]->format('Y-m').' +1 month'), 'short').'</span>';
 				echo '</div>';
 				echo '</div>';
 				echo '</div>';
