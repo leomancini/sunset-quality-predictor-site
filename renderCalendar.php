@@ -12,7 +12,6 @@
 		} else {
 			return date('M \'y', $date);
 		}
-		
 	}
 
 	function renderCalendar($predictions) {
