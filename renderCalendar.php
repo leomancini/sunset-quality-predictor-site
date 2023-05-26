@@ -1,16 +1,16 @@
 <?php
 	function renderMonthLabel($date, $length) {
-		if (date('y', $date) === date('y')) {
-			switch ($length) {
-				case 'long':
+		switch ($length) {
+			case 'long':
+				if (date('y', $date) === date('y')) {
 					return date('F', $date);
-				break;
-				case 'short':
+				} else {
 					return date('M \'y', $date);
-				break;
-			}
-		} else {
-			return date('M \'y', $date);
+				}
+			break;
+			case 'short':
+				return date('M', $date);
+			break;
 		}
 	}
 
