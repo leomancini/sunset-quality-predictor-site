@@ -18,11 +18,12 @@
 		global $sitePrefix;
 
 		$startDate = '2022-05-01';
+		$endDate = '2023-09-30';
 
 		$period = new DatePeriod(
 			new DateTime($startDate),
 			new DateInterval('P1D'),
-			new DateTime('last day of this month')
+			new DateTime($endDate)
 		);
 
 		$monthKey = 0;
