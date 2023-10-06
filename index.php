@@ -29,7 +29,7 @@
 	} else if ($firstDateWithPrediction === $yesterday) {
 		$predictionDay = 'Yesterday\'s';
 	} else {
-		$predictionDay = 'Latest';
+		$predictionDay = 'Last';
 	}
 
 	$sitePrefix = '';
